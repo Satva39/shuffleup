@@ -8,10 +8,30 @@ import ScoreBoard from "./ScoreBoard";
 import BidPanel from "./BidPanel";
 import { getPlayableCards } from "../logic/rules";
 
-function arrangePlayers(players, userId) {
-    const selfIndex = players.findIndex((player) => player.id === userId);
-    if (selfIndex < 0) return players;
-    return [...players.slice(selfIndex), ...players.slice(0, selfIndex)];
+function getSeatStyle(index, total) {
+    const angle = Math.PI / 2 + (index * Math.PI * 2) / total;
+    const radiusX = total >= 8 ? 38 : 40;
+    const radiusY = total >= 8 ? 34 : 36;
+
+    return {
+        left: `${50 + Math.cos(angle) * radiusX}%`,
+        top: `${50 + Math.sin(angle) * radiusY}%`,
+    };
+}
+
+function getOrderedPlayers(players, userId) {
+    if (!players.length) return [];
+
+    const userIndex = players.findIndex(
+        (player) => player.id === userId
+    );
+
+    if (userIndex < 0) return players;
+
+    return [
+        ...players.slice(userIndex),
+        ...players.slice(0, userIndex),
+    ];
 }
 
 function KachufulTable({
@@ -23,106 +43,103 @@ function KachufulTable({
     onPlayCard,
 }) {
     const players = gameState?.players || [];
-    const tablePlayers = arrangePlayers(players, userId);
-    const currentPlayer = players.find((player) => player.id === gameState.currentPlayerId);
+    const orderedPlayers = getOrderedPlayers(players, userId);
+    const currentPlayer = players.find(
+        (player) => player.id === gameState.currentPlayerId
+    );
+
     const isYourTurn = gameState.currentPlayerId === userId;
 
     const playableCards = new Set(
         gameState.status === "playing" && isYourTurn
-            ? getPlayableCards(gameState.yourCards || [], gameState.currentTrick || []).map((card) => card.id)
+            ? getPlayableCards(
+                gameState.yourCards || [],
+                gameState.currentTrick || []
+            ).map((card) => card.id)
             : []
     );
 
     return (
-        <div className="kachuful-game-space">
-            <div className="kachuful-context-row">
-                <RoundInfo
-                    round={gameState.round}
-                    totalRounds={gameState.totalRounds}
-                    cardsPerPlayer={gameState.cardsPerPlayer}
-                />
-                <TrumpIndicator trump={gameState.trump} />
-                <TurnIndicator currentPlayer={currentPlayer} isYourTurn={isYourTurn} status={gameState.status} />
-                <ScoreBoard players={players} userId={userId} />
-            </div>
-
-            <section className={`kachuful-table kachuful-status-${gameState.status}`} aria-label="Kachuful table">
-                <div className="table-felt-glow" aria-hidden="true" />
-                <div className="table-rim" aria-hidden="true" />
-                <div className="table-caption">
-                    <span className="table-caption-kicker">KACHUFUL</span>
-                    <strong>{gameState.status === "bidding" ? "Bidding phase" : gameState.status === "playing" ? "Trick in play" : "Table ready"}</strong>
+        <div className="kachuful-table-wrapper">
+            <header className="kachuful-game-header">
+                <div className="kachuful-header-left">
+                    <RoundInfo
+                        round={gameState.round}
+                        totalRounds={gameState.totalRounds}
+                        cardsPerPlayer={gameState.cardsPerPlayer}
+                    />
+                    <TrumpIndicator trump={gameState.trump} />
                 </div>
 
-                {tablePlayers.map((player, index) => {
-                    const angle = (Math.PI / 2) + (index * (Math.PI * 2 / Math.max(tablePlayers.length, 1)));
-                    const x = 50 + Math.cos(angle) * 43;
-                    const y = 50 + Math.sin(angle) * 39;
-                    const seatPosition = {
-                        left: `${x}%`,
-                        top: `${y}%`,
-                    };
+                <TurnIndicator
+                    currentPlayer={currentPlayer}
+                    isYourTurn={isYourTurn}
+                />
 
-                    return (
-                        <div className="kachuful-seat-position" style={seatPosition} key={player.id}>
+                <div className="kachuful-header-right">
+                    <ScoreBoard players={players} />
+                </div>
+            </header>
+
+            <section className="kachuful-play-space">
+                <div className="kachuful-table-shadow" />
+                <div className="kachuful-table">
+                    <div className="table-inner-ring" />
+                    <div className="table-center-glow" />
+
+                    {orderedPlayers.map((player, index) => (
+                        <div
+                            key={player.id}
+                            className="kachuful-seat-position"
+                            style={getSeatStyle(index, orderedPlayers.length)}
+                        >
                             <PlayerSeat
                                 player={player}
-                                isCurrentTurn={player.id === gameState.currentPlayerId}
+                                isCurrentTurn={
+                                    player.id === gameState.currentPlayerId
+                                }
                                 isYou={player.id === userId}
+                                compact={orderedPlayers.length >= 8}
                             />
                         </div>
-                    );
-                })}
+                    ))}
 
-                <TrickArea
-                    trick={gameState.currentTrick || []}
-                    players={players}
-                    lastCompletedTrick={gameState.lastCompletedTrick}
-                    currentPlayerId={gameState.currentPlayerId}
-                />
-
-                <div className="table-state-pod">
-                    <div>
-                        <span>TRUMP</span>
-                        <strong>{gameState.trump?.symbol || "—"}</strong>
-                    </div>
-                    <div>
-                        <span>ROUND</span>
-                        <strong>{gameState.round}/{gameState.totalRounds}</strong>
-                    </div>
-                    <div>
-                        <span>CARDS</span>
-                        <strong>{gameState.cardsPerPlayer}</strong>
-                    </div>
-                </div>
-
-                <div className="kachuful-your-area">
-                    <div className="your-hand-heading">
-                        <div>
-                            <span className="your-hand-kicker">YOUR HAND</span>
-                            <strong>{gameState.yourCards?.length || 0} cards</strong>
-                        </div>
-                        <span className={isYourTurn ? "hand-turn-tag active" : "hand-turn-tag"}>
-                            {isYourTurn ? "Your turn" : currentPlayer ? `${currentPlayer.username}'s turn` : "Waiting"}
-                        </span>
-                    </div>
-
-                    <PlayerHand
-                        cards={gameState.yourCards || []}
-                        playableCards={gameState.status === "playing" && isYourTurn ? playableCards : new Set()}
-                        onPlayCard={onPlayCard}
+                    <TrickArea
+                        trick={gameState.currentTrick}
+                        players={players}
+                        lastCompletedTrick={gameState.lastCompletedTrick}
                     />
                 </div>
 
                 {gameState.status === "bidding" && (
-                    <BidPanel
-                        cardsPerPlayer={gameState.cardsPerPlayer}
-                        currentBid={selectedBid}
-                        submitted={gameState.yourBid !== null}
-                        onBid={onBidChange}
-                        onBidConfirm={onBidConfirm}
-                    />
+                    <div className="kachuful-action-dock">
+                        <BidPanel
+                            cardsPerPlayer={gameState.cardsPerPlayer}
+                            currentBid={selectedBid}
+                            submitted={gameState.yourBid !== null}
+                            onBid={onBidChange}
+                            onBidConfirm={onBidConfirm}
+                        />
+                    </div>
                 )}
+
+                <div className="kachuful-hand-dock">
+                    <div className="hand-dock-label-row">
+                        <span>YOUR HAND</span>
+                        <span>
+                            {gameState.yourCards?.length || 0} cards
+                        </span>
+                    </div>
+                    <PlayerHand
+                        cards={gameState.yourCards || []}
+                        playableCards={
+                            gameState.status === "playing" && isYourTurn
+                                ? playableCards
+                                : new Set()
+                        }
+                        onPlayCard={onPlayCard}
+                    />
+                </div>
             </section>
         </div>
     );

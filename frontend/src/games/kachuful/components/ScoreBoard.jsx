@@ -1,34 +1,34 @@
-function ScoreBoard({ players, userId }) {
+function ScoreBoard({ players }) {
     return (
-        <details className="kachuful-scoreboard context-card">
-            <summary>
-                <span className="score-summary-icon">Σ</span>
-                <span>
-                    <b>Scoreboard</b>
-                    <small>{players.length} players</small>
-                </span>
-                <span className="score-summary-chevron">⌄</span>
-            </summary>
-            <div className="scoreboard-popover">
-                <header className="scoreboard-head">
-                    <span>PLAYER</span>
-                    <span>BID</span>
-                    <span>WON</span>
-                    <span>PTS</span>
-                </header>
+        <aside className="kachuful-scoreboard">
+            <div className="scoreboard-heading">
+                <div>
+                    <span>SCOREBOARD</span>
+                    <strong>{players.length} players</strong>
+                </div>
+                <span className="scoreboard-live">LIVE</span>
+            </div>
+
+            <div className="scoreboard-list">
                 {players.map((player) => (
-                    <div className={`score-row ${player.id === userId ? "score-self" : ""}`} key={player.id}>
+                    <div
+                        className="score-row"
+                        key={player.id}
+                    >
                         <div className="score-player">
-                            <span className="score-avatar">{player.username?.charAt(0)?.toUpperCase() || "?"}</span>
-                            <strong>{player.id === userId ? "You" : player.username}</strong>
+                            <span className="score-avatar">
+                                {player.username?.charAt(0).toUpperCase() || "?"}
+                            </span>
+                            <strong>{player.username}</strong>
                         </div>
+
                         <span>{player.bid ?? "—"}</span>
                         <span>{player.tricksWon ?? 0}</span>
-                        <strong>{player.score ?? 0}</strong>
+                        <b>{player.score ?? 0}</b>
                     </div>
                 ))}
             </div>
-        </details>
+        </aside>
     );
 }
 

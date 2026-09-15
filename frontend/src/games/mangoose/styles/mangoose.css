@@ -1,0 +1,1228 @@
+.mangoose-page {
+    min-height: 100vh;
+    width: 100%;
+    background:
+        radial-gradient(circle at 50% 45%, #2c1b44 0%, #110c1d 48%, #08060d 100%);
+    color: #fff;
+    overflow: hidden;
+    font-family: inherit;
+}
+
+.mangoose-game {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.mangoose-game-status {
+    position: absolute;
+    top: 18px;
+    left: 22px;
+    right: 22px;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    pointer-events: none;
+}
+
+.mangoose-game-status>div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: rgba(7, 5, 12, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mangoose-game-status strong {
+    font-size: 9px;
+    letter-spacing: .13em;
+}
+
+.mangoose-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #a855f7;
+    box-shadow: 0 0 12px rgba(168, 85, 247, .75);
+}
+
+.mangoose-status-offline {
+    background: #f59e0b;
+    box-shadow: 0 0 12px rgba(245, 158, 11, .5);
+}
+
+.mangoose-game-error {
+    max-width: min(430px, 60vw);
+    padding: 8px 12px;
+    border-radius: 9px;
+    background: rgba(127, 29, 29, .78);
+    border: 1px solid rgba(248, 113, 113, .25);
+    color: #fecaca;
+    font-size: 10px;
+    letter-spacing: .04em;
+}
+
+.mangoose-layout {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 58px 20px 225px;
+}
+
+.mangoose-table-wrap {
+    width: min(1040px, 78vw);
+    position: relative;
+}
+
+.mangoose-table {
+    width: 100%;
+    aspect-ratio: 1.75 / 1;
+    position: relative;
+    border-radius: 48%;
+    padding: 13px;
+    background: #151019;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(255, 255, 255, .05);
+}
+
+.mangoose-table::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border-radius: 48%;
+    background:
+        radial-gradient(ellipse at center, #39234f 0%, #241733 58%, #171020 100%);
+    border: 1px solid rgba(168, 85, 247, .34);
+    box-shadow: inset 0 0 45px rgba(0, 0, 0, .35);
+}
+
+.mangoose-table::after {
+    content: "";
+    position: absolute;
+    inset: 9%;
+    border-radius: 48%;
+    border: 1px solid rgba(255, 255, 255, .07);
+    pointer-events: none;
+}
+
+.mangoose-center-area {
+    position: absolute;
+    z-index: 4;
+    inset: 18% 17%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mangoose-center-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    opacity: .55;
+    letter-spacing: .18em;
+    margin-bottom: 9px;
+}
+
+.mangoose-center-title span {
+    font-size: 7px;
+}
+
+.mangoose-center-title strong {
+    font-size: 18px;
+}
+
+.mangoose-center-stacks {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 11px;
+    width: min(460px, 80%);
+}
+
+.mangoose-center-stack {
+    position: relative;
+    border: 0;
+    background: transparent;
+    display: grid;
+    place-items: center;
+    padding: 4px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.mangoose-center-stack>span {
+    position: absolute;
+    bottom: -2px;
+    right: 7px;
+    font-size: 8px;
+    color: rgba(255, 255, 255, .55);
+}
+
+.mangoose-target {
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, .3), 0 0 24px rgba(168, 85, 247, .18);
+}
+
+.mangoose-center-stack:disabled {
+    cursor: default;
+}
+
+.mangoose-seat {
+    position: absolute;
+    z-index: 8;
+    transform: translate(-50%, -50%);
+}
+
+.mangoose-player-card {
+    min-width: 142px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    background: rgba(10, 8, 15, .9);
+    border: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: 0 11px 27px rgba(0, 0, 0, .28);
+    transition: .2s ease;
+}
+
+.mangoose-player-turn {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, .18), 0 0 25px rgba(168, 85, 247, .23);
+}
+
+.mangoose-player-local {
+    border-color: rgba(168, 85, 247, .45);
+}
+
+.mangoose-player-disconnected {
+    opacity: .5;
+}
+
+.mangoose-player-avatar {
+    width: 31px;
+    height: 31px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    background: #332044;
+    color: #d8b4fe;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.mangoose-player-meta {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.mangoose-player-meta strong {
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 10px;
+}
+
+.mangoose-player-meta span {
+    margin-top: 2px;
+    font-size: 7px;
+    letter-spacing: .09em;
+    opacity: .58;
+}
+
+.mangoose-player-count {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 800;
+    color: #d8b4fe;
+}
+
+.mangoose-opponent-pile {
+    margin: -2px auto 0;
+    transform: translateY(-1px);
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+}
+
+.mangoose-opponent-pile>span {
+    position: absolute;
+    right: -3px;
+    bottom: -4px;
+    padding: 2px 5px;
+    border-radius: 999px;
+    background: #16101e;
+    color: rgba(255, 255, 255, .6);
+    font-size: 7px;
+}
+
+.mangoose-seat-2-0 {
+    left: 50%;
+    top: 7%;
+}
+
+.mangoose-seat-2-1 {
+    left: 50%;
+    bottom: -4%;
+}
+
+.mangoose-seat-3-0 {
+    left: 50%;
+    top: 7%;
+}
+
+.mangoose-seat-3-1 {
+    left: 7%;
+    top: 62%;
+}
+
+.mangoose-seat-3-2 {
+    right: -5%;
+    top: 62%;
+}
+
+.mangoose-seat-4-0 {
+    left: 50%;
+    top: 6%;
+}
+
+.mangoose-seat-4-1 {
+    left: 3%;
+    top: 50%;
+}
+
+.mangoose-seat-4-2 {
+    left: 50%;
+    bottom: -4%;
+}
+
+.mangoose-seat-4-3 {
+    right: -4%;
+    top: 50%;
+}
+
+.mangoose-seat-5-0,
+.mangoose-seat-6-0,
+.mangoose-seat-7-0,
+.mangoose-seat-8-0,
+.mangoose-seat-9-0,
+.mangoose-seat-10-0,
+.mangoose-seat-11-0,
+.mangoose-seat-12-0 {
+    left: 50%;
+    top: 5%;
+}
+
+.mangoose-seat-5-1,
+.mangoose-seat-6-1,
+.mangoose-seat-7-1,
+.mangoose-seat-8-1,
+.mangoose-seat-9-1,
+.mangoose-seat-10-1,
+.mangoose-seat-11-1,
+.mangoose-seat-12-1 {
+    left: 3%;
+    top: 31%;
+}
+
+.mangoose-seat-5-2,
+.mangoose-seat-6-2,
+.mangoose-seat-7-2,
+.mangoose-seat-8-2,
+.mangoose-seat-9-2,
+.mangoose-seat-10-2,
+.mangoose-seat-11-2,
+.mangoose-seat-12-2 {
+    left: 6%;
+    bottom: 3%;
+}
+
+.mangoose-seat-5-3,
+.mangoose-seat-6-3,
+.mangoose-seat-7-3,
+.mangoose-seat-8-3,
+.mangoose-seat-9-3,
+.mangoose-seat-10-3,
+.mangoose-seat-11-3,
+.mangoose-seat-12-3 {
+    left: 50%;
+    bottom: -2%;
+}
+
+.mangoose-seat-5-4,
+.mangoose-seat-6-4,
+.mangoose-seat-7-4,
+.mangoose-seat-8-4,
+.mangoose-seat-9-4,
+.mangoose-seat-10-4,
+.mangoose-seat-11-4,
+.mangoose-seat-12-4 {
+    right: 1%;
+    bottom: 3%;
+}
+
+.mangoose-seat-5-5,
+.mangoose-seat-6-5,
+.mangoose-seat-7-5,
+.mangoose-seat-8-5,
+.mangoose-seat-9-5,
+.mangoose-seat-10-5,
+.mangoose-seat-11-5,
+.mangoose-seat-12-5 {
+    right: -3%;
+    top: 31%;
+}
+
+.mangoose-seat-6-6,
+.mangoose-seat-7-6,
+.mangoose-seat-8-6,
+.mangoose-seat-9-6,
+.mangoose-seat-10-6,
+.mangoose-seat-11-6,
+.mangoose-seat-12-6 {
+    left: 25%;
+    top: 17%;
+}
+
+.mangoose-seat-7-6 {
+    left: 75%;
+    top: 17%;
+}
+
+.mangoose-seat-7-5 {
+    right: -2%;
+    top: 50%;
+}
+
+.mangoose-seat-7-4 {
+    right: 8%;
+    bottom: 0;
+}
+
+.mangoose-seat-8-6 {
+    left: 72%;
+    top: 17%;
+}
+
+.mangoose-seat-8-7 {
+    right: 7%;
+    bottom: 0;
+}
+
+.mangoose-seat-8-5 {
+    right: -2%;
+    top: 50%;
+}
+
+.mangoose-seat-9-6 {
+    left: 69%;
+    top: 16%;
+}
+
+.mangoose-seat-9-7 {
+    left: 82%;
+    top: 41%;
+}
+
+.mangoose-seat-9-8 {
+    right: 5%;
+    bottom: 1%;
+}
+
+.mangoose-seat-10-6 {
+    left: 69%;
+    top: 16%;
+}
+
+.mangoose-seat-10-7 {
+    left: 83%;
+    top: 35%;
+}
+
+.mangoose-seat-10-8 {
+    right: 8%;
+    bottom: 0;
+}
+
+.mangoose-seat-10-9 {
+    left: 25%;
+    top: 17%;
+}
+
+.mangoose-seat-11-6 {
+    left: 74%;
+    top: 17%;
+}
+
+.mangoose-seat-11-7 {
+    left: 83%;
+    top: 40%;
+}
+
+.mangoose-seat-11-8 {
+    right: 6%;
+    bottom: 0;
+}
+
+.mangoose-seat-11-9 {
+    left: 25%;
+    top: 17%;
+}
+
+.mangoose-seat-11-10 {
+    left: 17%;
+    top: 40%;
+}
+
+.mangoose-seat-12-6 {
+    left: 71%;
+    top: 16%;
+}
+
+.mangoose-seat-12-7 {
+    left: 80%;
+    top: 37%;
+}
+
+.mangoose-seat-12-8 {
+    right: 8%;
+    bottom: 0;
+}
+
+.mangoose-seat-12-9 {
+    left: 29%;
+    top: 16%;
+}
+
+.mangoose-seat-12-10 {
+    left: 17%;
+    top: 37%;
+}
+
+.mangoose-seat-12-11 {
+    left: 50%;
+    bottom: 18%;
+}
+
+.mangoose-card {
+    width: 63px;
+    height: 88px;
+    position: relative;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #d6d6d6;
+    background: #fafafa;
+    color: #15111a;
+    box-shadow: 0 9px 22px rgba(0, 0, 0, .35);
+    padding: 0;
+    cursor: default;
+}
+
+button.mangoose-card:disabled {
+    cursor: default;
+}
+
+.mangoose-card-red {
+    color: #b91c1c;
+}
+
+.mangoose-card-selected {
+    transform: translateY(-5px);
+    box-shadow: 0 13px 29px rgba(168, 85, 247, .28);
+}
+
+.mangoose-card-back {
+    background: #241735;
+    border-color: rgba(168, 85, 247, .35);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.mangoose-card-back span {
+    width: 76%;
+    height: 82%;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(216, 180, 254, .22);
+    background: repeating-linear-gradient(45deg, transparent 0, transparent 4px, rgba(168, 85, 247, .10) 4px, rgba(168, 85, 247, .10) 6px);
+    color: #a855f7;
+    font-size: 23px;
+}
+
+.mangoose-card-corner {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.mangoose-card-corner strong {
+    font-size: 14px;
+}
+
+.mangoose-card-corner span {
+    margin-top: 2px;
+    font-size: 10px;
+}
+
+.mangoose-card-corner-bottom {
+    left: auto;
+    top: auto;
+    right: 6px;
+    bottom: 5px;
+    transform: rotate(180deg);
+}
+
+.mangoose-card-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 27px;
+}
+
+.mangoose-card-small {
+    width: 36px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.mangoose-card-small .mangoose-card-corner {
+    top: 3px;
+    left: 3px;
+}
+
+.mangoose-card-small .mangoose-card-corner strong {
+    font-size: 8px;
+}
+
+.mangoose-card-small .mangoose-card-corner span {
+    font-size: 6px;
+}
+
+.mangoose-card-small .mangoose-card-corner-bottom {
+    right: 3px;
+    bottom: 3px;
+}
+
+.mangoose-card-small .mangoose-card-center {
+    font-size: 16px;
+}
+
+.mangoose-hand {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+}
+
+.mangoose-hand>div,
+.mangoose-own-pile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.mangoose-pile-label {
+    font-size: 7px;
+    letter-spacing: .12em;
+    opacity: .52;
+}
+
+.mangoose-hand-pile,
+.mangoose-hand-flipped,
+.mangoose-own-pile {
+    min-width: 80px;
+}
+
+.mangoose-hand-pile strong,
+.mangoose-own-pile strong {
+    font-size: 9px;
+    opacity: .62;
+}
+
+.mangoose-hand-flipped {
+    min-height: 110px;
+    justify-content: flex-end;
+}
+
+.mangoose-empty-slot {
+    width: 63px;
+    height: 88px;
+    border-radius: 8px;
+    border: 1px dashed rgba(255, 255, 255, .13);
+    display: grid;
+    place-items: center;
+    color: rgba(255, 255, 255, .35);
+    font-size: 7px;
+    text-align: center;
+}
+
+.mangoose-own-pile {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+}
+
+.mangoose-own-pile:disabled {
+    cursor: default;
+}
+
+.mangoose-open-empty {
+    width: 36px;
+    height: 50px;
+    border: 1px dashed rgba(255, 255, 255, .13);
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    font-size: 7px;
+    color: rgba(255, 255, 255, .3);
+}
+
+.mangoose-own-pile-active {
+    outline: 1px solid rgba(168, 85, 247, .34);
+    border-radius: 10px;
+    padding: 6px;
+}
+
+.mangoose-action-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 9px 11px;
+    border-radius: 13px;
+    background: rgba(9, 7, 14, .93);
+    border: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: 0 11px 35px rgba(0, 0, 0, .35);
+}
+
+.mangoose-action-label {
+    font-size: 8px;
+    letter-spacing: .09em;
+    opacity: .6;
+}
+
+.mangoose-action-buttons {
+    display: flex;
+    gap: 7px;
+}
+
+.mangoose-action-buttons button {
+    border: 0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: white;
+    background: #7e22ce;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    cursor: pointer;
+}
+
+.mangoose-action-buttons button:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.mangoose-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.mangoose-turn {
+    position: absolute;
+    left: 50%;
+    bottom: 176px;
+    z-index: 20;
+    transform: translateX(-50%);
+    padding: 8px 15px;
+    border-radius: 999px;
+    background: rgba(9, 7, 14, .82);
+    border: 1px solid rgba(255, 255, 255, .08);
+    color: rgba(255, 255, 255, .66);
+    font-size: 9px;
+    letter-spacing: .1em;
+    white-space: nowrap;
+}
+
+.mangoose-turn-mine {
+    color: #e9d5ff;
+    border-color: rgba(168, 85, 247, .44);
+    box-shadow: 0 0 18px rgba(168, 85, 247, .12);
+}
+
+.mangoose-scoreboard {
+    width: 185px;
+    max-height: 60vh;
+    overflow: auto;
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(9, 7, 14, .82);
+    border: 1px solid rgba(255, 255, 255, .07);
+}
+
+.mangoose-panel-heading {
+    font-size: 8px;
+    letter-spacing: .14em;
+    opacity: .5;
+    margin-bottom: 9px;
+}
+
+.mangoose-score-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 0;
+    border-top: 1px solid rgba(255, 255, 255, .05);
+    font-size: 9px;
+}
+
+.mangoose-score-row strong {
+    color: #d8b4fe;
+}
+
+.mangoose-result-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(5, 4, 8, .7);
+    backdrop-filter: blur(9px);
+}
+
+.mangoose-result-card {
+    width: min(430px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    text-align: center;
+    padding: 32px 28px;
+    border-radius: 22px;
+    background: #15101d;
+    border: 1px solid rgba(168, 85, 247, .28);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .5);
+}
+
+.mangoose-result-trophy {
+    display: block;
+    font-size: 39px;
+}
+
+.mangoose-result-card p {
+    margin: 9px 0 0;
+    font-size: 9px;
+    letter-spacing: .16em;
+    color: #d8b4fe;
+}
+
+.mangoose-result-card h1 {
+    margin: 6px 0 2px;
+    font-size: 28px;
+}
+
+.mangoose-result-caption {
+    font-size: 8px;
+    letter-spacing: .13em;
+    opacity: .5;
+}
+
+.mangoose-final-list {
+    margin: 22px 0;
+    border-top: 1px solid rgba(255, 255, 255, .07);
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
+}
+
+.mangoose-final-list>div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 10px;
+}
+
+.mangoose-final-list strong {
+    color: #d8b4fe;
+}
+
+.mangoose-result-card>button {
+    width: 100%;
+    border: 0;
+    border-radius: 9px;
+    padding: 11px;
+    color: white;
+    background: #7e22ce;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    cursor: pointer;
+}
+
+.mangoose-loading {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 9px;
+}
+
+.mangoose-loader {
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(255, 255, 255, .1);
+    border-top-color: #a855f7;
+    border-radius: 50%;
+    animation: mangoose-spin .75s linear infinite;
+}
+
+.mangoose-loading h2 {
+    margin: 4px 0 0;
+    font-size: 14px;
+    letter-spacing: .13em;
+}
+
+.mangoose-loading p,
+.mangoose-loading span {
+    margin: 0;
+    font-size: 11px;
+    opacity: .52;
+}
+
+@keyframes mangoose-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 900px) {
+    .mangoose-layout {
+        padding: 55px 10px 210px;
+    }
+
+    .mangoose-table-wrap {
+        width: 96vw;
+    }
+
+    .mangoose-scoreboard {
+        display: none;
+    }
+
+    .mangoose-table {
+        aspect-ratio: .96 / 1;
+        border-radius: 34%;
+    }
+
+    .mangoose-table::before,
+    .mangoose-table::after {
+        border-radius: 34%;
+    }
+
+    .mangoose-center-area {
+        inset: 23% 14%;
+    }
+
+    .mangoose-center-stacks {
+        gap: 5px;
+        width: 95%;
+    }
+
+    .mangoose-player-card {
+        min-width: 104px;
+        padding: 6px 7px;
+        gap: 6px;
+    }
+
+    .mangoose-player-avatar {
+        width: 27px;
+        height: 27px;
+        font-size: 10px;
+    }
+
+    .mangoose-player-meta strong {
+        max-width: 70px;
+        font-size: 8px;
+    }
+
+    .mangoose-player-meta span {
+        font-size: 6px;
+    }
+
+    .mangoose-card {
+        width: 52px;
+        height: 73px;
+    }
+
+    .mangoose-card-center {
+        font-size: 22px;
+    }
+
+    .mangoose-card-corner strong {
+        font-size: 11px;
+    }
+
+    .mangoose-card-corner span {
+        font-size: 8px;
+    }
+
+    .mangoose-hand {
+        gap: 5px;
+    }
+
+    .mangoose-turn {
+        bottom: 159px;
+    }
+
+    .mangoose-action-label {
+        display: none;
+    }
+
+    .mangoose-game-status {
+        top: 9px;
+        left: 10px;
+        right: 10px;
+    }
+
+    .mangoose-game-error {
+        max-width: 55vw;
+    }
+}
+
+@media (max-width: 600px) {
+    .mangoose-player-count {
+        display: none;
+    }
+
+    .mangoose-player-card {
+        min-width: 92px;
+    }
+
+    .mangoose-player-meta strong {
+        max-width: 58px;
+    }
+
+    .mangoose-opponent-pile {
+        display: none;
+    }
+
+    .mangoose-seat-6-6,
+    .mangoose-seat-7-6,
+    .mangoose-seat-8-6,
+    .mangoose-seat-9-6,
+    .mangoose-seat-10-6,
+    .mangoose-seat-11-6,
+    .mangoose-seat-12-6,
+    .mangoose-seat-12-7,
+    .mangoose-seat-12-8,
+    .mangoose-seat-12-9,
+    .mangoose-seat-12-10,
+    .mangoose-seat-12-11 {
+        transform: translate(-50%, -50%) scale(.86);
+    }
+
+    .mangoose-bottom {
+        bottom: 6px;
+    }
+
+    .mangoose-action-buttons button {
+        padding: 9px 10px;
+    }
+
+    .mangoose-turn {
+        max-width: 92vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (max-height: 660px) and (orientation: landscape) {
+    .mangoose-layout {
+        padding-top: 45px;
+        padding-bottom: 150px;
+    }
+
+    .mangoose-bottom {
+        bottom: 4px;
+    }
+
+    .mangoose-turn {
+        bottom: 118px;
+    }
+
+    .mangoose-card {
+        width: 48px;
+        height: 67px;
+    }
+}
+
+/* Mangoose rule-state enhancements */
+.mangoose-center-stack {
+    appearance: none;
+    color: inherit;
+}
+
+.mangoose-center-stack:disabled {
+    opacity: .82;
+}
+
+.mangoose-center-empty {
+    min-height: 90px;
+}
+
+.mangoose-empty-foundation {
+    width: 63px;
+    height: 88px;
+    display: grid;
+    place-items: center;
+    gap: 0;
+    border: 1px dashed rgba(255, 255, 255, .13);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, .42);
+    font-size: 22px;
+    background: rgba(255, 255, 255, .02);
+}
+
+.mangoose-empty-foundation>span {
+    position: static;
+    transform: translateY(-4px);
+    font-size: 18px;
+    color: rgba(255, 255, 255, .34);
+}
+
+.mangoose-call-button {
+    background: #b45309 !important;
+    box-shadow: 0 0 22px rgba(180, 83, 9, .28);
+}
+
+.mangoose-call-button:hover {
+    background: #c2410c !important;
+}
+
+.mangoose-call-waiting {
+    display: inline-flex;
+    align-items: center;
+    min-height: 31px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(180, 83, 9, .28);
+    color: rgba(254, 215, 170, .72);
+    font-size: 8px;
+    letter-spacing: .08em;
+}
+
+.mangoose-call-banner {
+    max-width: 42vw;
+    padding: 7px 10px;
+    border-radius: 9px;
+    background: rgba(120, 53, 15, .72);
+    border: 1px solid rgba(251, 146, 60, .22);
+    color: #fed7aa;
+    font-size: 8px;
+    letter-spacing: .05em;
+}
+
+.mangoose-notice-banner {
+    max-width: 46vw;
+    padding: 8px 11px;
+    border-radius: 9px;
+    background: rgba(91, 33, 182, .88);
+    border: 1px solid rgba(196, 181, 253, .2);
+    color: #f3e8ff;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.mangoose-turn-warning {
+    border-color: rgba(251, 146, 60, .42);
+    color: #fed7aa;
+    box-shadow: 0 0 20px rgba(180, 83, 9, .12);
+}
+
+.mangoose-result-mongoose {
+    display: grid;
+    gap: 3px;
+    margin: 18px auto 0;
+    padding: 11px 13px;
+    max-width: 260px;
+    border-radius: 10px;
+    border: 1px solid rgba(180, 83, 9, .25);
+    background: rgba(120, 53, 15, .16);
+}
+
+.mangoose-result-mongoose span {
+    font-size: 8px;
+    letter-spacing: .14em;
+    color: #fdba74;
+}
+
+.mangoose-result-mongoose strong {
+    font-size: 15px;
+}
+
+@media (max-width: 600px) {
+
+    .mangoose-call-banner,
+    .mangoose-notice-banner {
+        max-width: 68vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mangoose-empty-foundation {
+        width: 52px;
+        height: 73px;
+        font-size: 18px;
+    }
+
+    .mangoose-empty-foundation>span {
+        font-size: 14px;
+    }
+}
+
+.mangoose-score-row>span {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mangoose-score-row>span strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.mangoose-score-row>span small {
+    font-size: 6px;
+    letter-spacing: .08em;
+    opacity: .48;
+}

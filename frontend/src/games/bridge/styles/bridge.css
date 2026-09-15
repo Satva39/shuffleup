@@ -1,0 +1,754 @@
+.bridge-shell {
+    min-height: 100vh;
+    padding: 20px;
+    background: radial-gradient(circle at top, #183f31 0%, #0b1d17 45%, #060d0b 100%);
+    color: #f7f4ec;
+}
+
+.bridge-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    max-width: 1500px;
+    margin: 0 auto 12px;
+}
+
+.bridge-topbar h1 {
+    margin: 5px 0 0;
+    font-size: clamp(24px, 3vw, 38px);
+    letter-spacing: -.04em;
+}
+
+.bridge-eyebrow {
+    display: block;
+    font-size: 11px;
+    letter-spacing: .18em;
+    font-weight: 800;
+    opacity: .65;
+}
+
+.bridge-top-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.bridge-top-meta span,
+.bridge-turn-pill {
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .1);
+    padding: 9px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+}
+
+.bridge-status-row {
+    max-width: 1500px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #c9d8d0;
+}
+
+.bridge-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #67d59c;
+    box-shadow: 0 0 18px rgba(103, 213, 156, .65);
+}
+
+.bridge-error-inline {
+    color: #ffafaf;
+    margin-left: 8px;
+}
+
+.bridge-layout {
+    max-width: 1380px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: minmax(240px, 280px) minmax(500px, 780px) minmax(240px, 280px);
+    gap: 14px;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.bridge-side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bridge-panel,
+.bridge-contract-card {
+    background: rgba(5, 14, 10, .72);
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 20px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .22);
+    backdrop-filter: blur(10px);
+}
+
+.bridge-panel {
+    padding: 16px;
+}
+
+.bridge-panel-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.bridge-panel-head h2 {
+    margin: 4px 0 0;
+    font-size: 18px;
+}
+
+.bridge-turn-pill {
+    white-space: nowrap;
+}
+
+.bridge-current-bid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 0 12px;
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .04);
+}
+
+.bridge-current-bid strong {
+    font-size: 24px;
+}
+
+.bridge-bid-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    max-height: 240px;
+    overflow: auto;
+}
+
+.bridge-bid-grid button,
+.bridge-secondary-actions button,
+.bridge-result button {
+    border: 0;
+    border-radius: 11px;
+    padding: 9px 7px;
+    color: #f8f5ee;
+    background: #214b3d;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.bridge-bid-grid button:hover,
+.bridge-secondary-actions button:hover,
+.bridge-result button:hover {
+    background: #2d6651;
+}
+
+.bridge-secondary-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.bridge-secondary-actions .secondary {
+    background: #162720;
+    border: 1px solid rgba(255, 255, 255, .08);
+}
+
+.bridge-secondary-actions button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.bridge-call-guide {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 11px;
+    color: #9eb5a9;
+    font-size: 11px;
+}
+
+.bridge-contract-card {
+    padding: 16px;
+    display: grid;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(193, 150, 74, .18), rgba(5, 14, 10, .72));
+}
+
+.bridge-contract-card strong {
+    display: block;
+    font-size: 31px;
+    margin-top: 3px;
+}
+
+.bridge-contract-detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: #b8c9c1;
+    font-size: 12px;
+}
+
+.bridge-contract-detail b {
+    color: #fff;
+}
+
+.bridge-scoreboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 10px;
+}
+
+.bridge-scoreboard div {
+    padding: 9px;
+    border-right: 1px solid rgba(255, 255, 255, .08);
+}
+
+.bridge-scoreboard div:last-child {
+    border-right: 0;
+}
+
+.bridge-scoreboard span {
+    display: block;
+    color: #91a59c;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+}
+
+.bridge-scoreboard strong {
+    display: block;
+    margin-top: 4px;
+    font-size: 18px;
+}
+
+.bridge-table-wrap {
+    min-width: 0;
+}
+
+.bridge-felt {
+    min-height: 760px;
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: radial-gradient(ellipse at center, #2a7155 0%, #174f3d 50%, #0c2c21 100%);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, .22), 0 22px 80px rgba(0, 0, 0, .3);
+    padding: 18px;
+}
+
+.bridge-table-grid {
+    height: 100%;
+    min-height: 724px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1.2fr 1fr 1.2fr;
+    align-items: center;
+    justify-items: center;
+}
+
+.bridge-seat {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    padding: 6px;
+    transition: .2s ease;
+}
+
+.bridge-seat-n {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.bridge-seat-w {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.bridge-seat-e {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.bridge-seat-s {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.bridge-seat.is-current .bridge-seat-header {
+    outline: 2px solid rgba(239, 206, 122, .75);
+    box-shadow: 0 0 28px rgba(239, 206, 122, .18);
+}
+
+.bridge-seat-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 12px;
+    background: rgba(3, 13, 9, .5);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 13px;
+}
+
+.bridge-seat-name {
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.bridge-seat-meta {
+    font-size: 10px;
+    color: #b9d0c3;
+}
+
+.bridge-hidden-hand {
+    color: #abc0b4;
+    font-size: 11px;
+}
+
+.bridge-hand {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    min-height: 80px;
+    overflow: visible;
+}
+
+.bridge-hand .bridge-card {
+    margin-left: -18px;
+}
+
+.bridge-hand .bridge-card:first-child {
+    margin-left: 0;
+}
+
+.bridge-hand.compact .bridge-card {
+    width: 39px;
+    height: 60px;
+    font-size: 13px;
+}
+
+.bridge-card {
+    width: 51px;
+    height: 76px;
+    flex: 0 0 auto;
+    border-radius: 10px;
+    border: 1px solid #ddd6c8;
+    background: linear-gradient(160deg, #fffdf7, #e9e3d8);
+    color: #181716;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    cursor: default;
+    transition: transform .14s, box-shadow .14s;
+}
+
+.bridge-card-suit {
+    font-size: 22px;
+    margin-top: 2px;
+}
+
+.bridge-card.is-red {
+    color: #b22f35;
+}
+
+.bridge-card:not(:disabled) {
+    cursor: pointer;
+}
+
+.bridge-card:not(:disabled):hover {
+    transform: translateY(-7px);
+    box-shadow: 0 14px 20px rgba(0, 0, 0, .28);
+}
+
+.bridge-card.is-disabled {
+    opacity: .46;
+}
+
+.bridge-center {
+    grid-column: 2;
+    grid-row: 2;
+    width: 100%;
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.bridge-turn-indicator {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(4, 16, 11, .58);
+    border: 1px solid rgba(255, 255, 255, .1);
+}
+
+.bridge-turn-indicator span {
+    font-size: 9px;
+    letter-spacing: .18em;
+    color: #a7c0b3;
+}
+
+.bridge-turn-indicator strong {
+    font-size: 12px;
+}
+
+.bridge-trick-area {
+    width: min(94%, 370px);
+    min-height: 165px;
+    padding: 13px;
+    border-radius: 22px;
+    background: rgba(4, 18, 12, .36);
+    border: 1px solid rgba(255, 255, 255, .08);
+    position: relative;
+}
+
+.bridge-trick-title {
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .7;
+}
+
+.bridge-trick-cards {
+    min-height: 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.bridge-played-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.bridge-played-card .bridge-card {
+    width: 48px;
+    height: 70px;
+}
+
+.bridge-played-card small {
+    color: #bdd2c7;
+    font-size: 9px;
+}
+
+.bridge-played-card.is-winner .bridge-card {
+    outline: 2px solid #e9cc6a;
+}
+
+.bridge-trick-placeholder {
+    color: #89a398;
+    font-size: 11px;
+    text-align: center;
+}
+
+.bridge-table-caption {
+    font-size: 10px;
+    letter-spacing: .12em;
+    color: #b4c7be;
+    text-transform: uppercase;
+}
+
+.bridge-auction-history {
+    max-height: 390px;
+    overflow: auto;
+    display: grid;
+    gap: 5px;
+    margin-top: 12px;
+}
+
+.bridge-auction-entry {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 9px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .04);
+    font-size: 12px;
+}
+
+.bridge-auction-entry span {
+    color: #8fa59a;
+}
+
+.bridge-empty {
+    color: #8fa59a;
+    font-size: 12px;
+    padding: 10px 0;
+}
+
+.bridge-tip {
+    background: linear-gradient(145deg, rgba(83, 127, 104, .16), rgba(5, 14, 10, .72));
+}
+
+.bridge-tip strong {
+    display: block;
+    margin-top: 6px;
+    line-height: 1.45;
+}
+
+.bridge-result h2 {
+    margin: 5px 0 6px;
+}
+
+.bridge-result p {
+    margin: 4px 0;
+    color: #b5c7bf;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.bridge-result button {
+    margin-top: 12px;
+    width: 100%;
+    background: #a77a32;
+}
+
+.bridge-loading {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 8px;
+    background: #06100c;
+    color: #eff8f3;
+    text-align: center;
+    padding: 20px;
+}
+
+.bridge-loading h2 {
+    margin: 0;
+}
+
+.bridge-loading p {
+    margin: 0;
+    color: #a8bbb2;
+}
+
+.bridge-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255, 255, 255, .15);
+    border-top-color: #76cca0;
+    border-radius: 50%;
+    animation: bridge-spin 1s linear infinite;
+}
+
+@keyframes bridge-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width:1200px) {
+    .bridge-layout {
+        grid-template-columns: 240px minmax(460px, 1fr) 240px;
+    }
+}
+
+@media (max-width:980px) {
+    .bridge-shell {
+        padding: 12px
+    }
+
+    .bridge-topbar {
+        align-items: flex-start;
+        flex-direction: column
+    }
+
+    .bridge-top-meta {
+        justify-content: flex-start
+    }
+
+    .bridge-layout {
+        grid-template-columns: 1fr
+    }
+
+    .bridge-side-column.left,
+    .bridge-side-column.right {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+    }
+
+    .bridge-felt {
+        min-height: 680px
+    }
+
+    .bridge-table-grid {
+        min-height: 644px
+    }
+
+    .bridge-bidding-panel {
+        grid-column: 1
+    }
+
+    .bridge-auction-history {
+        max-height: 220px
+    }
+}
+
+@media (max-width:640px) {
+    .bridge-layout {
+        display: flex;
+        flex-direction: column
+    }
+
+    .bridge-side-column.left,
+    .bridge-side-column.right {
+        display: flex
+    }
+
+    .bridge-felt {
+        padding: 8px;
+        min-height: 620px;
+        border-radius: 24px
+    }
+
+    .bridge-table-grid {
+        min-height: 604px;
+        grid-template-columns: .9fr 1.8fr .9fr
+    }
+
+    .bridge-hand .bridge-card {
+        width: 40px;
+        height: 59px;
+        margin-left: -14px
+    }
+
+    .bridge-hand .bridge-card-suit {
+        font-size: 18px
+    }
+
+    .bridge-hand.compact .bridge-card {
+        width: 31px;
+        height: 48px;
+        margin-left: -12px;
+        font-size: 11px
+    }
+
+    .bridge-seat-header {
+        padding: 6px 8px
+    }
+
+    .bridge-seat-name {
+        font-size: 11px
+    }
+
+    .bridge-seat-meta {
+        font-size: 8px
+    }
+
+    .bridge-center {
+        min-height: 185px
+    }
+
+    .bridge-trick-area {
+        min-height: 130px
+    }
+
+    .bridge-trick-cards {
+        min-height: 88px
+    }
+
+    .bridge-played-card .bridge-card {
+        width: 40px;
+        height: 58px
+    }
+
+    .bridge-topbar h1 {
+        font-size: 28px
+    }
+
+    .bridge-bid-grid {
+        max-height: none
+    }
+}
+
+/* Side hands: keep East/West cards inside their seat instead of overflowing the table. */
+.bridge-seat-w .bridge-hand,
+.bridge-seat-e .bridge-hand {
+    display: grid;
+    grid-template-columns: repeat(5, 34px);
+    grid-auto-rows: 52px;
+    gap: 3px;
+    width: max-content;
+    max-width: 100%;
+    min-height: 0;
+    overflow: visible;
+    justify-content: center;
+    align-content: center;
+}
+
+.bridge-seat-w .bridge-hand .bridge-card,
+.bridge-seat-e .bridge-hand .bridge-card,
+.bridge-seat-w .bridge-hand .bridge-card:first-child,
+.bridge-seat-e .bridge-hand .bridge-card:first-child {
+    width: 34px;
+    height: 52px;
+    margin: 0;
+    border-radius: 8px;
+    font-size: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .18);
+}
+
+.bridge-seat-w .bridge-hand .bridge-card-suit,
+.bridge-seat-e .bridge-hand .bridge-card-suit {
+    font-size: 15px;
+    margin-top: 3px;
+}
+
+.bridge-seat-w .bridge-hand .bridge-card:not(:disabled):hover,
+.bridge-seat-e .bridge-hand .bridge-card:not(:disabled):hover {
+    transform: translateY(-4px);
+}
+
+@media (max-width: 640px) {
+
+    .bridge-seat-w .bridge-hand,
+    .bridge-seat-e .bridge-hand {
+        grid-template-columns: repeat(3, 28px);
+        grid-auto-rows: 44px;
+        gap: 2px;
+        max-width: 94px;
+    }
+
+    .bridge-seat-w .bridge-hand .bridge-card,
+    .bridge-seat-e .bridge-hand .bridge-card,
+    .bridge-seat-w .bridge-hand .bridge-card:first-child,
+    .bridge-seat-e .bridge-hand .bridge-card:first-child {
+        width: 28px;
+        height: 44px;
+        border-radius: 7px;
+        font-size: 10px;
+    }
+
+    .bridge-seat-w .bridge-hand .bridge-card-suit,
+    .bridge-seat-e .bridge-hand .bridge-card-suit {
+        font-size: 12px;
+    }
+}

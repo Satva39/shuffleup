@@ -1,0 +1,814 @@
+.jt-page {
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: #08070d;
+    color: #f8f5ff;
+}
+
+.jt-game {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    isolation: isolate;
+    background: radial-gradient(circle at 50% 45%, #241633 0, #0f0b17 56%, #07060b 100%);
+}
+
+.jt-game::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .012) 0, rgba(255, 255, 255, .012) 1px, transparent 1px, transparent 4px);
+}
+
+.jt-status-bar {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    right: 20px;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+}
+
+.jt-brand,
+.jt-live-status,
+.jt-notice,
+.jt-turn-indicator {
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(7, 6, 12, .8);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .2);
+}
+
+.jt-brand {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 12px;
+    border-radius: 12px;
+}
+
+.jt-brand small {
+    font-size: 7px;
+    letter-spacing: .24em;
+    opacity: .6;
+}
+
+.jt-brand strong {
+    font-size: 11px;
+    letter-spacing: .1em;
+}
+
+.jt-live-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .14em;
+}
+
+.jt-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #a66cff;
+    box-shadow: 0 0 14px rgba(166, 108, 255, .7);
+}
+
+.jt-live-dot.offline {
+    background: #f59e0b;
+    box-shadow: 0 0 14px rgba(245, 158, 11, .55);
+}
+
+.jt-notice {
+    justify-self: end;
+    max-width: 42vw;
+    padding: 9px 12px;
+    border-radius: 999px;
+    color: #ded8eb;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-align: center;
+}
+
+.jt-notice.error {
+    color: #fecaca;
+    border-color: rgba(248, 113, 113, .35);
+}
+
+.jt-turn-indicator {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    min-width: 220px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.jt-turn-indicator span {
+    font-size: 11px;
+    font-weight: 950;
+    letter-spacing: .13em;
+}
+
+.jt-turn-indicator small {
+    font-size: 8px;
+    opacity: .65;
+    letter-spacing: .08em;
+}
+
+.jt-table-wrap {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 78px 20px 250px;
+}
+
+.jt-table {
+    width: min(1080px, 89vw);
+    aspect-ratio: 1.58 / 1;
+    position: relative;
+    border-radius: 50%;
+    background: #120b1b;
+    border: 9px solid rgba(255, 255, 255, .018);
+    box-shadow: 0 35px 90px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(255, 255, 255, .05);
+}
+
+.jt-table-rim {
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, #402653 0, #2b1739 52%, #190d23 100%);
+    border: 1px solid rgba(166, 108, 255, .25);
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, .38);
+}
+
+.jt-table-rim::after {
+    content: "";
+    position: absolute;
+    inset: 8%;
+    border: 1px solid rgba(255, 255, 255, .06);
+    border-radius: 50%;
+}
+
+.jt-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 4;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.jt-emblem {
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .12);
+    background: rgba(7, 6, 12, .28);
+    color: #cdb1ff;
+    font: 800 25px Georgia, serif;
+}
+
+.jt-center strong {
+    font-size: 13px;
+    letter-spacing: .2em;
+}
+
+.jt-center span {
+    font-size: 7px;
+    letter-spacing: .18em;
+    opacity: .45;
+}
+
+.jt-seat-position {
+    position: absolute;
+    z-index: 15;
+    transform: translate(-50%, -50%);
+}
+
+.jt-seat {
+    position: relative;
+    min-width: 150px;
+}
+
+.jt-seat-card {
+    display: grid;
+    grid-template-columns: 29px minmax(0, 1fr) 7px;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 9px;
+    border-radius: 12px;
+    background: rgba(9, 7, 14, .92);
+    border: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, .28);
+    transition: .18s ease;
+}
+
+.jt-seat.active .jt-seat-card {
+    border-color: rgba(166, 108, 255, .75);
+    box-shadow: 0 0 0 1px rgba(166, 108, 255, .18), 0 0 30px rgba(166, 108, 255, .2);
+}
+
+.jt-seat.local .jt-seat-card {
+    background: rgba(29, 19, 42, .95);
+}
+
+.jt-seat.target .jt-seat-card {
+    border-color: rgba(255, 255, 255, .22);
+}
+
+.jt-avatar {
+    width: 29px;
+    height: 29px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #34203f;
+    color: #e7d6ff;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.jt-seat-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.jt-seat-copy strong {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 9px;
+}
+
+.jt-seat-copy span {
+    font-size: 7px;
+    opacity: .57;
+    letter-spacing: .05em;
+}
+
+.jt-seat-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #7e718b;
+}
+
+.jt-seat:not(.local) .jt-seat-dot {
+    background: #72c59a;
+}
+
+.jt-seat .jt-seat-dot {
+    box-shadow: 0 0 10px rgba(114, 197, 154, .3);
+}
+
+.jt-seat:has(.jt-seat-copy span) {}
+
+.jt-target-chip {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    border: 1px solid rgba(166, 108, 255, .24);
+    background: rgba(36, 22, 51, .85);
+    color: #e7ddf2;
+    border-radius: 999px;
+    padding: 5px 8px;
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+
+.jt-draw-area {
+    position: absolute;
+    left: 50%;
+    bottom: 7%;
+    transform: translateX(-50%);
+    z-index: 20;
+    width: min(70%, 510px);
+    padding: 11px 12px 13px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, .07);
+    background: rgba(8, 7, 12, .55);
+}
+
+.jt-draw-area.can-draw {
+    border-color: rgba(166, 108, 255, .3);
+    box-shadow: 0 0 26px rgba(166, 108, 255, .1);
+}
+
+.jt-draw-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.jt-draw-heading span {
+    font-size: 7px;
+    letter-spacing: .12em;
+    opacity: .55;
+}
+
+.jt-draw-heading strong {
+    font-size: 9px;
+}
+
+.jt-hidden-hand {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 2px 2px 1px;
+}
+
+.jt-card-back,
+.jt-playing-card {
+    flex: 0 0 auto;
+    border: 0;
+    cursor: pointer;
+}
+
+.jt-card-back {
+    width: 31px;
+    height: 46px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    background: #241733;
+    color: #b58df3;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .025), 0 6px 10px rgba(0, 0, 0, .2);
+    transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+
+.jt-card-back:hover:not(:disabled) {
+    transform: translateY(-5px);
+    border-color: rgba(166, 108, 255, .65);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, .3);
+}
+
+.jt-card-back.disabled {
+    cursor: default;
+    opacity: .82;
+}
+
+.jt-card-back span {
+    font-size: 14px;
+}
+
+.jt-bottom-area {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 16px;
+    z-index: 45;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 12px;
+    align-items: end;
+}
+
+.jt-hand-panel,
+.jt-action-panel {
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(7, 6, 12, .8);
+    backdrop-filter: blur(14px);
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+}
+
+.jt-hand-panel {
+    padding: 10px 12px 12px;
+    min-width: 0;
+}
+
+.jt-panel-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.jt-panel-label span {
+    font-size: 7px;
+    letter-spacing: .14em;
+    opacity: .6;
+}
+
+.jt-panel-label strong {
+    font-size: 8px;
+}
+
+.jt-hand {
+    min-height: 78px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 4px 3px 1px;
+}
+
+.jt-playing-card {
+    width: 52px;
+    height: 73px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    border-radius: 9px;
+    background: #f8f5ed;
+    box-shadow: 0 10px 17px rgba(0, 0, 0, .22);
+    font-family: Georgia, serif;
+    transition: transform .15s ease;
+}
+
+.jt-playing-card:hover {
+    transform: translateY(-4px);
+}
+
+.jt-playing-card.black {
+    color: #141117;
+}
+
+.jt-playing-card.red {
+    color: #b52a47;
+}
+
+.jt-playing-card span {
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.jt-playing-card strong {
+    font-size: 25px;
+    line-height: 1;
+}
+
+.jt-empty-hand {
+    font-size: 8px;
+    letter-spacing: .14em;
+    opacity: .54;
+}
+
+.jt-action-panel {
+    padding: 15px;
+}
+
+.jt-turn-kicker {
+    font-size: 7px;
+    letter-spacing: .17em;
+    opacity: .5;
+}
+
+.jt-action-panel h2 {
+    margin: 5px 0;
+    font-size: 13px;
+    letter-spacing: .06em;
+}
+
+.jt-action-panel p {
+    margin: 0 0 9px;
+    color: #aaa0b7;
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+.jt-action-hint {
+    padding: 8px 9px;
+    border-radius: 9px;
+    background: rgba(166, 108, 255, .08);
+    color: #bfb1ca;
+    font-size: 8px;
+    line-height: 1.35;
+}
+
+.jt-primary-action,
+.jt-result-card button {
+    width: 100%;
+    border: 1px solid rgba(166, 108, 255, .35);
+    border-radius: 10px;
+    background: #2d1a43;
+    color: #f5efff;
+    padding: 10px 12px;
+    font-weight: 900;
+    font-size: 8px;
+    letter-spacing: .1em;
+    cursor: pointer;
+}
+
+.jt-primary-action:hover,
+.jt-result-card button:hover {
+    background: #3a2155;
+}
+
+.jt-pair-toast {
+    position: absolute;
+    top: 116px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 60;
+}
+
+.jt-result-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(4, 3, 7, .74);
+    backdrop-filter: blur(10px);
+}
+
+.jt-result-card {
+    width: min(420px, 100%);
+    padding: 28px;
+    border: 1px solid rgba(166, 108, 255, .22);
+    border-radius: 22px;
+    background: #120d1a;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, .55);
+    text-align: center;
+}
+
+.jt-result-kicker {
+    font-size: 8px;
+    letter-spacing: .2em;
+    color: #bda1dc;
+}
+
+.jt-result-card h1 {
+    margin: 4px 0 8px;
+    font-size: 28px;
+    letter-spacing: .12em;
+}
+
+.jt-result-main {
+    margin: 0 0 16px;
+    color: #bbb0c6;
+    font-size: 12px;
+}
+
+.jt-final-jack {
+    width: 62px;
+    height: 86px;
+    margin: 0 auto 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: #f8f5ed;
+    font-family: Georgia, serif;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .28);
+}
+
+.jt-final-jack.red {
+    color: #b52a47;
+}
+
+.jt-final-jack.black {
+    color: #141117;
+}
+
+.jt-final-jack span {
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.jt-final-jack strong {
+    font-size: 32px;
+}
+
+.jt-elimination-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 18px;
+    color: #aaa0b7;
+    font-size: 9px;
+}
+
+.jt-elimination-list .loser {
+    color: #e6b5c0;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+
+.jt-loading {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 8px;
+    text-align: center;
+    padding: 24px;
+}
+
+.jt-loading h1 {
+    margin: 4px 0;
+    font-size: 17px;
+    letter-spacing: .1em;
+}
+
+.jt-loading p {
+    margin: 0;
+    color: #a99fb0;
+    font-size: 11px;
+}
+
+.jt-loader {
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(166, 108, 255, .18);
+    border-top-color: #a66cff;
+    border-radius: 50%;
+    animation: jt-spin .7s linear infinite;
+}
+
+@keyframes jt-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 900px) {
+    .jt-table-wrap {
+        padding-bottom: 300px;
+    }
+
+    .jt-table {
+        width: 94vw;
+    }
+
+    .jt-seat {
+        min-width: 120px;
+    }
+
+    .jt-seat-card {
+        grid-template-columns: 24px minmax(0, 1fr) 6px;
+        padding: 6px 7px;
+        gap: 5px;
+    }
+
+    .jt-avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 9px;
+    }
+
+    .jt-seat-copy strong {
+        font-size: 7px;
+    }
+
+    .jt-seat-copy span {
+        font-size: 6px;
+    }
+
+    .jt-hidden-hand {
+        justify-content: flex-start;
+    }
+
+    .jt-bottom-area {
+        grid-template-columns: 1fr;
+    }
+
+    .jt-action-panel {
+        order: -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .jt-status-bar {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        grid-template-columns: 1fr auto;
+    }
+
+    .jt-brand {
+        padding: 7px 9px;
+    }
+
+    .jt-brand strong {
+        font-size: 9px;
+    }
+
+    .jt-notice {
+        grid-column: 1 / -1;
+        justify-self: center;
+        max-width: 92vw;
+    }
+
+    .jt-turn-indicator {
+        top: 72px;
+        min-width: 190px;
+    }
+
+    .jt-table-wrap {
+        padding: 108px 8px 340px;
+    }
+
+    .jt-table {
+        width: 99vw;
+        aspect-ratio: 1.14 / 1;
+        border-width: 6px;
+    }
+
+    .jt-center {
+        transform: translate(-50%, -50%) scale(.8);
+    }
+
+    .jt-seat {
+        min-width: 96px;
+    }
+
+    .jt-seat-card {
+        padding: 5px 6px;
+    }
+
+    .jt-target-chip {
+        font-size: 6px;
+        padding: 4px 5px;
+    }
+
+    .jt-draw-area {
+        width: 82%;
+        bottom: 5%;
+    }
+
+    .jt-card-back {
+        width: 28px;
+        height: 41px;
+    }
+
+    .jt-bottom-area {
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        gap: 8px;
+    }
+
+    .jt-hand-panel {
+        padding: 8px;
+    }
+
+    .jt-hand {
+        min-height: 67px;
+        justify-content: flex-start;
+    }
+
+    .jt-playing-card {
+        width: 44px;
+        height: 63px;
+    }
+
+    .jt-playing-card span {
+        font-size: 14px;
+    }
+
+    .jt-playing-card strong {
+        font-size: 21px;
+    }
+
+    .jt-action-panel {
+        padding: 11px;
+    }
+
+    .jt-action-panel h2 {
+        font-size: 11px;
+    }
+
+    .jt-action-panel p {
+        font-size: 8px;
+    }
+}

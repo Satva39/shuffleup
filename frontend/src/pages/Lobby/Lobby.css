@@ -1,0 +1,156 @@
+.lobby-page {
+    min-height: 100vh;
+    padding: 80px 24px;
+    background: var(--background);
+}
+
+.lobby-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.lobby-header {
+    margin-bottom: 45px;
+    text-align: center;
+}
+
+.lobby-header p,
+.card-number {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.lobby-header h1 {
+    margin: 12px 0;
+    font-size: clamp(38px, 6vw, 58px);
+    letter-spacing: -2px;
+}
+
+.lobby-header span {
+    color: var(--muted);
+}
+
+.lobby-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 20px;
+}
+
+.create-room-card,
+.join-room-card {
+    padding: 30px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+}
+
+.lobby-layout h2 {
+    margin: 12px 0 8px;
+}
+
+.lobby-layout p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.game-selection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 25px 0;
+}
+
+.game-selection button {
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--background);
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+}
+
+.game-selection button:hover,
+.game-selection button.selected {
+    border-color: var(--accent);
+    background: var(--card-bg);
+}
+
+.game-selection strong,
+.game-selection small {
+    display: block;
+}
+
+.game-selection small {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.lobby-primary-btn,
+.lobby-secondary-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.lobby-primary-btn {
+    border: 0;
+    background: var(--accent);
+    color: white;
+}
+
+.lobby-secondary-btn {
+    margin-top: 20px;
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--text);
+}
+
+.join-room-card input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 25px;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    outline: none;
+    background: var(--background);
+    color: var(--text);
+    text-align: center;
+    letter-spacing: 4px;
+    font-weight: 800;
+}
+
+.join-room-card input:focus {
+    border-color: var(--accent);
+}
+
+.lobby-error {
+    margin-top: 20px;
+    padding: 13px;
+    border-radius: 9px;
+    background: rgba(255, 70, 70, 0.1);
+    color: #ff7777;
+    text-align: center;
+    font-size: 13px;
+}
+
+@media (max-width: 750px) {
+    .lobby-page {
+        padding: 50px 16px;
+    }
+
+    .lobby-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .game-selection {
+        grid-template-columns: 1fr;
+    }
+}

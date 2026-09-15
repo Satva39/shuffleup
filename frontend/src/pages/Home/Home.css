@@ -1,0 +1,302 @@
+.hero {
+    max-width: 1200px;
+    min-height: 600px;
+    margin: auto;
+    padding: 90px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.hero-content {
+    max-width: 650px;
+}
+
+.eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.hero h1 {
+    margin: 18px 0;
+    font-size: clamp(48px, 7vw, 82px);
+    line-height: 0.98;
+    letter-spacing: -4px;
+}
+
+.hero h1 span {
+    color: var(--accent);
+}
+
+.hero-description {
+    max-width: 520px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 17px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.primary-btn,
+.secondary-btn {
+    padding: 13px 22px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.primary-btn {
+    background: var(--accent);
+    color: white;
+}
+
+.secondary-btn {
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.hero-cards {
+    width: 330px;
+    height: 350px;
+    position: relative;
+}
+
+.floating-card {
+    position: absolute;
+    width: 150px;
+    height: 210px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.card-one {
+    left: 20px;
+    top: 70px;
+    transform: rotate(-15deg);
+}
+
+.card-two {
+    left: 90px;
+    top: 25px;
+    transform: rotate(4deg);
+    z-index: 2;
+}
+
+.card-three {
+    left: 165px;
+    top: 70px;
+    transform: rotate(16deg);
+}
+
+.games-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 80px 24px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 30px;
+}
+
+.section-heading h2,
+.how-section h2 {
+    margin: 8px 0 0;
+    font-size: 42px;
+    letter-spacing: -2px;
+}
+
+.section-heading>p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.game-controls {
+    margin-bottom: 30px;
+}
+
+.game-controls input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    margin-bottom: 14px;
+}
+
+.categories {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.categories button {
+    padding: 9px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.categories button.active,
+.categories button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.no-games {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.no-games p {
+    color: var(--muted);
+}
+
+.how-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 100px 24px;
+    text-align: center;
+}
+
+.steps {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    text-align: left;
+}
+
+.step {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+}
+
+.step span {
+    color: var(--accent);
+    font-weight: 800;
+}
+
+.step p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.about-section {
+    max-width: 800px;
+    margin: auto;
+    padding: 100px 24px;
+    text-align: center;
+}
+
+.about-section h2 {
+    font-size: 45px;
+    letter-spacing: -2px;
+}
+
+.about-section>p:last-child {
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 24px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+}
+
+footer strong {
+    color: var(--text);
+}
+
+@media (max-width: 900px) {
+    .hero {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .hero-description {
+        margin: auto;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-cards {
+        display: none;
+    }
+
+    .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        min-height: auto;
+        padding: 70px 18px;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+        letter-spacing: -2px;
+    }
+
+    .games-section {
+        padding: 60px 16px;
+    }
+
+    .section-heading {
+        display: block;
+    }
+
+    .section-heading h2,
+    .how-section h2 {
+        font-size: 34px;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 8px;
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "name": "shuffleup-backend",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "node --watch src/server.js",
+        "start": "node src/server.js",
+        "test:teen-patti": "node src/games/teen-patti/teenPattiEngine.test.js",
+        "test:indian-rummy": "node src/games/indian-rummy/indianRummyEngine.test.js",
+        "test:mangoose": "node src/games/mangoose/mangooseEngine.test.js",
+        "test:uno": "node src/games/uno/unoEngine.test.js",
+        "test:jack-thief": "node src/games/jack-thief/jackThiefEngine.test.js",
+        "test:napoleon": "node src/games/napoleon/napoleonEngine.test.js",
+        "test:bridge": "node src/games/bridge/bridgeEngine.test.js",
+        "test:spades": "node src/games/spades/spadesEngine.test.js",
+        "test:twenty-nine": "node src/games/twenty-nine/twentyNineEngine.test.js",
+        "test:mindi-coat": "node src/games/mindi-coat/mindiCoatEngine.test.js",
+        "test:bluff": "node src/games/bluff/bluffEngine.test.js",
+        "test:satte-pe-satta": "node src/games/satte-pe-satta/sattePeSattaEngine.test.js",
+        "test:war": "node src/games/war/warEngine.test.js",
+        "test:solitaire": "node src/games/solitaire/solitaireEngine.test.js",
+        "test:all": "for f in src/games/*/*.test.js; do node \"$f\" || exit 1; done"
+    },
+    "dependencies": {
+        "bcryptjs": "^3.0.2",
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.1",
+        "express": "^5.1.0",
+        "jsonwebtoken": "^9.0.2",
+        "pg": "^8.16.3",
+        "socket.io": "^4.8.3"
+    }
+}

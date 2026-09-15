@@ -1,0 +1,89 @@
+.game-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.game-card-top {
+    height: 150px;
+    background: var(--card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.playing-card {
+    font-size: 72px;
+    font-weight: 800;
+}
+
+.game-category {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.game-card-content {
+    padding: 20px;
+}
+
+.game-card h3 {
+    margin: 0 0 8px;
+    font-size: 21px;
+}
+
+.players {
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.game-description {
+    min-height: 58px;
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.game-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.how-btn,
+.play-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.how-btn {
+    background: transparent;
+    color: var(--text);
+}
+
+.play-btn {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}

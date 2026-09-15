@@ -1,0 +1,1 @@
+export { default as TeenPattiGame } from "./pages/TeenPattiGame";

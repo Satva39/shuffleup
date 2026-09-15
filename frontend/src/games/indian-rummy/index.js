@@ -1,0 +1,1 @@
+export { default as IndianRummyGame } from "./pages/IndianRummyGame";

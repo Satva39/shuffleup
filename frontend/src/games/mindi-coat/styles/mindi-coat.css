@@ -1,0 +1,1363 @@
+.mindi-page {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #183a2c 0%, #0b1c14 56%, #060d0a 100%);
+    color: #f4f4eb;
+    padding: 18px;
+    box-sizing: border-box;
+    font-family: Inter, system-ui, sans-serif
+}
+
+.mindi-shell {
+    max-width: 1280px;
+    margin: auto
+}
+
+.mindi-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px
+}
+
+.mindi-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.mindi-brand span,
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: .16em;
+    color: #b4bfae
+}
+
+.mindi-brand h1 {
+    margin: 2px 0 0;
+    font-size: 28px
+}
+
+.mindi-brand-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: rgba(240, 233, 206, .11);
+    border: 1px solid rgba(240, 233, 206, .17);
+    display: grid;
+    place-items: center;
+    font-weight: 800
+}
+
+.mindi-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, .1);
+    background: rgba(0, 0, 0, .18);
+    border-radius: 14px
+}
+
+.mindi-status strong,
+.mindi-status small {
+    display: block
+}
+
+.mindi-status small {
+    font-size: 11px;
+    color: #aeb8ad;
+    margin-top: 2px
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #75c68b;
+    box-shadow: 0 0 12px rgba(117, 198, 139, .65)
+}
+
+.mindi-scoreboard {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px
+}
+
+.mindi-score-team,
+.mindi-score-center {
+    border: 1px solid rgba(255, 255, 255, .09);
+    background: rgba(5, 13, 10, .55);
+    border-radius: 16px;
+    padding: 12px 16px
+}
+
+.mindi-score-team span,
+.mindi-score-team small {
+    display: block
+}
+
+.mindi-score-team span {
+    font-size: 11px;
+    letter-spacing: .12em;
+    color: #93a293
+}
+
+.mindi-score-team strong {
+    font-size: 34px;
+    line-height: 1;
+    margin-top: 4px
+}
+
+.mindi-score-team small {
+    margin-top: 6px;
+    color: #9eaa9e
+}
+
+.mindi-score-center {
+    display: grid;
+    place-items: center;
+    text-align: center
+}
+
+.mindi-score-center span {
+    font-size: 11px;
+    letter-spacing: .15em;
+    color: #c5cdbf
+}
+
+.mindi-score-center strong {
+    font-size: 18px;
+    letter-spacing: .15em;
+    margin-top: 4px
+}
+
+.mindi-table-wrap {
+    background: linear-gradient(180deg, rgba(31, 71, 52, .28), rgba(7, 18, 13, .65));
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 28px;
+    padding: 12px;
+    box-shadow: 0 28px 60px rgba(0, 0, 0, .25)
+}
+
+.mindi-table {
+    position: relative;
+    min-height: 740px;
+    border-radius: 24px;
+    background: radial-gradient(circle at center, #236446 0%, #164a34 38%, #0e3626 78%, #092119 100%);
+    border: 1px solid rgba(220, 236, 214, .1);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr) 250px;
+    grid-template-rows: 165px minmax(390px, 1fr) 165px;
+    grid-template-areas: "north north north" "west center east" "south south south";
+    gap: 8px;
+    padding: 12px
+}
+
+.mindi-table:before {
+    content: "";
+    position: absolute;
+    inset: 22px;
+    border: 1px solid rgba(224, 240, 225, .07);
+    border-radius: 42%;
+    pointer-events: none
+}
+
+.mindi-seat-area {
+    position: relative;
+    z-index: 2;
+    min-width: 0
+}
+
+.mindi-seat-area.north {
+    grid-area: north;
+    display: flex;
+    align-items: center
+}
+
+.mindi-seat-area.west {
+    grid-area: west;
+    display: flex;
+    align-items: center
+}
+
+.mindi-seat-area.east {
+    grid-area: east;
+    display: flex;
+    align-items: center
+}
+
+.mindi-seat-area.south {
+    grid-area: south;
+    display: flex;
+    align-items: center
+}
+
+.mindi-seat {
+    background: rgba(4, 12, 9, .46);
+    border: 1px solid rgba(232, 242, 229, .1);
+    border-radius: 16px;
+    padding: 10px;
+    backdrop-filter: blur(8px);
+    transition: .2s
+}
+
+.mindi-seat.is-active {
+    border-color: rgba(139, 217, 160, .55);
+    box-shadow: 0 0 0 1px rgba(139, 217, 160, .18), 0 0 22px rgba(83, 180, 112, .11)
+}
+
+.mindi-seat-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: center
+}
+
+.mindi-seat-person {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0
+}
+
+.mindi-avatar {
+    width: 31px;
+    height: 31px;
+    border-radius: 10px;
+    background: #c7d4c4;
+    color: #152319;
+    display: grid;
+    place-items: center;
+    font-size: 9px;
+    font-weight: 900;
+    flex: none
+}
+
+.mindi-seat-person strong,
+.mindi-seat-person span {
+    display: block
+}
+
+.mindi-seat-person strong {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px
+}
+
+.mindi-seat-person span {
+    font-size: 9px;
+    color: #a5b1a4;
+    margin-top: 2px
+}
+
+.mindi-seat-stats {
+    display: flex;
+    gap: 8px;
+    font-size: 9px;
+    color: #9ea99e
+}
+
+.mindi-seat-stats b {
+    color: #f0f2ea
+}
+
+.mindi-player-hand {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-top: 8px;
+    min-width: 0
+}
+
+.mindi-player-hand .mindi-card {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 44px
+}
+
+.mindi-seat-area.west .mindi-player-hand,
+.mindi-seat-area.east .mindi-player-hand {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px
+}
+
+.mindi-seat-area.west .mindi-card,
+.mindi-seat-area.east .mindi-card {
+    max-width: none
+}
+
+.mindi-opponent-hand {
+    text-align: center
+}
+
+.mindi-opponent-cards {
+    display: grid;
+    grid-template-columns: repeat(7, 20px);
+    gap: 2px;
+    justify-content: center;
+    margin-top: 8px
+}
+
+.mindi-seat-area.west .mindi-opponent-cards,
+.mindi-seat-area.east .mindi-opponent-cards {
+    grid-template-columns: repeat(4, 20px)
+}
+
+.mindi-opponent-hand small {
+    font-size: 8px;
+    color: #93a093
+}
+
+.mindi-card-back {
+    display: block;
+    width: 20px;
+    height: 31px;
+    border-radius: 5px;
+    background: repeating-linear-gradient(45deg, #1c4935, #1c4935 3px, #153b2b 3px, #153b2b 6px);
+    border: 1px solid rgba(255, 255, 255, .16);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .25)
+}
+
+.mindi-center {
+    grid-area: center;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    min-width: 0
+}
+
+.mindi-center-tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px
+}
+
+.mindi-trump-display,
+.mindi-turn,
+.mindi-counter {
+    border: 1px solid rgba(255, 255, 255, .09);
+    background: rgba(4, 12, 8, .38);
+    border-radius: 14px;
+    padding: 10px 12px;
+    text-align: center
+}
+
+.mindi-trump-display strong,
+.mindi-trump-display small,
+.mindi-turn strong,
+.mindi-turn small,
+.mindi-counter strong {
+    display: block
+}
+
+.mindi-trump-display strong {
+    font-size: 19px;
+    margin-top: 3px
+}
+
+.mindi-trump-display small,
+.mindi-turn small {
+    font-size: 9px;
+    color: #9eaa9c;
+    margin-top: 3px
+}
+
+.mindi-trump-display.revealed {
+    border-color: rgba(232, 213, 107, .34)
+}
+
+.mindi-trump-display.hidden strong {
+    color: #d1d6cf
+}
+
+.mindi-turn span,
+.mindi-counter span {
+    display: block;
+    font-size: 9px;
+    color: #8e9a8f;
+    letter-spacing: .12em
+}
+
+.mindi-turn strong {
+    font-size: 15px;
+    margin-top: 3px
+}
+
+.mindi-turn.mine {
+    box-shadow: inset 0 -2px 0 rgba(123, 213, 148, .5)
+}
+
+.mindi-counter strong {
+    font-size: 18px;
+    margin-top: 5px
+}
+
+.mindi-trick-area {
+    min-height: 290px;
+    border-radius: 22px;
+    background: rgba(2, 10, 7, .24);
+    border: 1px solid rgba(255, 255, 255, .08);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+.mindi-trick-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: #c4cec1;
+    font-size: 10px;
+    letter-spacing: .12em
+}
+
+.mindi-trick-heading small {
+    font-size: 9px;
+    letter-spacing: normal;
+    color: #859286
+}
+
+.mindi-trick-cards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 230px;
+    flex-wrap: nowrap
+}
+
+.mindi-trick-empty {
+    color: #738276;
+    font-size: 12px;
+    border: 1px dashed rgba(255, 255, 255, .12);
+    padding: 30px 22px;
+    border-radius: 16px
+}
+
+.mindi-played-card {
+    text-align: center
+}
+
+.mindi-played-card .mindi-card {
+    width: 74px;
+    height: 104px;
+    opacity: 1 !important;
+    filter: none !important;
+    background: linear-gradient(180deg, #fffdf7 0%, #ecebe2 100%);
+    border-color: rgba(15, 30, 21, .22);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .25)
+}
+
+.mindi-played-card span {
+    display: block;
+    font-size: 9px;
+    color: #adb7ad;
+    margin-top: 5px
+}
+
+.mindi-card {
+    position: relative;
+    border: 1px solid rgba(15, 30, 21, .22);
+    border-radius: 10px;
+    background: linear-gradient(180deg, #fffdf7 0%, #ecebe2 100%);
+    color: #1a241c;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .25);
+    height: 64px;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden
+}
+
+.mindi-card.red {
+    color: #bd4c4a
+}
+
+.mindi-card:disabled {
+    cursor: not-allowed;
+    opacity: .48;
+    filter: saturate(.6)
+}
+
+.mindi-card:not(:disabled):hover {
+    transform: translateY(-5px)
+}
+
+.mindi-card.selected {
+    transform: translateY(-7px);
+    box-shadow: 0 0 0 2px #e1c86d, 0 10px 18px rgba(0, 0, 0, .28)
+}
+
+.mindi-card-rank {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: 800
+}
+
+.mindi-card-suit {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px
+}
+
+.mindi-card-mindi {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-size: 7px;
+    font-weight: 900;
+    opacity: .55
+}
+
+.mindi-key-tracker {
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(4, 12, 8, .34);
+    padding: 9px 12px;
+    border-radius: 14px
+}
+
+.mindi-ten-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 8px;
+    align-items: center;
+    margin-top: 6px
+}
+
+.mindi-ten-team {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 10px
+}
+
+.mindi-ten-team span {
+    font-weight: 800
+}
+
+.mindi-ten-visual {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #dde3d8
+}
+
+.mindi-action-area {
+    margin-top: 14px;
+    display: grid;
+    gap: 12px
+}
+
+.mindi-trump-selector {
+    border: 1px solid rgba(230, 223, 162, .22);
+    background: rgba(12, 24, 17, .82);
+    border-radius: 20px;
+    padding: 16px
+}
+
+.mindi-trump-selector h2 {
+    margin: 4px 0 6px;
+    font-size: 20px
+}
+
+.mindi-trump-selector p {
+    margin: 0;
+    color: #aeb8ae;
+    font-size: 12px;
+    line-height: 1.45
+}
+
+.mindi-trump-selector .mindi-player-hand {
+    margin-top: 14px;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-start
+}
+
+.mindi-trump-selector .mindi-card {
+    flex: 0 0 54px;
+    max-width: 54px
+}
+
+.mindi-selector-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    color: #aeb7ae;
+    font-size: 11px
+}
+
+.mindi-primary {
+    border: 0;
+    border-radius: 11px;
+    padding: 10px 14px;
+    background: #d7c76d;
+    color: #1b201a;
+    font-weight: 800;
+    cursor: pointer
+}
+
+.mindi-primary:disabled {
+    opacity: .45;
+    cursor: not-allowed
+}
+
+.mindi-waiting {
+    padding: 14px 16px;
+    border-radius: 15px;
+    background: rgba(4, 12, 9, .55);
+    border: 1px solid rgba(255, 255, 255, .08);
+    color: #aab5aa;
+    text-align: center
+}
+
+.mindi-error {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(142, 43, 46, .24);
+    border: 1px solid rgba(233, 112, 112, .22);
+    color: #ffd0d0
+}
+
+.mindi-coat-banner,
+.mindi-game-result,
+.mindi-result-card {
+    border-radius: 18px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, .09);
+    background: rgba(6, 15, 10, .64)
+}
+
+.mindi-coat-banner {
+    text-align: center;
+    background: linear-gradient(180deg, rgba(171, 145, 45, .22), rgba(8, 18, 12, .75));
+    border-color: rgba(221, 201, 103, .28)
+}
+
+.mindi-coat-banner h2 {
+    font-size: 34px;
+    margin: 4px 0
+}
+
+.mindi-coat-banner p,
+.mindi-game-result p {
+    margin: 0;
+    color: #bac3ba
+}
+
+.mindi-result-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center
+}
+
+.mindi-result-card h3,
+.mindi-game-result h2 {
+    margin: 4px 0 0
+}
+
+.mindi-result-stats {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    color: #b9c2b8;
+    font-size: 12px
+}
+
+.mindi-result-stats b {
+    font-size: 20px;
+    color: #e2d57b
+}
+
+.mindi-game-result {
+    text-align: center
+}
+
+.mindi-game-result h2 {
+    font-size: 24px
+}
+
+.mindi-game-result p {
+    font-size: 30px
+}
+
+.mindi-loading {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    color: #d7ddd2
+}
+
+.mindi-disconnected {
+    display: block;
+    color: #efb1a9;
+    font-size: 9px;
+    text-align: right;
+    margin-top: 4px
+}
+
+.next-hand {
+    justify-self: center
+}
+
+@media (max-width:900px) {
+    .mindi-page {
+        padding: 10px
+    }
+
+    .mindi-topbar {
+        align-items: flex-start
+    }
+
+    .mindi-scoreboard {
+        grid-template-columns: 1fr 1fr
+    }
+
+    .mindi-score-center {
+        grid-column: 1/-1;
+        grid-row: 1
+    }
+
+    .mindi-score-team {
+        padding-top: 70px
+    }
+
+    .mindi-table {
+        min-height: 760px;
+        grid-template-columns: 150px minmax(0, 1fr) 150px;
+        grid-template-rows: 165px minmax(410px, 1fr) 165px
+    }
+
+    .mindi-seat-header {
+        gap: 4px
+    }
+
+    .mindi-seat-stats {
+        display: none
+    }
+
+    .mindi-center-tools {
+        grid-template-columns: 1fr 1fr
+    }
+
+    .mindi-counter {
+        grid-column: 1/-1
+    }
+
+    .mindi-trick-cards {
+        gap: 7px
+    }
+
+    .mindi-played-card .mindi-card {
+        width: 61px;
+        height: 88px;
+        opacity: 1 !important;
+        filter: none !important
+    }
+
+    .mindi-ten-visual {
+        font-size: 10px;
+        letter-spacing: 1px
+    }
+}
+
+@media (max-width:620px) {
+    .mindi-topbar {
+        display: block
+    }
+
+    .mindi-status {
+        margin-top: 10px;
+        width: max-content;
+        max-width: 100%
+    }
+
+    .mindi-brand h1 {
+        font-size: 24px
+    }
+
+    .mindi-table-wrap {
+        padding: 5px
+    }
+
+    .mindi-table {
+        min-height: 690px;
+        padding: 7px;
+        grid-template-columns: 96px minmax(0, 1fr) 96px;
+        grid-template-rows: 140px minmax(390px, 1fr) 140px;
+        border-radius: 20px
+    }
+
+    .mindi-seat {
+        padding: 7px
+    }
+
+    .mindi-seat-person span {
+        font-size: 7px
+    }
+
+    .mindi-seat-person strong {
+        font-size: 10px;
+        max-width: 72px
+    }
+
+    .mindi-avatar {
+        width: 25px;
+        height: 25px;
+        font-size: 7px;
+        border-radius: 8px
+    }
+
+    .mindi-player-hand {
+        margin-top: 5px
+    }
+
+    .mindi-seat-area.west .mindi-player-hand,
+    .mindi-seat-area.east .mindi-player-hand {
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+    .mindi-opponent-cards {
+        grid-template-columns: repeat(5, 16px)
+    }
+
+    .mindi-seat-area.west .mindi-opponent-cards,
+    .mindi-seat-area.east .mindi-opponent-cards {
+        grid-template-columns: repeat(3, 16px)
+    }
+
+    .mindi-card-back {
+        width: 16px;
+        height: 25px
+    }
+
+    .mindi-seat-area.north .mindi-card,
+    .mindi-seat-area.south .mindi-card {
+        height: 53px
+    }
+
+    .mindi-card-rank {
+        top: 5px;
+        font-size: 11px
+    }
+
+    .mindi-card-suit {
+        bottom: 5px;
+        font-size: 12px
+    }
+
+    .mindi-card-mindi {
+        display: none
+    }
+
+    .mindi-center {
+        gap: 7px
+    }
+
+    .mindi-trump-display,
+    .mindi-turn,
+    .mindi-counter {
+        padding: 7px
+    }
+
+    .mindi-trump-display strong {
+        font-size: 14px
+    }
+
+    .mindi-turn strong,
+    .mindi-counter strong {
+        font-size: 13px
+    }
+
+    .mindi-trick-area {
+        min-height: 230px;
+        padding: 8px
+    }
+
+    .mindi-trick-cards {
+        min-height: 180px;
+        gap: 4px
+    }
+
+    .mindi-played-card .mindi-card {
+        width: 47px;
+        height: 70px;
+        opacity: 1 !important;
+        filter: none !important
+    }
+
+    .mindi-played-card span {
+        font-size: 7px
+    }
+
+    .mindi-key-tracker {
+        padding: 7px
+    }
+
+    .mindi-ten-row {
+        grid-template-columns: 1fr;
+        gap: 3px
+    }
+
+    .mindi-ten-visual {
+        order: -1
+    }
+
+    .mindi-trump-selector .mindi-card {
+        flex-basis: 45px;
+        max-width: 45px;
+        height: 56px
+    }
+
+    .mindi-selector-footer {
+        display: block
+    }
+
+    .mindi-selector-footer .mindi-primary {
+        margin-top: 8px;
+        width: 100%
+    }
+
+    .mindi-result-card {
+        display: block
+    }
+
+    .mindi-result-stats {
+        margin-top: 10px
+    }
+
+    .mindi-score-team {
+        padding-top: 58px
+    }
+
+    .mindi-score-team strong {
+        font-size: 27px
+    }
+}
+
+@media (max-width:390px) {
+    .mindi-table {
+        grid-template-columns: 78px minmax(0, 1fr) 78px;
+        min-height: 650px
+    }
+
+    .mindi-seat-person strong {
+        max-width: 55px
+    }
+
+    .mindi-card {
+        height: 46px
+    }
+
+    .mindi-seat-area.north .mindi-card,
+    .mindi-seat-area.south .mindi-card {
+        height: 48px
+    }
+
+    .mindi-played-card .mindi-card {
+        width: 42px;
+        height: 62px;
+        opacity: 1 !important;
+        filter: none !important
+    }
+
+    .mindi-trick-area {
+        min-height: 210px
+    }
+
+    .mindi-brand h1 {
+        font-size: 21px
+    }
+}
+
+.mindi-seat-area.north .mindi-seat,
+.mindi-seat-area.south .mindi-seat {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+.mindi-hidden-hukum-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 8px auto 0;
+    color: #9aa79b;
+    font-size: 8px
+}
+
+.mindi-hidden-hukum-slot .mindi-card-back {
+    flex: none
+}
+
+.mindi-hidden-selector-hand {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+    justify-content: flex-start
+}
+
+.mindi-hidden-choice {
+    position: relative;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 8px
+}
+
+.mindi-hidden-choice .mindi-card-back {
+    display: block
+}
+
+.mindi-hidden-choice>span:last-child {
+    position: absolute;
+    left: 50%;
+    bottom: -14px;
+    transform: translateX(-50%);
+    font-size: 8px;
+    color: #94a091
+}
+
+.mindi-hidden-choice.selected .mindi-card-back {
+    outline: 2px solid #e1c86d;
+    box-shadow: 0 0 0 4px rgba(225, 200, 109, .16), 0 8px 16px rgba(0, 0, 0, .3)
+}
+
+.mindi-hidden-choice:disabled {
+    opacity: .5;
+    cursor: not-allowed
+}
+
+.mindi-hukum-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid rgba(225, 200, 109, .28);
+    background: rgba(71, 59, 17, .22);
+    border-radius: 15px
+}
+
+.mindi-hukum-action strong,
+.mindi-hukum-action span {
+    display: block
+}
+
+.mindi-hukum-action strong {
+    font-size: 12px
+}
+
+.mindi-hukum-action span {
+    margin-top: 3px;
+    color: #b4beae;
+    font-size: 10px
+}
+
+.mindi-hukum-action .mindi-primary {
+    white-space: nowrap
+}
+
+.mindi-hukum-reveal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 1px solid rgba(225, 200, 109, .3);
+    background: rgba(77, 63, 15, .2);
+    border-radius: 14px
+}
+
+.mindi-hukum-reveal strong {
+    font-size: 12px
+}
+
+.mindi-hukum-reveal span {
+    font-size: 10px;
+    color: #b5c0b3
+}
+
+@media (max-width:620px) {
+
+    .mindi-hukum-action,
+    .mindi-hukum-reveal {
+        display: block
+    }
+
+    .mindi-hukum-action .mindi-primary {
+        margin-top: 8px;
+        width: 100%
+    }
+
+    .mindi-hukum-reveal span {
+        display: block;
+        margin-top: 4px
+    }
+
+    .mindi-hidden-selector-hand {
+        gap: 5px
+    }
+
+    .mindi-hidden-hukum-slot {
+        margin-top: 5px
+    }
+}
+
+/* Final-game modal */
+.mindi-game-finish-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(3, 10, 7, .76);
+    backdrop-filter: blur(7px);
+}
+
+.mindi-game-finish-modal {
+    width: min(440px, 100%);
+    box-sizing: border-box;
+    padding: 30px 28px 26px;
+    text-align: center;
+    border: 1px solid rgba(235, 222, 151, .3);
+    border-radius: 24px;
+    background: linear-gradient(180deg, #10291d 0%, #091811 100%);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, .48), 0 0 0 1px rgba(255, 255, 255, .03);
+}
+
+.mindi-game-finish-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: #dfd58d;
+    background: rgba(215, 199, 109, .1);
+    border: 1px solid rgba(215, 199, 109, .22);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .16em;
+}
+
+.mindi-game-finish-icon {
+    width: 54px;
+    height: 54px;
+    margin: 16px auto 10px;
+    display: grid;
+    place-items: center;
+    border-radius: 17px;
+    color: #f1e7aa;
+    background: rgba(215, 199, 109, .1);
+    border: 1px solid rgba(215, 199, 109, .2);
+    font-size: 27px;
+}
+
+.mindi-game-finish-modal h2 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.15;
+    color: #f6f3df;
+}
+
+.mindi-game-finish-subtitle {
+    margin: 8px auto 20px;
+    max-width: 330px;
+    color: #aeb9ad;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.mindi-game-finish-score {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 14px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(3, 10, 7, .34);
+}
+
+.mindi-game-finish-score div:not(.mindi-game-finish-divider) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mindi-game-finish-score span {
+    color: #8f9d91;
+    font-size: 9px;
+    letter-spacing: .14em;
+}
+
+.mindi-game-finish-score strong {
+    color: #f0e8b0;
+    font-size: 30px;
+}
+
+.mindi-game-finish-divider {
+    color: #707c72;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.mindi-game-finish-button {
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    padding: 13px 16px;
+    background: #d7c76d;
+    color: #1a2119;
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
+    transition: transform .16s ease, filter .16s ease;
+}
+
+.mindi-game-finish-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04)
+}
+
+.mindi-game-finish-button:active {
+    transform: translateY(0)
+}
+
+/* Center trick cards */
+.mindi-center-card {
+    width: 82px;
+    height: 114px;
+    cursor: default;
+    opacity: 1 !important;
+    filter: none !important;
+    background: linear-gradient(180deg, #fffdf7 0%, #f0eee5 100%);
+}
+
+.mindi-center-card .mindi-card-rank {
+    top: 9px;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.mindi-center-card .mindi-card-suit {
+    bottom: 8px;
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.mindi-center-card:hover {
+    transform: none !important
+}
+
+@media (max-width:900px) {
+    .mindi-center-card {
+        width: 68px;
+        height: 98px
+    }
+
+    .mindi-center-card .mindi-card-rank {
+        font-size: 18px
+    }
+
+    .mindi-center-card .mindi-card-suit {
+        font-size: 21px
+    }
+}
+
+@media (max-width:620px) {
+    .mindi-game-finish-modal {
+        padding: 24px 18px 20px;
+        border-radius: 20px
+    }
+
+    .mindi-game-finish-modal h2 {
+        font-size: 25px
+    }
+
+    .mindi-game-finish-score strong {
+        font-size: 26px
+    }
+
+    .mindi-center-card {
+        width: 54px;
+        height: 78px
+    }
+
+    .mindi-center-card .mindi-card-rank {
+        top: 6px;
+        font-size: 16px
+    }
+
+    .mindi-center-card .mindi-card-suit {
+        bottom: 6px;
+        font-size: 19px
+    }
+}
+
+.mindi-hukum-hidden-seat-hand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 3px;
+    max-width: 100%;
+    margin-top: 8px;
+    padding: 4px 2px 0;
+}
+
+.mindi-hukum-hidden-seat-hand .mindi-card-back {
+    flex: 0 0 20px;
+}
+
+.mindi-hukum-hidden-seat-hand small {
+    flex-basis: 100%;
+    text-align: center;
+    margin-top: 4px;
+    color: #8f9c90;
+    font-size: 8px;
+}
+
+@media (max-width: 620px) {
+    .mindi-hukum-hidden-seat-hand {
+        gap: 2px;
+        margin-top: 5px;
+    }
+
+    .mindi-hukum-hidden-seat-hand .mindi-card-back {
+        width: 16px;
+        height: 25px;
+        flex-basis: 16px;
+    }
+
+    .mindi-hukum-hidden-seat-hand small {
+        font-size: 7px;
+        margin-top: 3px;
+    }
+}

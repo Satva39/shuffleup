@@ -1,0 +1,914 @@
+.teen-patti-page {
+    min-height: 100vh;
+    width: 100%;
+    background:
+        radial-gradient(circle at center,
+            #24183d 0%,
+            #100d1b 48%,
+            #09070f 100%);
+    color: #ffffff;
+    overflow: hidden;
+    font-family: inherit;
+}
+
+.teen-patti-game {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.teen-game-status {
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    right: 24px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    pointer-events: none;
+}
+
+.teen-status-main {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+}
+
+.teen-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #a855f7;
+    box-shadow: 0 0 12px #a855f7;
+}
+
+.teen-connection-status {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    opacity: 0.65;
+}
+
+.teen-game-error {
+    position: absolute;
+    top: 42px;
+    left: 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(220, 38, 38, 0.15);
+    border: 1px solid rgba(248, 113, 113, 0.35);
+    color: #fca5a5;
+    font-size: 12px;
+}
+
+.teen-table-wrapper {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 75px 30px 160px;
+}
+
+.teen-table {
+    width: min(1100px, 92vw);
+    aspect-ratio: 1.85 / 1;
+    position: relative;
+    border-radius: 48%;
+    padding: 14px;
+    background: #17121f;
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.55),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.teen-table-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 48%;
+    background:
+        radial-gradient(ellipse at center,
+            #35224d 0%,
+            #241735 60%,
+            #171020 100%);
+    border: 2px solid rgba(168, 85, 247, 0.35);
+    box-shadow:
+        inset 0 0 50px rgba(0, 0, 0, 0.35),
+        inset 0 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.teen-table-inner::before {
+    content: "";
+    position: absolute;
+    inset: 7%;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 48%;
+    pointer-events: none;
+}
+
+.teen-table-brand {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.35;
+    letter-spacing: 0.16em;
+}
+
+.teen-table-brand span {
+    font-size: 10px;
+}
+
+.teen-table-brand strong {
+    font-size: 20px;
+}
+
+.teen-pot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 35px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    opacity: 0.8;
+}
+
+.teen-pot span {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+}
+
+.teen-pot strong {
+    font-size: 13px;
+}
+
+.teen-seat {
+    position: absolute;
+    z-index: 5;
+    transform: translate(-50%, -50%);
+}
+
+.teen-seat-3-0,
+.teen-seat-4-0,
+.teen-seat-5-0,
+.teen-seat-6-0 {
+    top: 8%;
+    left: 50%;
+}
+
+.teen-seat-3-1 {
+    bottom: 10%;
+    left: 23%;
+}
+
+.teen-seat-3-2 {
+    bottom: 10%;
+    left: 77%;
+}
+
+.teen-seat-4-1 {
+    left: 13%;
+    top: 50%;
+}
+
+.teen-seat-4-2 {
+    bottom: 10%;
+    left: 50%;
+}
+
+.teen-seat-4-3 {
+    right: -3%;
+    top: 50%;
+}
+
+.teen-seat-5-1 {
+    left: 10%;
+    top: 34%;
+}
+
+.teen-seat-5-2 {
+    left: 25%;
+    bottom: 5%;
+}
+
+.teen-seat-5-3 {
+    right: 5%;
+    bottom: 5%;
+}
+
+.teen-seat-5-4 {
+    right: -1%;
+    top: 34%;
+}
+
+.teen-seat-6-1 {
+    left: 7%;
+    top: 50%;
+}
+
+.teen-seat-6-2 {
+    left: 25%;
+    bottom: 4%;
+}
+
+.teen-seat-6-3 {
+    left: 50%;
+    bottom: 1%;
+}
+
+.teen-seat-6-4 {
+    right: 5%;
+    bottom: 4%;
+}
+
+.teen-seat-6-5 {
+    right: -1%;
+    top: 50%;
+}
+
+.teen-player-seat {
+    min-width: 135px;
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 12px;
+    background: rgba(10, 8, 15, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.teen-player-seat-turn {
+    border-color: #a855f7;
+    box-shadow:
+        0 0 0 1px rgba(168, 85, 247, 0.2),
+        0 0 25px rgba(168, 85, 247, 0.25);
+}
+
+.teen-player-seat-local {
+    border-color: rgba(168, 85, 247, 0.5);
+}
+
+.teen-player-seat-folded {
+    opacity: 0.45;
+}
+
+.teen-player-seat-winner {
+    border-color: #f5d76e;
+}
+
+.teen-player-avatar {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #332044;
+    color: #d8b4fe;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.teen-player-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.teen-player-info strong {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.teen-player-info span {
+    margin-top: 2px;
+    font-size: 8px;
+    letter-spacing: 0.07em;
+    opacity: 0.6;
+}
+
+.teen-opponent-cards {
+    display: flex;
+    margin-left: 4px;
+}
+
+.teen-card {
+    width: 64px;
+    height: 90px;
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #fafafa;
+    color: #17121f;
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.teen-card-red {
+    color: #c62828;
+}
+
+.teen-card-small {
+    width: 31px;
+    height: 44px;
+    border-radius: 5px;
+}
+
+.teen-card-corner {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.teen-card-corner strong {
+    font-size: 14px;
+}
+
+.teen-card-corner span {
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.teen-card-corner-bottom {
+    top: auto;
+    left: auto;
+    right: 6px;
+    bottom: 5px;
+    transform: rotate(180deg);
+}
+
+.teen-card-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 29px;
+}
+
+.teen-card-small .teen-card-corner {
+    top: 3px;
+    left: 4px;
+}
+
+.teen-card-small .teen-card-corner strong {
+    font-size: 8px;
+}
+
+.teen-card-small .teen-card-corner span {
+    font-size: 7px;
+}
+
+.teen-card-small .teen-card-center {
+    font-size: 16px;
+}
+
+.teen-card-small .teen-card-corner-bottom {
+    right: 4px;
+    bottom: 3px;
+}
+
+.teen-card-back {
+    background: #22172e;
+    border-color: rgba(168, 85, 247, 0.35);
+    padding: 4px;
+}
+
+.teen-card-back-pattern {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(216, 180, 254, 0.25);
+    border-radius: 4px;
+    background:
+        repeating-linear-gradient(45deg,
+            transparent 0,
+            transparent 4px,
+            rgba(168, 85, 247, 0.1) 4px,
+            rgba(168, 85, 247, 0.1) 6px);
+    color: #a855f7;
+}
+
+.teen-card-back-pattern span {
+    font-size: 22px;
+    opacity: 0.7;
+}
+
+.teen-center-deck {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    opacity: 0.8;
+}
+
+.teen-center-deck>span {
+    font-size: 7px;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+}
+
+.teen-deck-card {
+    width: 43px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    border: 1px solid rgba(216, 180, 254, 0.3);
+    background: #241735;
+    box-shadow: 4px 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+.teen-deck-card span {
+    font-size: 22px;
+    color: #a855f7;
+}
+
+.teen-turn-indicator {
+    position: absolute;
+    bottom: 132px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 15px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}
+
+.teen-my-turn {
+    border-color: rgba(168, 85, 247, 0.5);
+    color: #d8b4fe;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.12);
+}
+
+.teen-bottom-area {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+}
+
+.teen-player-hand {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 7px;
+}
+
+.teen-player-hand .teen-card:nth-child(1) {
+    transform: rotate(-5deg) translateY(5px);
+}
+
+.teen-player-hand .teen-card:nth-child(3) {
+    transform: rotate(5deg) translateY(5px);
+}
+
+.teen-action-panel {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 9px 12px;
+    border-radius: 13px;
+    background: rgba(10, 8, 15, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+}
+
+.teen-action-title {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #d8b4fe;
+}
+
+.teen-action-buttons {
+    display: flex;
+    gap: 7px;
+}
+
+.teen-action-buttons button {
+    min-width: 76px;
+    padding: 8px 13px;
+    border: 0;
+    border-radius: 8px;
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.teen-action-buttons button:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.teen-action-buttons button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.teen-action-play {
+    background: #7e22ce;
+}
+
+.teen-action-fold {
+    background: #3b3445;
+}
+
+.teen-result-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(5, 4, 8, 0.72);
+    backdrop-filter: blur(8px);
+}
+
+.teen-result-card {
+    width: min(430px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    padding: 35px;
+    text-align: center;
+    border-radius: 22px;
+    background: #15101d;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.teen-result-trophy {
+    font-size: 38px;
+}
+
+.teen-result-label {
+    display: block;
+    margin-top: 10px;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: #d8b4fe;
+}
+
+.teen-status-round {
+    margin-left: 8px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+}
+
+.teen-result-rounds {
+    margin: 6px 0 18px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+}
+
+.teen-result-score {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.teen-result-score span {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.teen-result-score strong {
+    font-size: 20px;
+    color: #d8b4fe;
+}
+
+.teen-result-player.is-winner {
+    color: #d8b4fe;
+}
+
+.teen-result-player.is-winner strong {
+    opacity: 1;
+}
+
+.teen-result-card h1 {
+    margin: 7px 0 0;
+    font-size: 28px;
+}
+
+.teen-result-hand {
+    margin: 6px 0 22px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.teen-result-players {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.teen-result-player {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 0;
+    font-size: 11px;
+}
+
+.teen-result-player strong {
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    opacity: 0.65;
+}
+
+.teen-result-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 22px;
+}
+
+.teen-result-actions button {
+    flex: 1;
+    padding: 11px;
+    border: 0;
+    border-radius: 9px;
+    background: #7e22ce;
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.teen-result-actions button:last-child {
+    background: #302838;
+}
+
+.teen-loading {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 8px;
+}
+
+.teen-loading h2 {
+    margin: 5px 0 0;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+}
+
+.teen-loading p {
+    margin: 0;
+    opacity: 0.5;
+    font-size: 12px;
+}
+
+.teen-loader {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #a855f7;
+    animation: teen-spin 0.8s linear infinite;
+}
+
+@keyframes teen-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 700px) {
+    .teen-game-status {
+        top: 10px;
+        left: 12px;
+        right: 12px;
+    }
+
+    .teen-status-main {
+        font-size: 10px;
+    }
+
+    .teen-connection-status {
+        font-size: 8px;
+    }
+
+    .teen-table-wrapper {
+        padding: 58px 8px 150px;
+    }
+
+    .teen-table {
+        width: 98vw;
+        aspect-ratio: 0.95 / 1;
+        border-radius: 35%;
+        padding: 9px;
+    }
+
+    .teen-table-inner {
+        border-radius: 35%;
+    }
+
+    .teen-table-inner::before {
+        inset: 5%;
+        border-radius: 35%;
+    }
+
+    .teen-player-seat {
+        min-width: 105px;
+        padding: 6px 8px;
+        gap: 6px;
+    }
+
+    .teen-player-avatar {
+        width: 27px;
+        height: 27px;
+        font-size: 10px;
+    }
+
+    .teen-player-info strong {
+        max-width: 68px;
+        font-size: 9px;
+    }
+
+    .teen-player-info span {
+        font-size: 6px;
+    }
+
+    .teen-opponent-cards {
+        display: none;
+    }
+
+    .teen-seat-3-0,
+    .teen-seat-4-0,
+    .teen-seat-5-0,
+    .teen-seat-6-0 {
+        top: 8%;
+        left: 50%;
+    }
+
+    .teen-seat-3-1,
+    .teen-seat-4-1,
+    .teen-seat-5-1,
+    .teen-seat-6-1 {
+        left: 3%;
+        top: 43%;
+        bottom: auto;
+    }
+
+    .teen-seat-3-2,
+    .teen-seat-4-3,
+    .teen-seat-5-4,
+    .teen-seat-6-5 {
+        right: -2%;
+        left: auto;
+        top: 43%;
+        bottom: auto;
+    }
+
+    .teen-seat-4-2,
+    .teen-seat-5-2,
+    .teen-seat-6-2 {
+        left: 24%;
+        bottom: 23%;
+        top: auto;
+    }
+
+    .teen-seat-5-3,
+    .teen-seat-6-4 {
+        right: 24%;
+        bottom: 23%;
+        left: auto;
+        top: auto;
+    }
+
+    .teen-seat-6-3 {
+        left: 50%;
+        bottom: 13%;
+        top: auto;
+    }
+
+    .teen-card {
+        width: 56px;
+        height: 78px;
+    }
+
+    .teen-card-center {
+        font-size: 25px;
+    }
+
+    .teen-card-corner strong {
+        font-size: 12px;
+    }
+
+    .teen-player-hand {
+        gap: 4px;
+    }
+
+    .teen-player-hand .teen-card:nth-child(1) {
+        transform: rotate(-4deg);
+    }
+
+    .teen-player-hand .teen-card:nth-child(3) {
+        transform: rotate(4deg);
+    }
+
+    .teen-turn-indicator {
+        bottom: 116px;
+        max-width: 90vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .teen-action-panel {
+        gap: 9px;
+        padding: 7px 9px;
+    }
+
+    .teen-action-title {
+        display: none;
+    }
+
+    .teen-action-buttons button {
+        min-width: 80px;
+        padding: 9px 12px;
+    }
+
+    .teen-bottom-area {
+        bottom: 8px;
+        gap: 6px;
+    }
+
+    .teen-result-card {
+        padding: 25px 18px;
+    }
+
+    .teen-result-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-height: 650px) and (orientation: landscape) {
+    .teen-table-wrapper {
+        padding-top: 45px;
+        padding-bottom: 95px;
+    }
+
+    .teen-bottom-area {
+        bottom: 6px;
+    }
+
+    .teen-card {
+        width: 48px;
+        height: 67px;
+    }
+
+    .teen-turn-indicator {
+        bottom: 75px;
+    }
+
+    .teen-action-panel {
+        padding: 5px 8px;
+    }
+}

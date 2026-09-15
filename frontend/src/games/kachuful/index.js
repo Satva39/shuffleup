@@ -1,0 +1,1 @@
+export { default as KachufulGame } from "./pages/KachufulGame";

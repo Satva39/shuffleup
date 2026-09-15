@@ -1,64 +1,34 @@
 function GameResult({ players, onPlayAgain, onLobby }) {
-    const sortedPlayers = [...players].sort(
-        (a, b) => b.score - a.score
-    );
-
-    const winner = players.reduce(
-        (best, player) =>
-            !best || player.score > best.score
-                ? player
-                : best,
-        null
-    );
+    const sortedPlayers = [...(players || [])].sort((a, b) => (b.score || 0) - (a.score || 0));
+    const winner = sortedPlayers[0];
 
     return (
         <div className="kachuful-result-overlay">
             <div className="kachuful-result">
-                <span className="result-label">
-                    GAME COMPLETE
-                </span>
-
-                <h1>
-                    🏆 {winner?.username} WINS
-                </h1>
+                <div className="result-hero-mark" aria-hidden="true">♛</div>
+                <span className="result-label">KACHUFUL COMPLETE</span>
+                <h1>{winner?.username || "Winner"} takes the table.</h1>
+                <p className="result-lede">Final standings from the completed game.</p>
 
                 <div className="final-scores">
-                    {sortedPlayers.map(
-                        (player, index) => (
-                            <div
-                                className="final-score-row"
-                                key={player.id}
-                            >
-                                <span>
-                                    {index + 1}.
-                                </span>
-
-                                <strong>
-                                    {player.username}
-                                </strong>
-
-                                <b>
-                                    {player.score}
-                                </b>
+                    {sortedPlayers.map((player, index) => (
+                        <div className={`final-score-row ${index === 0 ? "final-winner" : ""}`} key={player.id}>
+                            <span className="rank-badge">{index + 1}</span>
+                            <div className="result-player-copy">
+                                <strong>{player.username}</strong>
+                                <small>{player.tricksWon ?? 0} tricks · {player.bid ?? "—"} bid</small>
                             </div>
-                        )
-                    )}
+                            <b>{player.score ?? 0}</b>
+                        </div>
+                    ))}
                 </div>
 
                 <div className="result-actions">
-                    <button
-                        type="button"
-                        onClick={onPlayAgain}
-                    >
-                        Play Again
+                    <button className="primary-action" type="button" onClick={onPlayAgain}>
+                        <span>Play again</span>
+                        <span aria-hidden="true">↻</span>
                     </button>
-
-                    <button
-                        type="button"
-                        onClick={onLobby}
-                    >
-                        Return to Lobby
-                    </button>
+                    <button className="secondary-action" type="button" onClick={onLobby}>Return to lobby</button>
                 </div>
             </div>
         </div>

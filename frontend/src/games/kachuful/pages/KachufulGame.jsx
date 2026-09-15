@@ -13,7 +13,6 @@ function KachufulGame() {
     const { roomCode } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
-
     const [selectedBid, setSelectedBid] = useState(null);
 
     const {
@@ -34,23 +33,22 @@ function KachufulGame() {
     if (!gameState) {
         return (
             <main className="kachuful-page kachuful-loading-page">
-                <div className="kachuful-loading-card">
-                    <div className="loading-mark" aria-hidden="true">
-                        <span>♠</span>
-                        <span>♥</span>
-                        <span>♣</span>
-                    </div>
-                    <span className="eyebrow">KACHUFUL TABLE</span>
-                    <h1>{reconnecting ? "Reconnecting to the table" : "Preparing your table"}</h1>
+                <section className="kachuful-loading">
+                    <div className="kachuful-loading-mark">SU</div>
+                    <span className="kachuful-eyebrow">SHUFFLEUP · KACHUFUL</span>
+                    <h2>{reconnecting ? "RESTORING YOUR SEAT" : "JOINING THE TABLE"}</h2>
                     <p>
                         {reconnecting
-                            ? "Restoring your seat and the latest game state…"
-                            : "Joining the live game and dealing your table view…"}
+                            ? "Reconnecting to the live game state…"
+                            : "Preparing your cards and table…"}
                     </p>
-                    <div className="loading-bar" aria-hidden="true"><span /></div>
-                </div>
+                </section>
             </main>
         );
+    }
+
+    function handleBidChange(bid) {
+        setSelectedBid(bid);
     }
 
     function confirmBid() {
@@ -89,37 +87,33 @@ function KachufulGame() {
 
     return (
         <main className="kachuful-page">
-            <div className="kachuful-app-shell">
-                <header className="kachuful-brandbar">
-                    <div className="brand-lockup">
-                        <div className="brand-mark" aria-hidden="true">S</div>
+            <div className="kachuful-shell">
+                <header className="kachuful-header">
+                    <div className="kachuful-brand">
+                        <div className="kachuful-brand-mark">SU</div>
                         <div>
-                            <strong>ShuffleUp</strong>
-                            <span>Kachuful</span>
+                            <span>SHUFFLEUP</span>
+                            <h1>Kachuful</h1>
                         </div>
                     </div>
-                    <div className="table-identity">
-                        <span className="live-dot" />
-                        <span>LIVE TABLE</span>
-                        <b>{roomCode?.toUpperCase()}</b>
-                    </div>
-                    <div className="connection-pill">
-                        <span className={connected ? "connection-dot online" : "connection-dot"} />
-                        {connected ? "Connected" : reconnecting ? "Reconnecting" : "Offline"}
+
+                    <div className="kachuful-header-meta">
+                        <div className="kachuful-room-pill">
+                            <span>ROOM</span>
+                            <strong>{roomCode?.toUpperCase()}</strong>
+                        </div>
+
+                        <div className={`kachuful-live-pill ${connected ? "is-live" : ""}`}>
+                            <i />
+                            {connected ? "LIVE TABLE" : "RECONNECTING"}
+                        </div>
                     </div>
                 </header>
 
-                {!connected && (
-                    <div className="kachuful-alert kachuful-alert-warning" role="status">
-                        <span className="alert-icon">↻</span>
-                        Reconnecting — your table will restore automatically.
-                    </div>
-                )}
-
                 {error && (
-                    <div className="kachuful-alert kachuful-alert-error" role="alert">
-                        <span className="alert-icon">!</span>
-                        {error}
+                    <div className="kachuful-error" role="alert">
+                        <strong>Action unavailable</strong>
+                        <span>{error}</span>
                     </div>
                 )}
 
@@ -127,41 +121,49 @@ function KachufulGame() {
                     gameState={gameState}
                     userId={user.id}
                     selectedBid={selectedBid}
-                    onBidChange={setSelectedBid}
+                    onBidChange={handleBidChange}
                     onBidConfirm={confirmBid}
                     onPlayCard={handlePlayCard}
                 />
 
-                {gameState.status === "round-complete" && (
-                    <div className="kachuful-overlay" role="dialog" aria-modal="true" aria-label="Round complete">
-                        <div className="round-result-modal">
-                            <div className="modal-kicker">ROUND {gameState.round} COMPLETE</div>
-                            <h2>Table reset. Scores locked in.</h2>
-                            <p className="modal-subtitle">Review the round, then continue from the same live table.</p>
+                {!connected && (
+                    <div className="kachuful-reconnect-bar">
+                        <span className="kachuful-spinner" />
+                        Reconnecting to the live table…
+                    </div>
+                )}
 
-                            <div className="round-result-list">
+                {gameState.status === "round-complete" && (
+                    <div className="kachuful-round-complete">
+                        <div className="kachuful-round-modal">
+                            <div className="kachuful-modal-kicker">ROUND COMPLETE</div>
+                            <h2>Round {gameState.round}</h2>
+                            <p className="kachuful-modal-subtitle">
+                                Review the round, then continue with the server-controlled next round.
+                            </p>
+
+                            <div className="round-results">
                                 {gameState.players.map((player) => (
                                     <div className="round-result-row" key={player.id}>
-                                        <div className="result-player">
+                                        <div className="round-result-player">
                                             <span className="mini-avatar">
-                                                {player.username?.charAt(0)?.toUpperCase() || "?"}
+                                                {player.username?.charAt(0).toUpperCase()}
                                             </span>
-                                            <div>
-                                                <strong>{player.username}</strong>
-                                                <small>Bid {player.bid ?? "—"} · Won {player.tricksWon}</small>
-                                            </div>
+                                            <strong>{player.username}</strong>
                                         </div>
-                                        <strong className={(player.roundScore || 0) >= 0 ? "positive-score" : "negative-score"}>
-                                            {(player.roundScore || 0) >= 0 ? "+" : ""}{player.roundScore ?? 0}
-                                        </strong>
-                                        <span className="total-score">{player.score ?? 0}</span>
+                                        <span>{player.bid ?? "—"} bid</span>
+                                        <span>{player.tricksWon} won</span>
+                                        <b>+{player.roundScore}</b>
                                     </div>
                                 ))}
                             </div>
 
-                            <button className="primary-action modal-action" type="button" onClick={handleNextRound}>
-                                <span>{gameState.round >= gameState.totalRounds ? "Finish Game" : "Next Round"}</span>
-                                <span aria-hidden="true">→</span>
+                            <button
+                                type="button"
+                                className="kachuful-primary-button"
+                                onClick={handleNextRound}
+                            >
+                                {gameState.round >= gameState.totalRounds ? "Finish Game" : "Next Round"}
                             </button>
                         </div>
                     </div>

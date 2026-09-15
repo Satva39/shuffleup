@@ -6,8 +6,7 @@ function PlayingCard({
 }) {
     if (!card) return null;
 
-    const isRed =
-        card.suit === "hearts" || card.suit === "diamonds";
+    const isRed = card.suit === "hearts" || card.suit === "diamonds";
 
     const symbols = {
         spades: "♠",
@@ -16,16 +15,16 @@ function PlayingCard({
         hearts: "♥",
     };
 
-    const suitSymbol = symbols[card.suit] || "";
+    const suit = symbols[card.suit] || "";
 
     return (
         <button
             type="button"
             className={[
                 "kachuful-card",
-                isRed ? "card-red" : "card-black",
-                !playable ? "card-disabled" : "",
-                selected ? "card-selected" : "",
+                isRed ? "is-red" : "is-black",
+                !playable ? "is-disabled" : "",
+                selected ? "is-selected" : "",
             ]
                 .filter(Boolean)
                 .join(" ")}
@@ -35,16 +34,16 @@ function PlayingCard({
         >
             <span className="card-corner card-corner-top">
                 <b>{card.rank}</b>
-                <span>{suitSymbol}</span>
+                <em>{suit}</em>
             </span>
 
             <span className="card-center-suit" aria-hidden="true">
-                {suitSymbol}
+                {suit}
             </span>
 
             <span className="card-corner card-corner-bottom" aria-hidden="true">
                 <b>{card.rank}</b>
-                <span>{suitSymbol}</span>
+                <em>{suit}</em>
             </span>
         </button>
     );

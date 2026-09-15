@@ -9,65 +9,57 @@ function getSuitSymbol(suit) {
     return symbols[suit] || "";
 }
 
-function TrickArea({
-    trick = [],
-    players = [],
-    lastCompletedTrick = null,
-}) {
+function TrickArea({ trick = [], players = [], lastCompletedTrick = null }) {
     const getPlayerName = (playerId) =>
         players.find((player) => player.id === playerId)?.username || "Player";
 
     return (
-        <section className="kachuful-trick-area" aria-label="Current trick">
-            <div className="trick-heading">
-                <span>TABLE</span>
-                <strong>Current trick</strong>
-            </div>
+        <section className="kachuful-trick-area">
+            {trick.length > 0 ? (
+                <>
+                    <div className="trick-cards">
+                        {trick.map((play) => {
+                            const card = play.card;
+                            if (!card) return null;
 
-            <div className="trick-cards">
-                {trick.map((play) => {
-                    const card = play.card;
-                    if (!card) return null;
+                            const isRed =
+                                card.suit === "hearts" || card.suit === "diamonds";
 
-                    const isRed =
-                        card.suit === "hearts" || card.suit === "diamonds";
+                            return (
+                                <div
+                                    className="trick-card"
+                                    key={`${play.playerId}-${card.id}`}
+                                >
+                                    <span className="trick-player">
+                                        {getPlayerName(play.playerId)}
+                                    </span>
+                                    <div className={`trick-card-face ${isRed ? "is-red" : ""}`}>
+                                        <b>{card.rank}</b>
+                                        <span>{getSuitSymbol(card.suit)}</span>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
 
-                    return (
-                        <div
-                            className="trick-play"
-                            key={`${play.playerId}-${card.id}`}
-                        >
-                            <span className="trick-player-name">
-                                {getPlayerName(play.playerId)}
-                            </span>
-                            <div
-                                className={`trick-card-face ${
-                                    isRed ? "trick-card-red" : ""
-                                }`}
-                            >
-                                <span>{card.rank}</span>
-                                <strong>{getSuitSymbol(card.suit)}</strong>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-
-            {!trick.length && lastCompletedTrick ? (
-                <div className="trick-result">
-                    Previous trick won by{" "}
+                    <span className="trick-count">
+                        {trick.length} card{trick.length === 1 ? "" : "s"} in trick
+                    </span>
+                </>
+            ) : lastCompletedTrick ? (
+                <div className="trick-complete-state">
+                    <span>LAST TRICK</span>
                     <strong>
-                        {getPlayerName(lastCompletedTrick.winnerId)}
+                        {getPlayerName(lastCompletedTrick.winnerId)} won the trick
                     </strong>
                 </div>
-            ) : null}
-
-            {!trick.length && !lastCompletedTrick ? (
-                <div className="trick-empty">
-                    <span>No cards played yet</span>
-                    <small>The played cards will appear here.</small>
+            ) : (
+                <div className="trick-empty-state">
+                    <span className="trick-empty-symbol">♣</span>
+                    <strong>Ready for the first card</strong>
+                    <small>The trick appears here as cards are played.</small>
                 </div>
-            ) : null}
+            )}
         </section>
     );
 }

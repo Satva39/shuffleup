@@ -1,34 +1,59 @@
-function ScoreBoard({ players }) {
+function ScoreBoard({ players, userId }) {
+    const leaderId = players.length
+        ? players.reduce(
+              (leader, player) =>
+                  player.score > (leader?.score ?? -Infinity) ? player : leader,
+              null
+          )?.id
+        : null;
+
     return (
-        <aside className="kachuful-scoreboard">
-            <div className="scoreboard-heading">
+        <section className="kachuful-score-strip" aria-label="Scoreboard">
+            <div className="kachuful-score-strip-head">
                 <div>
-                    <span>SCOREBOARD</span>
+                    <span className="kachuful-eyebrow">SCOREBOARD</span>
                     <strong>{players.length} players</strong>
                 </div>
-                <span className="scoreboard-live">LIVE</span>
+                <span className="score-live-chip">
+                    <i />
+                    LIVE
+                </span>
             </div>
 
-            <div className="scoreboard-list">
+            <div className="kachuful-score-list">
                 {players.map((player) => (
                     <div
-                        className="score-row"
+                        className={[
+                            "kachuful-score-item",
+                            player.id === userId ? "is-you" : "",
+                            player.id === leaderId ? "is-leader" : "",
+                        ]
+                            .filter(Boolean)
+                            .join(" ")}
                         key={player.id}
                     >
+                        <span className="score-avatar">
+                            {player.username?.charAt(0).toUpperCase()}
+                        </span>
+
                         <div className="score-player">
-                            <span className="score-avatar">
-                                {player.username?.charAt(0).toUpperCase() || "?"}
-                            </span>
-                            <strong>{player.username}</strong>
+                            <strong>{player.id === userId ? "You" : player.username}</strong>
+                            <span>{player.tricksWon ?? 0} tricks</span>
                         </div>
 
-                        <span>{player.bid ?? "—"}</span>
-                        <span>{player.tricksWon ?? 0}</span>
-                        <b>{player.score ?? 0}</b>
+                        <div className="score-bid">
+                            <span>Bid</span>
+                            <b>{player.bid ?? "—"}</b>
+                        </div>
+
+                        <div className="score-points">
+                            <span>PTS</span>
+                            <b>{player.score ?? 0}</b>
+                        </div>
                     </div>
                 ))}
             </div>
-        </aside>
+        </section>
     );
 }
 

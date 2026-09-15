@@ -7,39 +7,36 @@ function BidPanel({
 }) {
     if (submitted) {
         return (
-            <div className="kachuful-bid-panel bid-submitted-panel">
-                <div className="bid-panel-copy">
-                    <span className="bid-label">BID LOCKED</span>
+            <section className="kachuful-action-panel kachuful-bid-waiting">
+                <div>
+                    <span className="kachuful-eyebrow">YOUR BID</span>
                     <strong className="submitted-bid">{currentBid}</strong>
-                    <small>Waiting for the other players to finish bidding.</small>
+                    <small>Bid locked. Waiting for the other players…</small>
                 </div>
-                <div className="bid-progress-mark" aria-hidden="true">✓</div>
-            </div>
+
+                <div className="bid-locked-chip">
+                    <i />
+                    Submitted
+                </div>
+            </section>
         );
     }
 
-    const maxBid = Math.max(0, Number(cardsPerPlayer) || 0);
-
     return (
-        <div className="kachuful-bid-panel">
-            <div className="bid-panel-heading">
-                <div>
-                    <span className="bid-label">YOUR BID</span>
-                    <h2>How many tricks?</h2>
-                </div>
-                <span className="bid-round-chip">{maxBid} cards</span>
+        <section className="kachuful-action-panel">
+            <div className="bid-panel-copy">
+                <span className="kachuful-eyebrow">YOUR BID</span>
+                <strong>How many tricks?</strong>
+                <small>{cardsPerPlayer} cards this round</small>
             </div>
 
             <div className="bid-options" role="group" aria-label="Choose bid">
-                {Array.from({ length: maxBid + 1 }, (_, bid) => (
+                {Array.from({ length: cardsPerPlayer + 1 }, (_, bid) => (
                     <button
                         key={bid}
                         type="button"
-                        className={
-                            currentBid === bid
-                                ? "bid-option bid-selected"
-                                : "bid-option"
-                        }
+                        className={`bid-option ${currentBid === bid ? "is-selected" : ""}`}
+                        aria-pressed={currentBid === bid}
                         onClick={() => onBid(bid)}
                     >
                         {bid}
@@ -54,9 +51,9 @@ function BidPanel({
                 onClick={onBidConfirm}
             >
                 <span>Confirm bid</span>
-                <span aria-hidden="true">→</span>
+                <b>→</b>
             </button>
-        </div>
+        </section>
     );
 }
 

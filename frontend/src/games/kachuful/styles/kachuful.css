@@ -509,18 +509,18 @@
     color: rgba(237, 104, 123, .23);
 }
 
-.kachuful-seat-position {
+/* .kachuful-seat-position {
     position: absolute;
     z-index: 8;
     width: min(208px, 20vw);
     pointer-events: none;
-}
+} */
 
 .kachuful-seat-position>* {
     pointer-events: auto;
 }
 
-.kachuful-seat {
+/* .kachuful-seat {
     position: relative;
     min-width: 0;
     width: 100%;
@@ -531,7 +531,7 @@
     box-shadow: 0 10px 24px rgba(0, 0, 0, .11);
     backdrop-filter: blur(7px);
     transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease, background .14s ease;
-}
+} */
 
 .kachuful-seat.is-you {
     border-color: rgba(227, 187, 104, .22);
@@ -547,19 +547,19 @@
     opacity: .55;
 }
 
-.kachuful-seat-main {
+/* .kachuful-seat-main {
     display: flex;
     align-items: center;
     min-width: 0;
     gap: 8px;
-}
+} */
 
-.kachuful-seat-avatar {
+/* .kachuful-seat-avatar {
     width: 30px;
     height: 30px;
     flex: 0 0 auto;
     position: relative;
-}
+} */
 
 .kachuful-seat.is-you .kachuful-seat-avatar {
     background: rgba(227, 187, 104, .13);
@@ -587,37 +587,37 @@
     gap: 5px;
 }
 
-.kachuful-seat-name-row strong {
+/* .kachuful-seat-name-row strong {
     max-width: 135px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: #edf4ef;
     font: 780 11px/1.1 system-ui, sans-serif;
-}
+} */
 
-.you-badge {
+/* .you-badge {
     padding: 3px 5px;
     border-radius: 999px;
     background: rgba(114, 220, 168, .1);
     color: #90e1b6;
     font: 800 7px/1 system-ui, sans-serif;
     letter-spacing: .06em;
-}
+} */
 
-.kachuful-seat-meta {
+/* .kachuful-seat-meta {
     display: flex;
     gap: 5px;
     color: #789388;
     font: 600 8px/1 system-ui, sans-serif;
-}
+} */
 
-.kachuful-seat-stats {
+/* .kachuful-seat-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 5px;
     margin-top: 8px;
-}
+} */
 
 .kachuful-seat-stats>div {
     min-width: 0;
@@ -627,7 +627,7 @@
     border-top: 1px solid rgba(255, 255, 255, .055);
 }
 
-.kachuful-seat-stats span {
+/* .kachuful-seat-stats span {
     color: #6e887c;
     font: 650 7px/1 system-ui, sans-serif;
     letter-spacing: .08em;
@@ -637,6 +637,84 @@
 .kachuful-seat-stats b {
     color: #e6eee9;
     font: 800 10px/1 system-ui, sans-serif;
+} */
+
+.kachuful-seat-position {
+    position: absolute;
+    z-index: 8;
+    width: min(250px, 23vw);
+    pointer-events: none;
+}
+
+.kachuful-seat {
+    position: relative;
+    min-width: 0;
+    width: 100%;
+    padding: 13px 13px 12px;
+    border-radius: 17px;
+    border: 1px solid rgba(255, 255, 255, .085);
+    background: rgba(4, 25, 18, .76);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .14);
+    backdrop-filter: blur(8px);
+    transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease, background .14s ease;
+}
+
+.kachuful-seat-main {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 10px;
+}
+
+.kachuful-seat-avatar {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+    position: relative;
+}
+
+.kachuful-seat-name-row strong {
+    max-width: 165px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #edf4ef;
+    font: 800 13px/1.1 system-ui, sans-serif;
+}
+
+.you-badge {
+    padding: 4px 6px;
+    border-radius: 999px;
+    background: rgba(114, 220, 168, .1);
+    color: #90e1b6;
+    font: 800 8px/1 system-ui, sans-serif;
+    letter-spacing: .06em;
+}
+
+.kachuful-seat-meta {
+    display: flex;
+    gap: 6px;
+    color: #789388;
+    font: 650 9px/1 system-ui, sans-serif;
+}
+
+.kachuful-seat-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.kachuful-seat-stats span {
+    color: #6e887c;
+    font: 700 8px/1 system-ui, sans-serif;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.kachuful-seat-stats b {
+    color: #e6eee9;
+    font: 850 12px/1 system-ui, sans-serif;
 }
 
 .kachuful-seat.is-active .kachuful-seat-stats b:last-child {

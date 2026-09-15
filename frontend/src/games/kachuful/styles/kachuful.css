@@ -1,40 +1,56 @@
-/* =========================================================
-   KACHUFUL — SHUFFLEUP TABLE
-   ========================================================= */
-
-* {
-    box-sizing: border-box;
-}
-
 .kachuful-page {
-    min-height: 100vh;
-    width: 100%;
-    padding: 18px;
+    --kf-bg: #06100c;
+    --kf-panel: rgba(13, 17, 22, 0.9);
+    --kf-panel-strong: rgba(10, 13, 18, 0.97);
+    --kf-line: rgba(255, 255, 255, 0.09);
+    --kf-muted: rgba(237, 242, 239, 0.58);
+    --kf-soft: rgba(237, 242, 239, 0.78);
+    --kf-accent: #c7a2ff;
+    --kf-accent-strong: #9e6cff;
+    --kf-green: #39d98a;
+    --kf-red: #ff6078;
+
+    min-height: 100svh;
     background:
-        radial-gradient(circle at 50% 35%,
-            #18291f 0%,
-            #0e1713 38%,
-            #080b0a 72%,
-            #050506 100%);
-    color: #f5f1fa;
-    overflow-x: hidden;
+        radial-gradient(circle at 50% 18%, rgba(90, 147, 117, 0.14), transparent 28%),
+        radial-gradient(circle at 100% 0%, rgba(128, 77, 196, 0.1), transparent 32%),
+        linear-gradient(145deg, #050a08 0%, #07120e 48%, #050907 100%);
+    color: #f7faf8;
+    overflow: hidden;
+    position: relative;
 }
 
-/* =========================================================
-   LOADING
-   ========================================================= */
+.kachuful-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 95%);
+}
 
 .kachuful-loading {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #08070d;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 50% 45%, rgba(79, 126, 100, 0.18), transparent 34%),
+        #050907;
     color: #fff;
+    text-align: center;
+    padding: 24px;
 }
 
 .kachuful-loading>div {
-    text-align: center;
+    padding: 34px 38px;
+    border: 1px solid var(--kf-line);
+    border-radius: 24px;
+    background: rgba(12, 17, 14, 0.78);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(18px);
 }
 
 .kachuful-loading h2 {
@@ -44,357 +60,480 @@
 
 .kachuful-loading p {
     margin: 0;
-    color: #a9a3b4;
+    color: var(--kf-muted);
 }
-
-/* =========================================================
-   MAIN WRAPPER
-   ========================================================= */
 
 .kachuful-table-wrapper {
-    width: min(1500px, 100%);
-    min-height: calc(100vh - 36px);
-    margin: 0 auto;
+    min-height: 100svh;
     position: relative;
+    z-index: 1;
+    padding: clamp(14px, 2vw, 24px);
 }
 
-/* =========================================================
-   TOP INFORMATION BAR
-   ========================================================= */
-
 .kachuful-top-bar {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 150px 120px minmax(360px, 1fr);
-    gap: 18px;
-    align-items: start;
     position: relative;
     z-index: 20;
+    width: min(1320px, 100%);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.kachuful-top-cluster {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
 }
 
 .kachuful-round-info,
 .kachuful-trump,
 .kachuful-scoreboard {
-    background: rgba(18, 14, 25, 0.94);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--kf-line);
+    background: linear-gradient(180deg, rgba(19, 24, 29, 0.92), rgba(10, 14, 18, 0.9));
     box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.3),
-        inset 0 1px rgba(255, 255, 255, 0.03);
+        0 18px 48px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    backdrop-filter: blur(18px);
 }
 
-/* =========================================================
-   ROUND INFO
-   ========================================================= */
-
-.kachuful-round-info {
-    min-height: 88px;
-    padding: 15px 16px;
-    border-radius: 15px;
+.kachuful-round-info,
+.kachuful-trump {
+    min-width: 150px;
+    min-height: 84px;
+    padding: 13px 16px;
+    border-radius: 18px;
 }
 
-.kachuful-round-info .label,
-.kachuful-round-info small {
+.kachuful-round-info span,
+.trump-label,
+.bid-label,
+.your-hand-label>span {
     display: block;
-    color: #9e97aa;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
+    color: var(--kf-muted);
 }
 
 .kachuful-round-info strong {
     display: block;
-    margin: 4px 0;
-    font-size: 20px;
-    line-height: 1.1;
+    margin-top: 5px;
+    font-size: 23px;
+    line-height: 1;
+    letter-spacing: -0.02em;
 }
 
-.kachuful-round-info span {
-    color: #aaa3b5;
-    font-size: 12px;
+.kachuful-round-info small {
+    display: block;
+    margin-top: 7px;
+    color: var(--kf-muted);
+    font-size: 10px;
 }
-
-/* =========================================================
-   TRUMP
-   ========================================================= */
 
 .kachuful-trump {
-    min-height: 108px;
-    padding: 13px 12px;
-    border-radius: 15px;
     text-align: center;
+    min-width: 124px;
 }
 
-.kachuful-trump .label,
+.trump-symbol {
+    display: block;
+    margin: 4px 0 1px;
+    font-size: 27px;
+    line-height: 1;
+    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+}
+
+.trump-red,
+.card-red {
+    color: var(--kf-red);
+}
+
+.trump-black,
+.card-black {
+    color: #171a1c;
+}
+
+.kachuful-trump strong,
 .kachuful-trump small {
     display: block;
-    color: #9e97aa;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
 }
 
 .kachuful-trump strong {
-    display: block;
-    margin-top: 14px;
-    font-size: 15px;
-}
-
-.kachuful-trump span {
-    display: block;
-    margin-top: 3px;
-    color: #aaa3b5;
     font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 }
 
-/* =========================================================
-   SCOREBOARD
-   ========================================================= */
+.kachuful-trump small {
+    margin-top: 2px;
+    color: var(--kf-muted);
+    font-size: 9px;
+}
 
 .kachuful-scoreboard {
-    justify-self: end;
-    width: min(430px, 100%);
-    border-radius: 15px;
+    width: min(430px, 42vw);
+    padding: 8px;
+    border-radius: 18px;
     overflow: hidden;
 }
 
-.kachuful-scoreboard-header,
-.scoreboard-header {
-    min-height: 35px;
-    padding: 10px 13px;
+.kachuful-scoreboard header,
+.score-row {
     display: grid;
-    grid-template-columns: minmax(130px, 1fr) 50px 50px 65px 55px;
-    gap: 6px;
+    grid-template-columns: minmax(130px, 1.7fr) 0.55fr 0.55fr 0.7fr 0.75fr;
+    gap: 8px;
     align-items: center;
-    color: #8f899c;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
+}
+
+.kachuful-scoreboard header {
+    padding: 5px 10px 8px;
+    color: rgba(237, 242, 239, 0.4);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
 }
 
-.kachuful-scoreboard-row,
-.scoreboard-row {
-    min-height: 44px;
-    padding: 7px 13px;
-    display: grid;
-    grid-template-columns: minmax(130px, 1fr) 50px 50px 65px 55px;
-    gap: 6px;
-    align-items: center;
+.score-row {
+    min-height: 37px;
+    padding: 7px 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.055);
+    font-size: 11px;
 }
 
-.kachuful-scoreboard-row:first-of-type {
-    border-top: 0;
-}
-
-.kachuful-scoreboard-row strong,
-.scoreboard-row strong {
-    font-size: 12px;
+.score-row strong:first-child {
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: #f4f7f5;
 }
 
-.kachuful-scoreboard-row span,
-.scoreboard-row span {
+.score-row>span {
+    color: var(--kf-muted);
     text-align: center;
-    color: #c0bacb;
-    font-size: 11px;
 }
 
-/* =========================================================
-   TURN INDICATOR
-   ========================================================= */
+.score-row strong:last-child {
+    color: var(--kf-accent);
+    text-align: right;
+    font-size: 12px;
+}
 
 .kachuful-turn {
-    width: fit-content;
-    margin: 12px auto 0;
-    position: relative;
-    z-index: 30;
-}
-
-.kachuful-turn strong,
-.turn-indicator {
+    position: absolute;
+    z-index: 40;
+    top: 102px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-height: 34px;
+    padding: 0 15px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-height: 36px;
-    padding: 0 22px;
-    border: 1px solid rgba(164, 105, 255, 0.75);
+    border: 1px solid var(--kf-line);
     border-radius: 999px;
-    background: rgba(91, 48, 137, 0.18);
-    box-shadow: 0 0 22px rgba(139, 84, 214, 0.15);
-    color: #d8bfff;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
+    background: rgba(9, 13, 16, 0.88);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(14px);
+    color: var(--kf-muted);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
 }
 
-/* =========================================================
-   TABLE
-   ========================================================= */
+.kachuful-turn.your-turn {
+    color: #fff;
+    border-color: rgba(57, 217, 138, 0.35);
+    background: rgba(15, 33, 25, 0.93);
+    box-shadow:
+        0 0 0 1px rgba(57, 217, 138, 0.06),
+        0 0 28px rgba(57, 217, 138, 0.11);
+}
 
 .kachuful-table {
-    width: min(1120px, 100%);
-    height: 650px;
-    margin: 15px auto 0;
     position: relative;
-    border-radius: 50% / 43%;
-    border: 9px solid #17111f;
+    width: min(1180px, calc(100vw - 36px));
+    height: clamp(520px, calc(100svh - 250px), 700px);
+    min-height: 520px;
+    margin: 42px auto 0;
+    border: 10px solid #14201a;
+    border-radius: 45% / 33%;
     background:
-        radial-gradient(ellipse at center,
-            #1c3025 0%,
-            #14241c 48%,
-            #0e1813 100%);
+        radial-gradient(circle at 50% 50%, rgba(30, 90, 62, 0.18), transparent 33%),
+        radial-gradient(circle at 50% 50%, #0c2a1d 0%, #0b2118 42%, #08170f 78%, #06110b 100%);
     box-shadow:
-        0 35px 80px rgba(0, 0, 0, 0.55),
-        0 0 0 1px rgba(255, 255, 255, 0.04),
-        inset 0 0 0 2px rgba(255, 255, 255, 0.035),
-        inset 0 0 70px rgba(0, 0, 0, 0.3);
+        0 30px 80px rgba(0, 0, 0, 0.48),
+        inset 0 0 95px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    overflow: hidden;
+    isolation: isolate;
 }
-
-/* Inner table line */
 
 .kachuful-table::before {
     content: "";
     position: absolute;
-    inset: 17px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    inset: 2.2%;
+    border: 1px solid rgba(132, 188, 157, 0.12);
     border-radius: inherit;
+    box-shadow:
+        inset 0 0 32px rgba(81, 158, 112, 0.05),
+        0 0 0 1px rgba(0, 0, 0, 0.24);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.kachuful-table::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 72%, transparent 35%, rgba(0, 0, 0, 0.3) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.table-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(32px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.table-glow-one {
+    width: 220px;
+    height: 220px;
+    left: 18%;
+    top: 15%;
+    background: rgba(60, 217, 138, 0.38);
+}
+
+.table-glow-two {
+    width: 260px;
+    height: 260px;
+    right: 15%;
+    bottom: 12%;
+    background: rgba(126, 82, 207, 0.32);
+}
+
+.table-center-mark {
+    position: absolute;
+    z-index: 0;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(213, 240, 222, 0.055);
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: 0.16em;
     pointer-events: none;
 }
 
-/* =========================================================
-   PLAYER SEATS
-   ========================================================= */
-
-.kachuful-seat-position {
+.table-caption {
     position: absolute;
-    z-index: 15;
-    transform: translate(-50%, -50%);
-}
-
-.seat-top {
-    top: 12%;
+    z-index: 8;
+    top: 11%;
     left: 50%;
-}
-
-.seat-right {
-    top: 50%;
-    left: 90%;
-}
-
-.seat-bottom {
-    top: 87%;
-    left: 50%;
-}
-
-.seat-left {
-    top: 50%;
-    left: 10%;
-}
-
-/* =========================================================
-   SEAT CARD
-   ========================================================= */
-
-.kachuful-player-seat,
-.player-seat {
-    width: 155px;
-    min-height: 76px;
-    padding: 11px 13px;
-    border-radius: 14px;
-    background: rgba(10, 8, 15, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.32),
-        inset 0 1px rgba(255, 255, 255, 0.03);
-}
-
-.kachuful-player-seat.active,
-.player-seat.active,
-.kachuful-seat-position.active .player-seat {
-    border-color: rgba(171, 106, 255, 0.85);
-    box-shadow:
-        0 0 0 1px rgba(171, 106, 255, 0.16),
-        0 0 30px rgba(139, 84, 214, 0.18);
-}
-
-.player-seat-header {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-}
-
-.player-avatar {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9px;
-    background: #25202e;
-    color: #eee8f6;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.player-name {
-    min-width: 0;
-    color: #f3eff8;
-    font-size: 12px;
-    font-weight: 750;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.player-seat-info {
-    margin-top: 7px;
-    display: flex;
-    gap: 9px;
-    color: #918a9d;
-    font-size: 10px;
-}
-
-/* =========================================================
-   TRICK AREA
-   ========================================================= */
-
-.kachuful-trick-area {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 310px;
-    min-height: 190px;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    z-index: 5;
+    gap: 3px;
+    pointer-events: none;
+    opacity: 0.75;
 }
 
-.trick-title {
-    margin-bottom: 14px;
-    color: rgba(235, 230, 240, 0.75);
-    font-size: 11px;
+.table-caption span {
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.32em;
+    text-indent: 0.32em;
+    color: rgba(232, 242, 236, 0.23);
+}
+
+.table-caption small {
+    font-size: 8px;
     font-weight: 800;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(232, 242, 236, 0.16);
 }
 
-.trick-cards {
-    width: 100%;
-    min-height: 110px;
+.kachuful-seat-position {
+    position: absolute;
+    z-index: 12;
+}
+
+.seat-top {
+    top: 6.5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.seat-right {
+    top: 43%;
+    right: 2.8%;
+    transform: translateY(-50%);
+}
+
+.seat-left {
+    top: 43%;
+    left: 2.8%;
+    transform: translateY(-50%);
+}
+
+.seat-bottom {
+    bottom: 3.5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.kachuful-seat {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 166px;
+    padding: 9px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(15, 21, 24, 0.94), rgba(8, 13, 16, 0.9));
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.kachuful-seat:hover {
+    transform: translateY(-2px);
+}
+
+.seat-active {
+    border-color: rgba(199, 162, 255, 0.5);
+    box-shadow:
+        0 0 0 1px rgba(199, 162, 255, 0.06),
+        0 0 28px rgba(158, 108, 255, 0.13),
+        0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.seat-active::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: -2px;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--kf-accent), transparent);
+    box-shadow: 0 0 14px rgba(199, 162, 255, 0.5);
+}
+
+.seat-you {
+    border-color: rgba(57, 217, 138, 0.18);
+}
+
+.seat-avatar {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.12), transparent 38%),
+        #15231d;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #eef7f1;
+    font-size: 12px;
+    font-weight: 900;
+    box-shadow: inset 0 0 16px rgba(57, 217, 138, 0.05);
+}
+
+.seat-details {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.seat-details strong {
+    max-width: 122px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+}
+
+.seat-details span {
+    color: var(--kf-muted);
+    font-size: 8px;
+}
+
+.seat-status {
+    position: absolute;
+    left: 50%;
+    bottom: -17px;
+    transform: translateX(-50%);
+    color: var(--kf-red);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+.seat-disconnected {
+    opacity: 0.52;
+}
+
+.kachuful-trick-area {
+    position: absolute;
+    z-index: 9;
+    top: 48%;
+    left: 50%;
+    width: min(430px, 38vw);
+    min-height: 190px;
+    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 9px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.trick-title {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(232, 242, 236, 0.24);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.24em;
+    white-space: nowrap;
+}
+
+.trick-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.18);
+}
+
+.trick-empty span {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+}
+
+.trick-empty small {
+    margin-top: 5px;
+    font-size: 8px;
 }
 
 .trick-card {
@@ -402,433 +541,595 @@
     flex-direction: column;
     align-items: center;
     gap: 5px;
+    animation: card-in 0.2s ease-out;
 }
 
 .trick-player {
-    max-width: 75px;
-    color: #aaa3b4;
-    font-size: 9px;
-    font-weight: 650;
+    max-width: 72px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 8px;
+    font-weight: 800;
 }
 
 .trick-card-face {
-    width: 61px;
-    height: 86px;
+    width: 62px;
+    height: 88px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 9px;
-    background: #fff;
     border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    background: linear-gradient(145deg, #ffffff, #edf1f3);
+    color: #15181a;
     box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.3),
-        inset 0 0 0 1px rgba(0, 0, 0, 0.04);
-    color: #17131c;
+        0 14px 24px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 .trick-card-rank {
     font-size: 22px;
-    font-weight: 850;
     line-height: 1;
+    font-weight: 900;
 }
 
 .trick-card-suit {
     margin-top: 4px;
-    font-size: 21px;
+    font-size: 22px;
     line-height: 1;
 }
 
 .trick-card-red {
-    color: #e14e61;
+    color: var(--kf-red);
 }
 
 .trick-result {
-    margin-top: 8px;
-    padding: 7px 13px;
-    border-radius: 999px;
-    background: rgba(14, 10, 20, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    color: #aaa3b5;
+    width: 100%;
+    text-align: center;
+    padding: 9px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    background: rgba(5, 10, 8, 0.42);
+    color: rgba(238, 245, 240, 0.62);
     font-size: 10px;
+    animation: trick-result-in 0.24s ease-out;
 }
 
 .trick-result strong {
-    color: #d9c0fa;
+    color: #fff;
+    font-weight: 800;
 }
-
-/* =========================================================
-   YOUR HAND
-   ========================================================= */
 
 .kachuful-your-hand {
     position: absolute;
-    bottom: 24px;
+    z-index: 22;
     left: 50%;
-    width: min(90%, 700px);
+    bottom: 2%;
+    width: min(880px, 82%);
     transform: translateX(-50%);
-    z-index: 25;
+}
+
+.your-hand-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 2;
+}
+
+.your-hand-label>span {
+    color: rgba(232, 242, 236, 0.72);
+}
+
+.your-hand-label small {
+    color: rgba(232, 242, 236, 0.28);
+    font-size: 8px;
 }
 
 .kachuful-hand {
+    min-height: 130px;
     display: flex;
-    align-items: flex-end;
     justify-content: center;
-    gap: 8px;
+    align-items: flex-end;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 12px 32px 3px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
-/* =========================================================
-   PLAYING CARDS
-   ========================================================= */
-
 .kachuful-card {
-    width: 72px;
-    height: 104px;
     position: relative;
-    border: 0;
-    border-radius: 10px;
-    background: #fff;
-    color: #17131c;
-    cursor: pointer;
+    width: 76px;
+    height: 108px;
+    flex: 0 0 76px;
+    margin-left: -14px;
+    border: 1px solid rgba(21, 23, 25, 0.18);
+    border-radius: 11px;
+    background: linear-gradient(145deg, #fff 0%, #f3f5f6 78%, #e7ebed 100%);
     box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.32),
-        0 0 0 1px rgba(255, 255, 255, 0.8);
-    transition:
-        transform 0.18s ease,
-        box-shadow 0.18s ease;
+        0 10px 18px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.95) inset;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    touch-action: manipulation;
+}
+
+.kachuful-card:first-child {
+    margin-left: 0;
+}
+
+.kachuful-card::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(17, 22, 24, 0.035);
+    border-radius: 8px;
+    pointer-events: none;
 }
 
 .kachuful-card:hover:not(:disabled) {
-    transform: translateY(-12px);
+    transform: translateY(-18px);
+    z-index: 30;
     box-shadow:
-        0 18px 28px rgba(0, 0, 0, 0.38),
-        0 0 0 1px rgba(172, 106, 255, 0.8);
+        0 22px 28px rgba(0, 0, 0, 0.33),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-.kachuful-card:active:not(:disabled) {
-    transform: translateY(-5px) scale(0.98);
-}
-
-.kachuful-card.red {
-    color: #dc455a;
-}
-
-.card-rank {
-    font-size: 22px;
-    font-weight: 850;
-}
-
-.card-suit {
-    font-size: 20px;
+.kachuful-card:focus-visible {
+    outline: 2px solid rgba(199, 162, 255, 0.9);
+    outline-offset: 3px;
 }
 
 .card-disabled {
-    opacity: 0.32;
     cursor: not-allowed;
-    filter: saturate(0.5);
+    opacity: 0.44;
 }
 
 .card-selected {
-    transform: translateY(-12px);
-    box-shadow:
-        0 18px 28px rgba(0, 0, 0, 0.35),
-        0 0 0 2px #a56bdf;
+    transform: translateY(-18px);
 }
 
-/* =========================================================
-   BID PANEL
-   ========================================================= */
+.card-rank {
+    position: absolute;
+    top: 8px;
+    left: 9px;
+    z-index: 1;
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 900;
+}
+
+.card-suit {
+    position: absolute;
+    top: 28px;
+    left: 9px;
+    z-index: 1;
+    font-size: 18px;
+    line-height: 1;
+}
 
 .kachuful-bid-panel {
     position: absolute;
+    z-index: 60;
+    top: 50%;
     left: 50%;
-    bottom: 34px;
-    width: 360px;
-    transform: translateX(-50%);
-    padding: 18px 20px;
-    border-radius: 16px;
-    background: rgba(18, 13, 25, 0.96);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    width: min(400px, 84vw);
+    transform: translate(-50%, -50%);
+    padding: 27px;
+    border: 1px solid rgba(199, 162, 255, 0.17);
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(18, 18, 24, 0.98), rgba(8, 12, 15, 0.99));
     box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.42),
-        inset 0 1px rgba(255, 255, 255, 0.03);
-    z-index: 40;
+        0 34px 85px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.02) inset;
     text-align: center;
+    backdrop-filter: blur(18px);
 }
 
-.bid-label {
-    display: block;
-    margin-bottom: 13px;
-    color: #aaa3b5;
-    font-size: 10px;
-    font-weight: 850;
-    letter-spacing: 1.5px;
+.kachuful-bid-panel::before {
+    content: "";
+    position: absolute;
+    left: 24%;
+    right: 24%;
+    top: 0;
+    height: 2px;
+    border-radius: 0 0 99px 99px;
+    background: linear-gradient(90deg, transparent, var(--kf-accent), transparent);
+    box-shadow: 0 0 20px rgba(199, 162, 255, 0.35);
 }
 
 .bid-options {
     display: flex;
     justify-content: center;
-    gap: 7px;
-    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 19px 0 10px;
 }
 
 .bid-option {
-    width: 42px;
-    height: 42px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 9px;
-    background: #211b2a;
-    color: #dcd5e5;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 800;
-    transition: 0.15s ease;
-}
-
-.bid-option:hover {
-    border-color: rgba(171, 106, 255, 0.65);
-    background: #2a2136;
-}
-
-.bid-option.bid-selected {
-    background: #9258cf;
-    border-color: #b477ed;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.045);
     color: #fff;
-    box-shadow: 0 5px 16px rgba(146, 88, 207, 0.28);
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.bid-option:hover,
+.bid-selected {
+    border-color: rgba(199, 162, 255, 0.55);
+    background: rgba(158, 108, 255, 0.16);
+    transform: translateY(-2px);
 }
 
 .bid-confirm {
     width: 100%;
-    height: 43px;
+    min-height: 45px;
+    margin-top: 13px;
     border: 0;
-    border-radius: 9px;
-    background: #9258cf;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #aa7bff, #8a58ee);
     color: #fff;
-    cursor: pointer;
     font-size: 11px;
-    font-weight: 850;
-    letter-spacing: 0.8px;
-    transition: 0.15s ease;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(126, 83, 220, 0.22);
 }
 
 .bid-confirm:hover:not(:disabled) {
-    background: #a86be2;
+    filter: brightness(1.06);
     transform: translateY(-1px);
 }
 
 .bid-confirm:disabled {
-    opacity: 0.35;
+    opacity: 0.4;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .kachuful-bid-panel small {
-    display: block;
-    margin-top: 11px;
-    color: #827b8d;
-    font-size: 10px;
+    color: rgba(237, 242, 239, 0.45);
+    font-size: 9px;
 }
 
-/* =========================================================
-   CONNECTION / ERRORS
-   ========================================================= */
+.submitted-bid {
+    display: block;
+    margin: 8px 0 4px;
+    color: var(--kf-accent);
+    font-size: 42px;
+    line-height: 1;
+}
 
-.kachuful-connection,
-.kachuful-error {
+.kachuful-error,
+.kachuful-connection {
     position: fixed;
+    z-index: 100;
     top: 15px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 100;
-    padding: 9px 16px;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
     border-radius: 999px;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.7px;
-}
-
-.kachuful-connection {
-    background: #251c31;
-    border: 1px solid #73509b;
-    color: #d8b7f2;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(17, 16, 23, 0.94);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(14px);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
 }
 
 .kachuful-error {
-    background: #35191f;
-    border: 1px solid #a24757;
-    color: #ffb9c2;
+    color: #ff9baa;
+    border-color: rgba(255, 96, 120, 0.2);
 }
 
-/* =========================================================
-   ROUND COMPLETE
-   ========================================================= */
+.kachuful-connection {
+    color: #f0d9a0;
+}
 
-.kachuful-round-complete {
+.kachuful-round-complete,
+.kachuful-result-overlay {
     position: fixed;
     inset: 0;
-    z-index: 90;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    z-index: 200;
+    display: grid;
+    place-items: center;
     padding: 20px;
-    background: rgba(3, 3, 5, 0.78);
-    backdrop-filter: blur(9px);
+    background: rgba(1, 4, 3, 0.76);
+    backdrop-filter: blur(10px);
 }
 
-.kachuful-round-complete>div {
-    width: min(500px, 100%);
-    padding: 26px;
-    border-radius: 18px;
-    background: #17121f;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
-}
-
-/* =========================================================
-   GAME RESULT
-   ========================================================= */
-
-.kachuful-result-overlay {
-    min-height: calc(100vh - 36px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 25px;
-}
-
+.kachuful-round-complete>div,
 .kachuful-result {
-    width: min(620px, 100%);
+    position: relative;
+    width: min(560px, 94vw);
     padding: 30px;
-    border-radius: 20px;
-    background: rgba(18, 13, 25, 0.97);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 26px;
+    background: linear-gradient(180deg, rgba(20, 24, 29, 0.98), rgba(8, 13, 16, 0.99));
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-/* =========================================================
-   RESPONSIVE — TABLET
-   ========================================================= */
+.kachuful-round-complete>div::before,
+.kachuful-result::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 24%;
+    right: 24%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--kf-accent), transparent);
+    box-shadow: 0 0 20px rgba(199, 162, 255, 0.3);
+}
+
+.kachuful-round-complete span,
+.result-label {
+    color: var(--kf-muted);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+}
+
+.kachuful-round-complete h2,
+.kachuful-result h1 {
+    margin: 8px 0 20px;
+    letter-spacing: -0.03em;
+}
+
+.round-results,
+.final-scores {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 20px;
+}
+
+.round-results>div,
+.final-score-row {
+    display: grid;
+    grid-template-columns: 1.5fr 0.8fr 0.8fr 0.7fr;
+    gap: 10px;
+    align-items: center;
+    padding: 11px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.035);
+    font-size: 11px;
+}
+
+.round-results span,
+.final-score-row span {
+    color: var(--kf-muted);
+}
+
+.kachuful-round-complete button,
+.result-actions button {
+    min-height: 44px;
+    border: 0;
+    border-radius: 11px;
+    padding: 0 18px;
+    background: linear-gradient(135deg, #aa7bff, #8a58ee);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+}
+
+.kachuful-round-complete button:hover,
+.result-actions button:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+}
+
+.result-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.result-actions button:last-child {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.final-score-row {
+    grid-template-columns: 30px 1fr 60px;
+}
+
+.final-score-row b {
+    color: var(--kf-accent);
+    text-align: right;
+}
+
+@keyframes card-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes trick-result-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 @media (max-width: 1050px) {
+    .kachuful-scoreboard {
+        width: min(390px, 46vw);
+    }
+
+    .kachuful-table {
+        width: min(1100px, calc(100vw - 28px));
+    }
+
+    .kachuful-trick-area {
+        width: min(400px, 42vw);
+    }
+
+    .kachuful-your-hand {
+        width: 86%;
+    }
+}
+
+@media (max-width: 820px) {
+    .kachuful-page {
+        overflow: auto;
+    }
+
+    .kachuful-table-wrapper {
+        min-height: 100svh;
+        padding: 12px;
+    }
+
     .kachuful-top-bar {
-        grid-template-columns: 140px 110px 1fr;
         gap: 10px;
+    }
+
+    .kachuful-top-cluster {
+        gap: 8px;
+    }
+
+    .kachuful-round-info,
+    .kachuful-trump {
+        min-width: 0;
+        min-height: 72px;
+        padding: 10px 12px;
+    }
+
+    .kachuful-scoreboard {
+        width: auto;
+        min-width: 310px;
     }
 
     .kachuful-table {
         height: 600px;
+        min-height: 600px;
+        margin-top: 32px;
     }
 
-    .kachuful-scoreboard {
-        width: 100%;
-    }
-
-    .kachuful-card {
-        width: 64px;
-        height: 94px;
+    .kachuful-turn {
+        top: 88px;
     }
 }
 
-/* =========================================================
-   RESPONSIVE — MOBILE
-   ========================================================= */
-
-@media (max-width: 700px) {
-    .kachuful-page {
-        padding: 10px;
-    }
-
-    .kachuful-table-wrapper {
-        min-height: calc(100vh - 20px);
-    }
-
+@media (max-width: 650px) {
     .kachuful-top-bar {
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        align-items: stretch;
     }
 
-    .kachuful-round-info {
-        min-height: 78px;
-    }
-
-    .kachuful-trump {
-        min-height: 78px;
-    }
-
-    .kachuful-trump strong {
-        margin-top: 7px;
-    }
-
-    .kachuful-scoreboard {
-        grid-column: 1 / -1;
-        justify-self: stretch;
+    .kachuful-top-cluster {
         width: 100%;
     }
 
-    .kachuful-scoreboard-header,
-    .scoreboard-header,
-    .kachuful-scoreboard-row,
-    .scoreboard-row {
-        grid-template-columns: minmax(110px, 1fr) 40px 40px 55px 45px;
+    .kachuful-scoreboard {
+        display: none;
+    }
+
+    .kachuful-round-info {
+        flex: 1;
+    }
+
+    .kachuful-trump {
+        flex: 0 0 118px;
     }
 
     .kachuful-table {
-        height: 590px;
-        margin-top: 10px;
-        border-width: 6px;
-        border-radius: 45% / 34%;
+        width: 100%;
+        height: calc(100svh - 120px);
+        min-height: 520px;
+        margin-top: 28px;
+        border-width: 7px;
+        border-radius: 41% / 28%;
     }
 
-    .kachuful-table::before {
-        inset: 10px;
+    .kachuful-turn {
+        top: 80px;
+        min-height: 31px;
+        font-size: 8px;
+        letter-spacing: 0.1em;
     }
 
-    .kachuful-player-seat,
-    .player-seat {
-        width: 120px;
-        min-height: 65px;
-        padding: 8px 9px;
-    }
-
-    .player-avatar {
-        width: 25px;
-        height: 25px;
-        flex-basis: 25px;
-    }
-
-    .player-name {
-        font-size: 10px;
-    }
-
-    .player-seat-info {
-        font-size: 9px;
+    .table-caption {
+        top: 9%;
     }
 
     .seat-top {
-        top: 11%;
-    }
-
-    .seat-bottom {
-        top: 83%;
+        top: 5%;
     }
 
     .seat-left {
-        left: 14%;
+        left: 1.3%;
     }
 
     .seat-right {
-        left: 86%;
+        right: 1.3%;
+    }
+
+    .seat-bottom {
+        bottom: 2.5%;
+    }
+
+    .kachuful-seat {
+        min-width: 112px;
+        padding: 7px 8px;
+        gap: 7px;
+        border-radius: 13px;
+    }
+
+    .seat-avatar {
+        width: 28px;
+        height: 28px;
+        flex-basis: 28px;
+        font-size: 10px;
+    }
+
+    .seat-details strong {
+        max-width: 74px;
+        font-size: 9px;
+    }
+
+    .seat-details span {
+        font-size: 7px;
     }
 
     .kachuful-trick-area {
         width: 250px;
+        min-height: 165px;
+        gap: 10px;
     }
 
     .trick-card-face {
-        width: 50px;
+        width: 52px;
         height: 72px;
+        border-radius: 8px;
     }
 
     .trick-card-rank,
@@ -836,135 +1137,180 @@
         font-size: 18px;
     }
 
+    .trick-player {
+        max-width: 58px;
+        font-size: 7px;
+    }
+
     .kachuful-your-hand {
-        bottom: 15px;
         width: 96%;
+        bottom: 2%;
+    }
+
+    .your-hand-label small {
+        display: none;
     }
 
     .kachuful-hand {
-        gap: 5px;
+        min-height: 114px;
+        justify-content: flex-start;
+        padding: 12px 16px 2px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .kachuful-hand::-webkit-scrollbar {
+        display: none;
     }
 
     .kachuful-card {
-        width: 54px;
-        height: 78px;
-        border-radius: 8px;
+        width: 62px;
+        height: 90px;
+        flex-basis: 62px;
+        margin-left: -17px;
+        border-radius: 9px;
     }
 
     .card-rank {
-        font-size: 17px;
-    }
-
-    .card-suit {
-        font-size: 16px;
-    }
-
-    .kachuful-bid-panel {
-        width: min(350px, 92%);
-        bottom: 18px;
-        padding: 15px;
-    }
-}
-
-/* =========================================================
-   SMALL PHONES
-   ========================================================= */
-
-@media (max-width: 450px) {
-    .kachuful-page {
-        padding: 7px;
-    }
-
-    .kachuful-round-info,
-    .kachuful-trump {
-        padding: 10px;
-        min-height: 70px;
-    }
-
-    .kachuful-round-info strong {
-        font-size: 17px;
-    }
-
-    .kachuful-trump strong {
-        font-size: 13px;
-    }
-
-    .kachuful-table {
-        height: 520px;
-    }
-
-    .kachuful-player-seat,
-    .player-seat {
-        width: 105px;
-        min-height: 58px;
-    }
-
-    .player-avatar {
-        width: 22px;
-        height: 22px;
-        flex-basis: 22px;
-        font-size: 9px;
-    }
-
-    .player-name {
-        font-size: 9px;
-    }
-
-    .player-seat-info {
-        margin-top: 4px;
-        font-size: 8px;
-    }
-
-    .seat-left {
-        left: 12%;
-    }
-
-    .seat-right {
-        left: 88%;
-    }
-
-    .kachuful-trick-area {
-        width: 220px;
-    }
-
-    .trick-cards {
-        gap: 4px;
-    }
-
-    .trick-card-face {
-        width: 43px;
-        height: 63px;
-    }
-
-    .trick-card-rank,
-    .trick-card-suit {
-        font-size: 16px;
-    }
-
-    .trick-player {
-        max-width: 55px;
-        font-size: 8px;
-    }
-
-    .kachuful-card {
-        width: 48px;
-        height: 70px;
-    }
-
-    .card-rank {
+        top: 7px;
+        left: 8px;
         font-size: 15px;
     }
 
     .card-suit {
+        top: 26px;
+        left: 8px;
         font-size: 14px;
     }
 
-    .bid-option {
-        width: 38px;
-        height: 38px;
+    .kachuful-bid-panel {
+        width: min(330px, 86vw);
+        padding: 22px;
     }
 
-    .kachuful-bid-panel {
-        padding: 13px;
+    .kachuful-error,
+    .kachuful-connection {
+        top: 9px;
+        max-width: 92vw;
+        text-align: center;
     }
+
+    .kachuful-round-complete,
+    .kachuful-result-overlay {
+        padding: 14px;
+    }
+
+    .kachuful-round-complete>div,
+    .kachuful-result {
+        padding: 22px;
+        border-radius: 22px;
+    }
+
+    .round-results>div {
+        grid-template-columns: 1.35fr 0.7fr 0.7fr 0.55fr;
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 430px) {
+    .kachuful-round-info strong {
+        font-size: 18px;
+    }
+
+    .kachuful-round-info small {
+        font-size: 8px;
+    }
+
+    .kachuful-trump {
+        flex-basis: 104px;
+    }
+
+    .kachuful-table {
+        min-height: 500px;
+    }
+
+    .seat-left,
+    .seat-right {
+        top: 39%;
+    }
+
+    .seat-left .kachuful-seat,
+    .seat-right .kachuful-seat {
+        min-width: 92px;
+    }
+
+    .kachuful-trick-area {
+        width: 208px;
+    }
+
+    .trick-card-face {
+        width: 46px;
+        height: 66px;
+    }
+
+    .kachuful-card {
+        width: 56px;
+        height: 82px;
+        flex-basis: 56px;
+    }
+}
+
+.seat-dynamic {
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+}
+
+.seat-0 {
+    top: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.seat-1 {
+    top: 22%;
+    right: 4%;
+}
+
+.seat-2 {
+    top: 50%;
+    right: 3%;
+    transform: translateY(-50%);
+}
+
+.seat-3 {
+    bottom: 7%;
+    right: 8%;
+}
+
+.seat-4 {
+    bottom: 7%;
+    left: 8%;
+}
+
+.seat-5 {
+    top: 50%;
+    left: 3%;
+    transform: translateY(-50%);
+}
+
+.seat-6 {
+    top: 22%;
+    left: 4%;
+}
+
+.seat-7 {
+    top: 7%;
+    right: 18%;
+}
+
+.seat-8 {
+    top: 7%;
+    left: 18%;
+}
+
+.seat-9 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

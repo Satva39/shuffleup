@@ -2,30 +2,29 @@ import "./GameCard.css";
 import { useNavigate } from "react-router-dom";
 
 function GameCard({ game, onHowToPlay }) {
-
   const navigate = useNavigate();
-
 
   return (
     <article className="game-card">
       <div className="game-card-top">
-        <div className="playing-card">♠</div>
+        <img
+          src={game.image}
+          alt={`${game.name} game`}
+          className="game-card-image"
+          loading="lazy"
+        />
 
-        <span className="game-category">
-          {game.category}
-        </span>
+        <div className="game-card-image-overlay" />
+
+        <span className="game-category">{game.category}</span>
       </div>
 
       <div className="game-card-content">
         <h3>{game.name}</h3>
 
-        <p className="players">
-          👥 {game.players}
-        </p>
+        <p className="players">👥 {game.players}</p>
 
-        <p className="game-description">
-          {game.description}
-        </p>
+        <p className="game-description">{game.description}</p>
 
         <div className="game-actions">
           <button
@@ -37,6 +36,7 @@ function GameCard({ game, onHowToPlay }) {
           </button>
 
           <button
+            type="button"
             className="play-btn"
             onClick={() => navigate("/lobby")}
           >

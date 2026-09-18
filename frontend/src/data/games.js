@@ -4,119 +4,126 @@ export const games = [
     name: "Kachuful",
     players: "4–10 Players",
     category: "Trick Taking",
+    image: "/assets/games/kachuful.jpg",
     description:
-      "A classic Indian trick-taking card game full of strategy and surprises."
+      "A classic Indian trick-taking card game full of strategy and surprises.",
   },
   {
     id: "teen-patti",
     name: "Teen Patti",
     players: "3–6 Players",
     category: "Classic",
-    description:
-      "The famous Indian three-card game played with friends."
+    image: "/assets/games/teen-patti.jpg",
+    description: "The famous Indian three-card game played with friends.",
   },
   {
     id: "indian-rummy",
     name: "Indian Rummy",
     players: "2–6 Players",
     category: "Classic",
-    description:
-      "Arrange your cards into valid sequences and sets to win."
+    image: "/assets/games/indian-rummy.jpg",
+    description: "Arrange your cards into valid sequences and sets to win.",
   },
   {
     id: "mangoose",
     name: "Mangoose",
     players: "2–12 Players",
     category: "Classic",
-    description:
-      "A fast-paced multiplayer card game made for large groups."
+    image: "/assets/games/mangoose.jpg",
+    description: "A fast-paced multiplayer card game made for large groups.",
   },
   {
     id: "uno",
     name: "UNO",
     players: "2–12 Players",
     category: "Casual",
+    image: "/assets/games/uno.jpg",
     description:
-      "Match colors and numbers, use special cards and be the first to finish."
+      "Match colors and numbers, use special cards and be the first to finish.",
   },
   {
     id: "jack-thief",
     name: "Jack Thief",
     players: "2–8 Players",
     category: "Classic",
-    description:
-      "Also known as Old Maid or Gaddha Chor in Gujarati."
+    image: "/assets/games/jack-thief.jpg",
+    description: "Also known as Old Maid or Gaddha Chor in Gujarati.",
   },
   {
     id: "napoleon",
     name: "Napoleon",
     players: "Variant Based",
     category: "Trick Taking",
+    image: "/assets/games/napoleon.jpg",
     description:
-      "A strategic trick-taking game with bidding and changing tactics."
+      "A strategic trick-taking game with bidding and changing tactics.",
   },
   {
     id: "bridge",
     name: "Bridge",
     players: "4 Players",
     category: "Trick Taking",
-    description:
-      "A classic partnership card game based on bidding and tricks."
+    image: "/assets/games/bridge.jpg",
+    description: "A classic partnership card game based on bidding and tricks.",
   },
   {
     id: "spades",
     name: "Spades",
     players: "4 Players",
     category: "Trick Taking",
-    description:
-      "Predict your tricks and work with your partner to score."
+    image: "/assets/games/spades.jpg",
+    description: "Predict your tricks and work with your partner to score.",
   },
   {
     id: "twenty-nine",
     name: "29 Card Game",
     players: "4 Players",
     category: "Trick Taking",
+    image: "/assets/games/twenty-nine.jpg",
     description:
-      "A popular South Asian trick-taking game with bidding and trump."
+      "A popular South Asian trick-taking game with bidding and trump.",
   },
   {
     id: "mindi-coat",
     name: "Mindi Coat",
     players: "4 Players",
     category: "Trick Taking",
-    description:
-      "A traditional Indian trick-taking game also known as Mindi."
+    image: "/assets/games/mindi-coat.jpg",
+    description: "A traditional Indian trick-taking game also known as Mindi.",
   },
   {
     id: "bluff",
     name: "Bluff",
     players: "2–6 Players",
     category: "Casual",
+    image: "/assets/games/bluff.jpg",
     description:
-      "Play your cards and challenge your opponents when you think they are bluffing."
+      "Play your cards and challenge your opponents when you think they are bluffing.",
   },
   {
     id: "satte-pe-satta",
     name: "Satte Pe Satta",
     players: "3–8 Players",
     category: "Classic",
+    image: "/assets/games/satte-pe-satta.jpg",
     description:
-      "Build sequences around the central seven and get rid of your cards."
+      "Build sequences around the central seven and get rid of your cards.",
   },
   {
     id: "war",
     name: "War",
     players: "2 Players",
     category: "Classic",
-    description:
-      "A simple head-to-head battle where the highest card wins."
+    image: "/assets/games/war.jpg",
+    description: "A simple head-to-head battle where the highest card wins.",
   },
   {
     id: "solitaire",
     name: "Solitaire Multiplayer",
     players: "2+ Players",
     category: "Casual",
+    image: "/assets/games/solitaire.jpg",
     description:
-      "Race against other players while solving your own card layout."
-  }
+      "Race against other players while solving your own card layout.",
+  },
 ];

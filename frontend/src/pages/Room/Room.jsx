@@ -24,10 +24,27 @@ function Room() {
       return;
     }
 
+    const normalizedRoomCode = String(roomCode || "")
+      .trim()
+      .toUpperCase();
+
+    if (!normalizedRoomCode) {
+      setJoining(false);
+      setError("Invalid room link.");
+      return;
+    }
+
+    let cancelled = false;
+
     setJoining(true);
     setError("");
+    setRoom(null);
 
     function handleRoomUpdate(updatedRoom) {
+      if (cancelled) return;
+      if (!updatedRoom?.code) return;
+      if (updatedRoom.code.toUpperCase() !== normalizedRoomCode) return;
+
       setRoom(updatedRoom);
       setJoining(false);
     }
@@ -97,43 +114,54 @@ function Room() {
       }
     }
 
-    socket.on("room-updated", handleRoomUpdate);
-    socket.on("game-started", handleGameStarted);
+    function joinRoom() {
+      if (cancelled || !socket.connected) return;
 
-    if (!socket.connected) {
-      socket.connect();
-    }
+      socket.emit("join-room", { roomCode: normalizedRoomCode }, (response) => {
+        if (cancelled) return;
 
-    /*
-     * Important:
-     * Ask the server to join the room when this page
-     * is opened directly.
-     */
-    socket.emit(
-      "join-room",
-      {
-        roomCode: roomCode.toUpperCase(),
-        user: {
-          id: user.id,
-          username: user.username,
-        },
-      },
-      (response) => {
-        setJoining(false);
-
-        if (!response.success) {
-          setError(response.message);
+        if (!response?.success) {
+          setJoining(false);
+          setError(response?.message || "Unable to join room.");
           return;
         }
 
         setRoom(response.room);
-      },
-    );
+        setJoining(false);
+      });
+    }
+
+    function handleConnect() {
+      joinRoom();
+    }
+
+    function handleConnectError(connectionError) {
+      if (cancelled) return;
+
+      setJoining(false);
+      setError(
+        connectionError?.message ||
+          "Unable to connect to the ShuffleUp server.",
+      );
+    }
+
+    socket.on("room-updated", handleRoomUpdate);
+    socket.on("game-started", handleGameStarted);
+    socket.on("connect", handleConnect);
+    socket.on("connect_error", handleConnectError);
+
+    if (socket.connected) {
+      joinRoom();
+    } else {
+      socket.connect();
+    }
 
     return () => {
+      cancelled = true;
       socket.off("room-updated", handleRoomUpdate);
-
       socket.off("game-started", handleGameStarted);
+      socket.off("connect", handleConnect);
+      socket.off("connect_error", handleConnectError);
     };
   }, [user, roomCode, navigate]);
 

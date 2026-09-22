@@ -151,6 +151,7 @@
     margin-top: 25px;
 }
 
+.share-btn,
 .ready-btn,
 .start-btn,
 .leave-btn {
@@ -161,6 +162,7 @@
     font-weight: 800;
 }
 
+.share-btn,
 .ready-btn,
 .start-btn {
     border: 0;

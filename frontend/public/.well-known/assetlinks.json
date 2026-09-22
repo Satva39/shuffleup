@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.shuffleup.app",
+            "sha256_cert_fingerprints": [
+                "47:B1:31:A2:86:13:6D:F7:C3:13:81:1E:AC:D4:86:0F:01:6D:C4:19:63:5F:43:C5:E4:01:97:55:F7:BE:46:68"
+            ]
+        }
+    }
+]

@@ -1361,3 +1361,43 @@
         margin-top: 3px;
     }
 }
+
+/* Phase 4: latest-play emphasis + completed-trick persistence. */
+.mindi-played-card {
+    position: relative;
+}
+
+.mindi-played-card.is-latest .mindi-center-card {
+    outline: 2px solid rgba(142, 230, 184, .72);
+    box-shadow: 0 0 26px rgba(80, 205, 147, .2), 0 10px 22px rgba(0, 0, 0, .22);
+    animation: shuffleup-last-played 420ms ease-out both;
+}
+
+.mindi-played-card.is-latest>span {
+    color: #c6e7d3;
+    font-weight: 800;
+}
+
+.mindi-played-card em {
+    display: inline-block;
+    color: #07150f;
+    background: #8ee6b8;
+    border-radius: 999px;
+    padding: 3px 5px;
+    margin-top: 4px;
+    font: 900 5px/1 system-ui, sans-serif;
+    letter-spacing: .07em;
+    font-style: normal;
+    white-space: nowrap;
+}
+
+.mindi-trick-area.is-recent {
+    border-color: rgba(142, 230, 184, .2);
+}
+
+@media (max-width: 680px) {
+    .mindi-trick-cards {
+        flex-wrap: wrap;
+        row-gap: 8px;
+    }
+}

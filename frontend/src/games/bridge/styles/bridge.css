@@ -752,3 +752,76 @@
         font-size: 12px;
     }
 }
+
+/* Phase 4: recent-play visibility */
+.bridge-trick-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.bridge-trick-title-row>span {
+    color: #8fc9ac;
+    font: 800 7px/1 system-ui, sans-serif;
+    letter-spacing: .12em;
+}
+
+.bridge-played-card {
+    position: relative;
+}
+
+.bridge-played-card-meta {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    max-width: 88px;
+}
+
+.bridge-played-card-meta strong {
+    max-width: 88px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #d3e5dc;
+    font-size: 9px;
+    line-height: 1;
+}
+
+.bridge-played-card-meta small {
+    color: #7f9f90;
+    font-size: 7px;
+    letter-spacing: .1em;
+}
+
+.bridge-played-card.is-latest .bridge-card {
+    outline: 2px solid rgba(142, 230, 184, .7);
+    box-shadow: 0 0 24px rgba(75, 203, 145, .22), 0 10px 22px rgba(0, 0, 0, .24);
+    animation: shuffleup-last-played 420ms ease-out both;
+}
+
+.bridge-latest-badge {
+    color: #07150f;
+    background: #8ee6b8;
+    border-radius: 999px;
+    padding: 3px 5px;
+    font: 900 6px/1 system-ui, sans-serif;
+    letter-spacing: .08em;
+    white-space: nowrap;
+}
+
+.bridge-trick-area.is-recent {
+    border-color: rgba(142, 230, 184, .22);
+}
+
+@media (max-width: 720px) {
+    .bridge-trick-cards {
+        min-height: 108px;
+        gap: 7px;
+    }
+
+    .bridge-played-card .bridge-card {
+        width: 44px;
+        height: 64px;
+    }
+}

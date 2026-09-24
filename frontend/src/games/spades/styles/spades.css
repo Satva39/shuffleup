@@ -1450,3 +1450,64 @@
         width: 65px;
     }
 }
+
+/* Phase 4: make the latest server-confirmed play obvious to every viewer. */
+.spades-trick-area .trick-cards {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.spades-trick-area .played-card {
+    position: relative;
+    flex: 0 0 88px;
+    width: 88px;
+    min-height: 122px;
+}
+
+.spades-trick-area .played-card.is-latest {
+    border-color: rgba(142, 230, 184, .62);
+    box-shadow: 0 0 26px rgba(80, 205, 147, .2), 0 12px 24px rgba(0, 0, 0, .2);
+}
+
+.spades-trick-area .played-card.is-latest strong {
+    color: #0d2118;
+}
+
+.spades-trick-area .played-card em {
+    position: absolute;
+    left: 50%;
+    bottom: 7px;
+    transform: translateX(-50%);
+    color: #0a1a12;
+    background: #8ee6b8;
+    border-radius: 999px;
+    padding: 3px 5px;
+    font: 900 5px/1 system-ui, sans-serif;
+    letter-spacing: .07em;
+    font-style: normal;
+    white-space: nowrap;
+}
+
+.spades-trick-area .played-card.is-latest,
+.spades-trick-area .played-card.is-latest em {
+    animation: shuffleup-last-played 420ms ease-out both;
+}
+
+.spades-trick-area.is-recent {
+    border-color: rgba(142, 230, 184, .18);
+}
+
+@media (max-width: 560px) {
+    .spades-trick-area .trick-cards {
+        gap: 7px;
+    }
+
+    .spades-trick-area .played-card {
+        flex-basis: 65px;
+        width: 65px;
+        min-height: 98px;
+    }
+}

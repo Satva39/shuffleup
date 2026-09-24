@@ -1224,3 +1224,63 @@ button {
         animation: none;
     }
 }
+
+/* Phase 4: newest play is explicitly identified; completed tricks use the
+ * same existing cards instead of a second/fake card representation. */
+.trick-area {
+    width: 100%;
+}
+
+.napoleon-trick-status-placeholder {
+    display: none;
+}
+
+.trick-card-wrap {
+    position: relative;
+}
+
+.trick-card-wrap.is-latest .napoleon-card {
+    outline: 2px solid rgba(142, 230, 184, .72);
+    box-shadow: 0 0 26px rgba(80, 205, 147, .2), 0 12px 24px rgba(0, 0, 0, .24);
+    animation: shuffleup-last-played 420ms ease-out both;
+}
+
+.trick-card-wrap.is-latest>span {
+    color: #c6e7d3;
+    font-weight: 800;
+}
+
+.trick-card-wrap em {
+    color: #07150f;
+    background: #8ee6b8;
+    border-radius: 999px;
+    padding: 3px 5px;
+    font: 900 5px/1 system-ui, sans-serif;
+    letter-spacing: .07em;
+    font-style: normal;
+    white-space: nowrap;
+}
+
+.trick-status-line {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.trick-status-line span {
+    color: rgba(244, 232, 199, .68);
+    font: 850 8px/1 system-ui, sans-serif;
+    letter-spacing: .14em;
+}
+
+.trick-status-line small {
+    color: var(--nap-muted);
+    font-size: 7px;
+}
+
+.trick-area.is-recent {
+    border-color: rgba(142, 230, 184, .18);
+}

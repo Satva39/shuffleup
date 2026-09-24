@@ -868,3 +868,44 @@
         /* z-index: 90000; */
     }
 }
+
+/* Phase 4: latest-play emphasis + persisted completed trick presentation. */
+.twenty-nine-trick-play {
+    position: relative;
+}
+
+.twenty-nine-trick-play.is-latest .twenty-nine-card {
+    outline: 2px solid rgba(142, 230, 184, .7);
+    box-shadow: 0 0 25px rgba(76, 205, 147, .2), 0 12px 24px rgba(0, 0, 0, .22);
+    animation: shuffleup-last-played 420ms ease-out both;
+}
+
+.twenty-nine-trick-play.is-latest span {
+    color: #c2e9d3;
+    font-weight: 800;
+}
+
+.twenty-nine-trick-play em {
+    color: #081810;
+    background: #8ee6b8;
+    border-radius: 999px;
+    padding: 3px 5px;
+    font: 900 5px/1 system-ui, sans-serif;
+    letter-spacing: .07em;
+    font-style: normal;
+    white-space: nowrap;
+}
+
+.twenty-nine-trick-area.is-recent {
+    border-color: rgba(142, 230, 184, .2);
+}
+
+@media (max-width: 680px) {
+    .twenty-nine-trick-cards {
+        gap: 8px;
+    }
+
+    .twenty-nine-trick-play.is-latest .twenty-nine-card {
+        outline-width: 1.5px;
+    }
+}

@@ -6,7 +6,7 @@ export default function PlayingCard({ card, selected = false, disabled = false, 
     return (
         <button
             type="button"
-            className={`bluff-card ${isRed(card) ? "red" : "black"} ${selected ? "selected" : ""}`}
+            className={`bluff-card game-card-motion ${isRed(card) ? "red" : "black"} ${selected ? "selected" : ""}`}
             disabled={disabled}
             onClick={() => onClick?.(card.id)}
             aria-label={`${card.rank}${SUIT_SYMBOLS[card.suit]}`}

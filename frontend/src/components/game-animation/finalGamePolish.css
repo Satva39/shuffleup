@@ -1,0 +1,53 @@
+/* ShuffleUp final presentation polish — UI only. */
+
+:where(button, a[role="button"]):not(:disabled) {
+    transition:
+        transform 140ms cubic-bezier(0.22, 1, 0.36, 1),
+        filter 140ms ease,
+        box-shadow 180ms ease;
+    touch-action: manipulation;
+}
+
+:where(button, a[role="button"]):not(:disabled):active {
+    transform: translate3d(0, 1px, 0) scale(0.995);
+}
+
+:where(button, a[role="button"], input, select, textarea):focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+/* Keep game feedback legible over animated surfaces without changing layout. */
+:where(.trick-latest-badge,
+    .score-live-chip,
+    .turn-pill,
+    .kachuful-turn-badge,
+    .you-badge,
+    .bid-locked-chip,
+    .connection-pill,
+    .sps-count-pill,
+    .mangoose-player-count) {
+    text-wrap: balance;
+}
+
+/* Avoid accidental page-level horizontal movement while preserving in-hand scrolling. */
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+/* Respect the device safe-area when a browser viewport exposes one. */
+body {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :where(button, a[role="button"]):not(:disabled) {
+        transition: none !important;
+    }
+
+    :where(button, a[role="button"]):not(:disabled):active {
+        transform: none !important;
+    }
+}

@@ -1,27 +1,38 @@
-function TurnIndicator({
-    isMyTurn,
-    currentPlayer,
-}) {
-    if (isMyTurn) {
-        return (
-            <div className="teen-turn-indicator teen-my-turn">
-                YOUR TURN
-            </div>
-        );
-    }
+import GameAnimation from "../../../components/game-animation/GameAnimation";
+import { useGameAnimation } from "../../../hooks/useGameAnimation";
 
-    if (!currentPlayer) {
-        return null;
-    }
+function TurnIndicator({ isMyTurn, currentPlayer }) {
+  const animationKey = useGameAnimation(
+    `${currentPlayer?.id || "none"}:${isMyTurn}`,
+  );
 
+  if (isMyTurn) {
     return (
-        <div className="teen-turn-indicator">
-            WAITING FOR{" "}
-            <strong>
-                {currentPlayer.username}
-            </strong>
-        </div>
+      <GameAnimation
+        as="div"
+        key={animationKey}
+        variant="turn"
+        className="teen-turn-indicator teen-my-turn"
+      >
+        YOUR TURN
+      </GameAnimation>
     );
+  }
+
+  if (!currentPlayer) {
+    return null;
+  }
+
+  return (
+    <GameAnimation
+      as="div"
+      key={animationKey}
+      variant="turn"
+      className="teen-turn-indicator"
+    >
+      WAITING FOR <strong>{currentPlayer.username}</strong>
+    </GameAnimation>
+  );
 }
 
 export default TurnIndicator;

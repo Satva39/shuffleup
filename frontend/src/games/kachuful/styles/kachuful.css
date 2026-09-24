@@ -1630,3 +1630,65 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Phase 4: make the newest/currently relevant card unmistakable without
+ * changing the existing table layout or game state. */
+.kachuful-trick-area {
+    position: relative;
+}
+
+.trick-status-line {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 7px;
+}
+
+.trick-status-line span {
+    color: rgba(231, 247, 238, .72);
+    font: 850 8px/1 system-ui, sans-serif;
+    letter-spacing: .14em;
+}
+
+.trick-status-line small {
+    color: rgba(205, 226, 216, .4);
+    font: 650 7px/1 system-ui, sans-serif;
+}
+
+.trick-card {
+    position: relative;
+}
+
+.trick-card.is-latest .trick-card-face {
+    box-shadow:
+        0 0 0 2px rgba(125, 235, 179, .48),
+        0 0 28px rgba(91, 221, 160, .22),
+        0 12px 28px rgba(0, 0, 0, .24);
+}
+
+.trick-card.is-latest .trick-player {
+    color: #bdebd0;
+    font-weight: 800;
+}
+
+.trick-latest-badge {
+    color: #07150f;
+    background: #8ee6b8;
+    border-radius: 999px;
+    padding: 3px 5px;
+    font: 900 6px/1 system-ui, sans-serif;
+    letter-spacing: .08em;
+    white-space: nowrap;
+    box-shadow: 0 5px 14px rgba(73, 194, 137, .18);
+}
+
+.trick-card.is-latest .trick-card-face,
+.trick-card.is-latest .trick-latest-badge {
+    animation: shuffleup-last-played 420ms ease-out both;
+}
+
+.kachuful-trick-area.is-recent {
+    border-radius: 14px;
+}

@@ -1,0 +1,400 @@
+/*
+ * ShuffleUp shared motion primitives.
+ * Presentation only: no game state, rules, networking, or interaction logic.
+ */
+:root {
+    --game-motion-fast: 120ms;
+    --game-motion-standard: 220ms;
+    --game-motion-emphasis: 360ms;
+    --game-motion-slow: 520ms;
+    --game-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --game-motion-ease-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
+    --game-motion-distance: 18px;
+    --game-motion-duration: var(--game-motion-standard);
+    --game-motion-delay: 0ms;
+}
+
+.game-motion {
+    --motion-duration: var(--game-motion-duration);
+    --motion-delay: var(--game-motion-delay);
+    --motion-distance: var(--game-motion-distance);
+    transform-origin: center center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: auto;
+}
+
+.game-motion.is-active {
+    will-change: transform, opacity;
+}
+
+.game-motion:not(.is-active) {
+    animation-play-state: paused;
+}
+
+.game-motion.is-active {
+    animation-duration: var(--motion-duration);
+    animation-delay: var(--motion-delay);
+    animation-fill-mode: both;
+    animation-iteration-count: 1;
+    animation-timing-function: var(--game-motion-ease);
+}
+
+.game-motion--fade-in.is-active {
+    animation-name: game-motion-fade-in;
+}
+
+.game-motion--rise-in.is-active {
+    animation-name: game-motion-rise-in;
+}
+
+.game-motion--scale-in.is-active {
+    animation-name: game-motion-scale-in;
+}
+
+.game-motion--slide-in.is-active {
+    animation-name: game-motion-slide-in;
+}
+
+.game-motion--card-deal.is-active {
+    animation-name: game-motion-card-deal;
+    animation-duration: 320ms;
+}
+
+.game-motion--card-play.is-active {
+    animation-name: game-motion-card-play;
+    animation-duration: 260ms;
+}
+
+.game-motion--card-select.is-active {
+    animation-name: game-motion-card-select;
+    animation-duration: 180ms;
+}
+
+.game-motion--turn.is-active {
+    animation-name: game-motion-turn;
+    animation-duration: 300ms;
+}
+
+.game-motion--round.is-active {
+    animation-name: game-motion-round;
+    animation-duration: 360ms;
+}
+
+.game-motion--phase.is-active {
+    animation-name: game-motion-phase;
+    animation-duration: 280ms;
+    animation-timing-function: var(--game-motion-ease-soft);
+}
+
+.game-motion--trick-play.is-active {
+    animation-name: game-motion-trick-play;
+    animation-duration: 300ms;
+}
+
+.game-motion--trick-collection.is-active {
+    animation-name: game-motion-trick-collect;
+    animation-duration: 420ms;
+}
+
+.game-motion--success.is-active {
+    animation-name: game-motion-success;
+    animation-duration: 420ms;
+}
+
+.game-motion--shake.is-active {
+    animation-name: game-motion-shake;
+    animation-duration: 260ms;
+    animation-timing-function: ease-in-out;
+}
+
+.game-motion--collect.is-active {
+    animation-name: game-motion-collect;
+    animation-duration: 360ms;
+}
+
+@keyframes game-motion-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes game-motion-rise-in {
+    from {
+        opacity: 0;
+        transform: translate3d(0, var(--motion-distance), 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes game-motion-scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes game-motion-slide-in {
+    from {
+        opacity: 0;
+        transform: translate3d(var(--motion-distance), 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes game-motion-card-deal {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, -22px, 0) rotate(-1.5deg) scale(0.96);
+    }
+
+    55% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(0) scale(1);
+    }
+}
+
+@keyframes game-motion-card-play {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 24px, 0) rotate(1.25deg) scale(0.96);
+    }
+
+    65% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(0) scale(1);
+    }
+}
+
+@keyframes game-motion-card-select {
+    0% {
+        transform: translate3d(0, 3px, 0) scale(0.992);
+    }
+
+    55% {
+        transform: translate3d(0, -3px, 0) scale(1.012);
+    }
+
+    100% {
+        transform: translate3d(0, -2px, 0) scale(1.006);
+    }
+}
+
+@keyframes game-motion-turn {
+    0% {
+        opacity: 0.55;
+        transform: translate3d(0, 5px, 0) scale(0.985);
+    }
+
+    48% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1.018);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes game-motion-round {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 8px, 0) scale(0.98);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate3d(0, -1px, 0) scale(1.005);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes game-motion-phase {
+    0% {
+        opacity: 0.65;
+        transform: translate3d(0, 3px, 0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes game-motion-trick-play {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 14px, 0) scale(0.92) rotate(-1deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate3d(0, -1px, 0) scale(1.015) rotate(0.25deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1) rotate(0);
+    }
+}
+
+@keyframes game-motion-trick-collect {
+    0% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    60% {
+        opacity: 0.98;
+        transform: translate3d(0, 8px, 0) scale(0.95);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0) scale(0.84);
+    }
+}
+
+@keyframes game-motion-success {
+    0% {
+        opacity: 0.7;
+        transform: scale(0.985);
+    }
+
+    48% {
+        opacity: 1;
+        transform: scale(1.025);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes game-motion-shake {
+
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    25% {
+        transform: translate3d(-5px, 0, 0);
+    }
+
+    50% {
+        transform: translate3d(5px, 0, 0);
+    }
+
+    75% {
+        transform: translate3d(-3px, 0, 0);
+    }
+}
+
+@keyframes game-motion-collect {
+    0% {
+        opacity: 1;
+        transform: scale(1) translate3d(0, 0, 0);
+    }
+
+    55% {
+        opacity: 0.94;
+        transform: scale(0.95) translate3d(0, 8px, 0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.84) translate3d(0, 18px, 0);
+    }
+}
+
+/* Existing card DOM nodes use this directly to avoid wrapper/layout changes. */
+.game-card-motion {
+    transform-origin: center center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: transparent;
+    animation: shuffleup-card-enter 240ms var(--game-motion-ease) backwards;
+}
+
+.game-card-motion:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+@keyframes shuffleup-card-enter {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0) scale(0.975);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@media (max-width: 640px) {
+    :root {
+        --game-motion-distance: 12px;
+    }
+
+    .game-card-motion {
+        animation-duration: 200ms;
+    }
+
+    .game-motion--turn.is-active {
+        animation-duration: 240ms;
+    }
+
+    .game-motion--round.is-active {
+        animation-duration: 300ms;
+    }
+
+    .game-motion--trick-play.is-active {
+        animation-duration: 240ms;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .game-motion,
+    .game-motion.is-active,
+    .game-card-motion {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        filter: none !important;
+    }
+}

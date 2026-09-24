@@ -1,0 +1,535 @@
+/* Phase 7 — game-specific motion language.
+ * Presentation only: no state, timing, event, or rule changes. */
+
+/* Shared interaction polish */
+.kachuful-card,
+.teen-card,
+.rummy-card,
+.mangoose-card,
+.uno-card,
+.jt-playing-card,
+.jt-card-back,
+.napoleon-card,
+.bridge-card,
+.spades-card,
+.twenty-nine-card,
+.mindi-card,
+.bluff-card,
+.sps-card,
+.war-card,
+.solitaire-card {
+    transition:
+        transform 180ms var(--game-motion-ease-soft),
+        box-shadow 180ms var(--game-motion-ease-soft),
+        filter 180ms var(--game-motion-ease-soft);
+}
+
+/* 01 — Kachuful: crisp table landing + turn focus */
+.kachuful-trick-area .trick-card.is-latest .trick-card-face {
+    animation: kachuful-land 420ms var(--game-motion-ease) both;
+}
+
+.kachuful-trick-area.is-recent .trick-card-face {
+    animation: kachuful-collect-face 360ms var(--game-motion-ease-soft) both;
+}
+
+.kachuful-turn-indicator.is-mine {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .12), 0 10px 30px rgba(0, 0, 0, .18);
+}
+
+@keyframes kachuful-land {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px) rotate(-2deg) scale(.9);
+    }
+
+    58% {
+        opacity: 1;
+        transform: translateY(2px) rotate(.5deg) scale(1.045);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes kachuful-collect-face {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: .72;
+        transform: translateY(4px) scale(.96);
+    }
+}
+
+/* 02 — Teen Patti: reveal emphasis + action focus */
+.teen-card:not(.teen-card-back) .teen-card-center {
+    animation: teen-reveal-symbol 360ms var(--game-motion-ease) both;
+}
+
+.teen-my-turn {
+    animation: teen-turn-breathe 1300ms ease-in-out 2;
+}
+
+@keyframes teen-reveal-symbol {
+    0% {
+        opacity: 0;
+        transform: rotateY(90deg) scale(.86);
+    }
+
+    62% {
+        opacity: 1;
+        transform: rotateY(-4deg) scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotateY(0) scale(1);
+    }
+}
+
+@keyframes teen-turn-breathe {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 0 7px rgba(255, 255, 255, .05);
+    }
+}
+
+/* 03 — Indian Rummy: selection lift + wild-joker spark */
+.rummy-card.selected {
+    transform: translateY(-9px) scale(1.015);
+    box-shadow: 0 14px 26px rgba(0, 0, 0, .24);
+}
+
+.rummy-wild b {
+    display: inline-block;
+    animation: rummy-joker-pop 520ms var(--game-motion-ease) both;
+}
+
+@keyframes rummy-joker-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(4px) scale(.78) rotate(-8deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-1px) scale(1.08) rotate(2deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* 04 — Mangoose: pair/selection feel + call warning */
+.mangoose-card-selected {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .28);
+}
+
+.mangoose-card-center {
+    transition: transform 180ms var(--game-motion-ease-soft);
+}
+
+.mangoose-card-selected .mangoose-card-center {
+    transform: scale(1.06);
+}
+
+.mangoose-turn-warning {
+    animation: mangoose-warning 360ms ease-in-out both;
+}
+
+@keyframes mangoose-warning {
+    0% {
+        transform: translateX(0);
+    }
+
+    28% {
+        transform: translateX(-4px);
+    }
+
+    56% {
+        transform: translateX(4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* 05 — UNO: colorful playable feedback + wild-card shimmer */
+.uno-card-playable:hover,
+.uno-card-playable:focus-visible {
+    transform: translateY(-10px) rotate(-1deg) scale(1.025);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, .24);
+}
+
+.uno-card-selected {
+    transform: translateY(-12px) rotate(1deg) scale(1.035);
+}
+
+.uno-card-wild {
+    isolation: isolate;
+}
+
+.uno-card-wild::after {
+    content: "";
+    position: absolute;
+    inset: 7%;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: .45;
+    background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, .72) 48%, transparent 78%);
+    transform: translateX(-130%);
+    animation: uno-wild-sheen 1700ms ease-in-out 2;
+}
+
+@keyframes uno-wild-sheen {
+
+    58%,
+    100% {
+        transform: translateX(130%);
+    }
+}
+
+/* 06 — Jack Thief: lock-on selection + draw/back lift */
+.jt-playing-card.selected {
+    transform: translateY(-9px) scale(1.025) rotate(-.7deg);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, .25);
+}
+
+.jt-card-back:not(:disabled):hover {
+    transform: translateY(-7px) rotate(.9deg) scale(1.02);
+}
+
+/* 07 — Napoleon: authoritative trick impact + your-turn pulse */
+.trick-area .trick-card-wrap.is-latest .napoleon-card {
+    animation: napoleon-trick-impact 380ms var(--game-motion-ease) both;
+}
+
+.turn-indicator.your-turn {
+    animation: napoleon-turn-glow 1200ms ease-in-out 2;
+}
+
+@keyframes napoleon-trick-impact {
+    0% {
+        opacity: 0;
+        transform: translateY(-12px) rotate(1.8deg) scale(.91);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(2px) rotate(-.4deg) scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes napoleon-turn-glow {
+
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.08);
+    }
+}
+
+/* 08 — Bridge: seat-aware trick landing + winner collection */
+.bridge-played-card.is-latest .bridge-card {
+    animation: bridge-card-land 400ms var(--game-motion-ease) both;
+}
+
+.bridge-played-card.is-winner .bridge-card {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, .14), 0 16px 34px rgba(0, 0, 0, .28);
+}
+
+.bridge-played-card.is-winner {
+    animation: bridge-winner-mark 520ms var(--game-motion-ease) both;
+}
+
+@keyframes bridge-card-land {
+    0% {
+        opacity: 0;
+        transform: translateY(-9px) scale(.92) rotate(-1deg);
+    }
+
+    65% {
+        opacity: 1;
+        transform: translateY(2px) scale(1.045) rotate(.2deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes bridge-winner-mark {
+    0% {
+        transform: scale(.98);
+    }
+
+    48% {
+        transform: scale(1.025);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 09 — Spades: hard trick landing + broken-suit attention */
+.played-card.is-latest {
+    animation: spades-trick-land 390ms var(--game-motion-ease) both;
+}
+
+.spades-state-pill.is-broken {
+    animation: spades-broken 1500ms ease-in-out 2;
+}
+
+@keyframes spades-trick-land {
+    0% {
+        opacity: 0;
+        transform: translateY(-12px) scale(.9);
+    }
+
+    55% {
+        opacity: 1;
+        transform: translateY(2px) scale(1.045);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes spades-broken {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.025);
+    }
+}
+
+/* 10 — Twenty-Nine: trump choice confirmation + trick snap */
+.twenty-nine-trump-options button:hover,
+.twenty-nine-trump-options button:focus-visible {
+    transform: translateY(-4px) scale(1.02);
+}
+
+.twenty-nine-trick-play.is-latest .twenty-nine-card {
+    animation: twenty-nine-snap 360ms var(--game-motion-ease) both;
+}
+
+@keyframes twenty-nine-snap {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px) rotate(-1.5deg) scale(.92);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(2px) rotate(.25deg) scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* 11 — Mindi Coat: hukum reveal + Mindi marker */
+.mindi-hukum-reveal {
+    animation: mindi-hukum-reveal 460ms var(--game-motion-ease) both;
+}
+
+.mindi-played-card.is-latest .mindi-center-card {
+    animation: mindi-trick-land 380ms var(--game-motion-ease) both;
+}
+
+.mindi-card-mindi {
+    animation: mindi-marker-pop 320ms var(--game-motion-ease) both;
+}
+
+@keyframes mindi-hukum-reveal {
+    0% {
+        opacity: 0;
+        transform: translateY(7px) scale(.96);
+    }
+
+    65% {
+        opacity: 1;
+        transform: translateY(-1px) scale(1.02);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes mindi-trick-land {
+    0% {
+        opacity: 0;
+        transform: translateY(-9px) rotate(.8deg) scale(.92);
+    }
+
+    58% {
+        opacity: 1;
+        transform: translateY(2px) rotate(-.2deg) scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes mindi-marker-pop {
+    from {
+        opacity: 0;
+        transform: scale(.65) rotate(-12deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+/* 12 — Bluff/Cheat: challenge tension without hidden-card leakage */
+.bluff-card.selected {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, .25);
+}
+
+.bluff-turn.mine strong {
+    animation: bluff-claim-breathe 1200ms ease-in-out 2;
+}
+
+@keyframes bluff-claim-breathe {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.035);
+    }
+}
+
+/* 13 — Satte Pe Satta: legal placement + sequence expansion */
+.sps-card--playable:hover,
+.sps-card--playable:focus-visible {
+    transform: translateY(-8px) scale(1.02);
+}
+
+.sps-card--selected {
+    transform: translateY(-9px) scale(1.025);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, .24);
+}
+
+.sps-pass-button:not(:disabled) {
+    transition: transform 180ms var(--game-motion-ease-soft), box-shadow 180ms var(--game-motion-ease-soft);
+}
+
+.sps-pass-button:not(:disabled):hover,
+.sps-pass-button:not(:disabled):focus-visible {
+    transform: translateY(-2px);
+}
+
+/* 14 — War: battle slam + featured-card priority */
+.war-card.is-featured {
+    animation: war-battle-slam 430ms var(--game-motion-ease) both;
+}
+
+.war-card.is-hidden {
+    transition: transform 220ms var(--game-motion-ease);
+}
+
+@keyframes war-battle-slam {
+    0% {
+        opacity: 0;
+        transform: translateY(-15px) scale(.86) rotate(-2deg);
+    }
+
+    52% {
+        opacity: 1;
+        transform: translateY(3px) scale(1.07) rotate(.8deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* 15 — Solitaire: deliberate stack movement + foundation lift */
+.solitaire-card.selected {
+    transform: translateY(-9px) scale(1.015);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, .22);
+}
+
+.solitaire-card-back:hover:not(:disabled) {
+    transform: translateY(-3px) rotate(-.7deg);
+}
+
+@media (max-width: 640px) {
+
+    .rummy-card.selected,
+    .mangoose-card-selected,
+    .jt-playing-card.selected,
+    .bluff-card.selected,
+    .sps-card--selected,
+    .solitaire-card.selected {
+        transform: translateY(-6px) scale(1.01);
+    }
+}
+
+/* Performance: keep animated layers cheap and avoid persistent compositing. */
+.game-card-motion,
+.game-motion {
+    transform-style: flat;
+}
+
+/* Do not let decorative motion consume interaction or screen-reader focus. */
+@media (forced-colors: active) {
+    .game-card-motion:focus-visible {
+        outline: 2px solid CanvasText;
+        box-shadow: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .teen-my-turn,
+    .uno-card-wild::after,
+    .spades-state-pill.is-broken,
+    .turn-indicator.your-turn,
+    .bluff-turn.mine strong {
+        animation: none !important;
+    }
+}

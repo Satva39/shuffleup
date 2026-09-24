@@ -1,67 +1,87 @@
-function getSuitSymbol(suit) {
-    const symbols = {
-        spades: "♠",
-        diamonds: "♦",
-        clubs: "♣",
-        hearts: "♥",
-    };
+import GameAnimation from "../../../components/game-animation/GameAnimation";
+import { useTrickPresentation } from "../../../hooks/useTrickPresentation";
 
-    return symbols[suit] || "";
+function getSuitSymbol(suit) {
+  const symbols = {
+    spades: "♠",
+    diamonds: "♦",
+    clubs: "♣",
+    hearts: "♥",
+  };
+
+  return symbols[suit] || "";
 }
 
 function TrickArea({ trick = [], players = [], lastCompletedTrick = null }) {
-    const getPlayerName = (playerId) =>
-        players.find((player) => player.id === playerId)?.username || "Player";
+  const fallbackTrick = lastCompletedTrick?.cards || [];
+  const { presentedTrick, isRecent } = useTrickPresentation(
+    trick,
+    fallbackTrick,
+  );
+  const live = trick.length > 0;
 
-    return (
-        <section className="kachuful-trick-area">
-            {trick.length > 0 ? (
-                <>
-                    <div className="trick-cards">
-                        {trick.map((play) => {
-                            const card = play.card;
-                            if (!card) return null;
+  const getPlayerName = (playerId) =>
+    players.find((player) => player.id === playerId)?.username || "Player";
 
-                            const isRed =
-                                card.suit === "hearts" || card.suit === "diamonds";
+  return (
+    <GameAnimation
+      as="section"
+      variant={isRecent ? "trick-collection" : "fade-in"}
+      className={`kachuful-trick-area ${isRecent ? "is-recent" : ""}`}
+      aria-live="polite"
+    >
+      {presentedTrick.length > 0 ? (
+        <>
+          <div className="trick-status-line">
+            <span>{live ? "LIVE TRICK" : "LAST TRICK"}</span>
+            <small>
+              {presentedTrick.length} card
+              {presentedTrick.length === 1 ? "" : "s"}
+              {isRecent ? " · collection complete" : ""}
+            </small>
+          </div>
 
-                            return (
-                                <div
-                                    className="trick-card"
-                                    key={`${play.playerId}-${card.id}`}
-                                >
-                                    <span className="trick-player">
-                                        {getPlayerName(play.playerId)}
-                                    </span>
-                                    <div className={`trick-card-face ${isRed ? "is-red" : ""}`}>
-                                        <b>{card.rank}</b>
-                                        <span>{getSuitSymbol(card.suit)}</span>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
+          <div className="trick-cards">
+            {presentedTrick.map((play, index) => {
+              const card = play.card;
+              if (!card) return null;
 
-                    <span className="trick-count">
-                        {trick.length} card{trick.length === 1 ? "" : "s"} in trick
+              const isRed = card.suit === "hearts" || card.suit === "diamonds";
+              const isLatest = index === presentedTrick.length - 1;
+
+              return (
+                <GameAnimation
+                  as="div"
+                  variant="trick-play"
+                  key={`${play.playerId}-${card.id}`}
+                  className={`trick-card ${isLatest ? "is-latest" : ""}`}
+                >
+                  <span className="trick-player">
+                    {getPlayerName(play.playerId)}
+                  </span>
+                  <div className={`trick-card-face ${isRed ? "is-red" : ""}`}>
+                    <b>{card.rank}</b>
+                    <span>{getSuitSymbol(card.suit)}</span>
+                  </div>
+                  {isLatest && (
+                    <span className="trick-latest-badge">
+                      {live ? "LAST PLAYED" : "MOST RECENT"}
                     </span>
-                </>
-            ) : lastCompletedTrick ? (
-                <div className="trick-complete-state">
-                    <span>LAST TRICK</span>
-                    <strong>
-                        {getPlayerName(lastCompletedTrick.winnerId)} won the trick
-                    </strong>
-                </div>
-            ) : (
-                <div className="trick-empty-state">
-                    <span className="trick-empty-symbol">♣</span>
-                    <strong>Ready for the first card</strong>
-                    <small>The trick appears here as cards are played.</small>
-                </div>
-            )}
-        </section>
-    );
+                  )}
+                </GameAnimation>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <div className="trick-empty-state">
+          <span className="trick-empty-symbol">♣</span>
+          <strong>Ready for the first card</strong>
+          <small>The trick appears here as cards are played.</small>
+        </div>
+      )}
+    </GameAnimation>
+  );
 }
 
 export default TrickArea;

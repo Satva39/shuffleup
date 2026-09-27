@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function JackThiefSeatContent({ player, isYou, isCurrentTurn, isTarget }) {
   const initials = String(player?.username || "P")
@@ -38,6 +39,7 @@ function JackThiefSeatContent({ player, isYou, isCurrentTurn, isTarget }) {
         <Text numberOfLines={1} style={styles.name}>
           {player?.username || "Player"}
           {isYou ? " · YOU" : ""}
+          {!isYou && isBotPlayer(player) ? " · BOT" : ""}
         </Text>
         <Text style={styles.meta}>{status}</Text>
       </View>

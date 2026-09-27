@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import MangooseCard from "./MangooseCard";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function MangooseSeatContent({
   player,
@@ -30,6 +31,7 @@ function MangooseSeatContent({
         <Text numberOfLines={1} style={styles.name}>
           {player?.username || "Player"}
           {isYou ? " · YOU" : ""}
+          {!isYou && isBotPlayer(player) ? " · BOT" : ""}
         </Text>
         <Text style={styles.stats}>
           {player?.closedCount ?? 0} closed · {player?.openCount ?? 0} open

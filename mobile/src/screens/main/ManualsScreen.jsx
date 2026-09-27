@@ -6,7 +6,7 @@ import { getGameManual } from "../../data/gameManuals";
 
 export default function ManualsScreen({ navigation }) {
   return (
-    <Screen scroll={false}>
+    <Screen scroll={false} contentStyle={{ flex: 1 }}>
       <View style={{ paddingBottom: 14 }}>
         <Text
           style={{
@@ -35,10 +35,11 @@ export default function ManualsScreen({ navigation }) {
       </View>
 
       <FlatList
+        style={{ flex: 1 }}
         data={games}
         keyExtractor={(game) => game.id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 26 }}
+        contentContainerStyle={{ paddingBottom: 110 }}
         renderItem={({ item: game, index }) => {
           const manual = getGameManual(game.id);
           const overview = manual?.sections?.find(

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import { WarCardBack } from "./WarCard";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function WarSeatContent({ player, isYou = false, active = false }) {
   return (
@@ -25,6 +26,7 @@ function WarSeatContent({ player, isYou = false, active = false }) {
           <View style={styles.nameWrap}>
             <Text numberOfLines={1} style={styles.name}>
               {isYou ? "YOU" : player.username}
+              {!isYou && isBotPlayer(player) ? " · BOT" : ""}
             </Text>
             <Text style={styles.seatText}>SEAT {player.seat}</Text>
           </View>

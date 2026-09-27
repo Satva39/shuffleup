@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import TeenPattiCard from "./TeenPattiCard";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function TeenPattiSeatContent({ player, isLocal, isTurn }) {
   if (!player) return null;
@@ -31,6 +32,7 @@ function TeenPattiSeatContent({ player, isLocal, isTurn }) {
       <View style={styles.meta}>
         <Text numberOfLines={1} style={styles.name}>
           {isLocal ? "YOU" : player.username}
+          {!isLocal && isBotPlayer(player) ? " · BOT" : ""}
         </Text>
         <Text style={[styles.status, isTurn && styles.turnText]}>
           {winner

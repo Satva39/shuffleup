@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function TwentyNineSeatContent({
   player,
@@ -29,6 +30,7 @@ function TwentyNineSeatContent({
         <View style={styles.nameRow}>
           <Text numberOfLines={1} style={styles.name}>
             {self ? "You" : player.username}
+            {!self && isBotPlayer(player) ? " · BOT" : ""}
           </Text>
           <View
             style={[

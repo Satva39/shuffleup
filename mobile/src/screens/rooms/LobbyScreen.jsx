@@ -117,6 +117,59 @@ export default function LobbyScreen({ navigation }) {
             padding: 18,
           }}
         >
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+            <View
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 15,
+                backgroundColor: "rgba(124,92,255,0.16)",
+                borderWidth: 1,
+                borderColor: "rgba(124,92,255,0.3)",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons
+                name="hardware-chip-outline"
+                size={21}
+                color={colors.primary}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{ color: colors.text, fontSize: 18, fontWeight: "900" }}
+              >
+                Play With Bots
+              </Text>
+              <Text
+                style={{ color: colors.muted, marginTop: 4, lineHeight: 18 }}
+              >
+                Play a real server-side game when you are playing solo.
+              </Text>
+            </View>
+          </View>
+          <AppButton
+            title="Choose Game & Bots"
+            variant="secondary"
+            onPress={() => navigation.navigate("PlayWithBots")}
+            style={{ marginTop: 14 }}
+          />
+        </View>
+
+        <View
+          style={{
+            marginTop: 22,
+            backgroundColor: colors.surface,
+            borderRadius: radii.lg,
+            borderWidth: 1,
+            borderColor: colors.border,
+            padding: 18,
+            borderWidth: 1,
+            borderColor: colors.border,
+            padding: 18,
+          }}
+        >
           <Text style={{ color: colors.text, fontSize: 18, fontWeight: "900" }}>
             Create a room
           </Text>

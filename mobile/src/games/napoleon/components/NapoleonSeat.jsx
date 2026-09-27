@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function NapoleonSeatContent({
   player,
@@ -25,6 +26,7 @@ function NapoleonSeatContent({
       <View style={styles.info}>
         <Text numberOfLines={1} style={styles.name}>
           {you ? "YOU" : player.username}
+          {!you && isBotPlayer(player) ? " · BOT" : ""}
         </Text>
         <Text style={styles.meta}>{player.cardCount ?? 0} CARDS</Text>
       </View>

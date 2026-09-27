@@ -3,6 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors, radii } from "../../../theme";
 import RummyCard from "./RummyCard";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function RummySeatContent({ player, isCurrentTurn = false, isYou = false }) {
   const initials = String(player?.username || "Player")
@@ -37,6 +38,7 @@ function RummySeatContent({ player, isCurrentTurn = false, isYou = false }) {
         <Text numberOfLines={1} style={styles.name}>
           {player?.username || "Player"}
           {isYou ? " · YOU" : ""}
+          {!isYou && isBotPlayer(player) ? " · BOT" : ""}
         </Text>
         <Text style={styles.meta}>
           {player?.cardCount ?? 0} cards · {player?.score ?? 0} pts

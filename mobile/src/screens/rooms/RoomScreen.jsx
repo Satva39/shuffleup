@@ -15,6 +15,7 @@ import { colors, radii } from "../../theme";
 import { useAuth } from "../../context/AuthStore";
 import { shuffleSocket } from "../../services/socket";
 import { useRoomSocket } from "../../hooks/useRoomSocket";
+import { isBotPlayer } from "../../utils/player";
 
 const statusCopy = {
   connected: {
@@ -516,6 +517,7 @@ export default function RoomScreen({ route, navigation }) {
                     }}
                   >
                     {player.username}
+                    {isBotPlayer(player) ? " · BOT" : ""}
                   </Text>
                   {player.id === room?.hostId ? (
                     <Text

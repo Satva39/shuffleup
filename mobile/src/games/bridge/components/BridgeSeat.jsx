@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BridgeCard from "./BridgeCard";
 import { colors } from "../../../theme";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 const names = { N: "North", E: "East", S: "South", W: "West" };
 
@@ -29,6 +30,7 @@ function BridgeSeatContent({
           <Text numberOfLines={1} style={styles.name}>
             {player.username}
             {player.id === viewerId ? " · YOU" : ""}
+            {player.id !== viewerId && isBotPlayer(player) ? " · BOT" : ""}
           </Text>
           <Text style={styles.meta}>
             {names[player.seat]} · {player.partnership} ·{" "}

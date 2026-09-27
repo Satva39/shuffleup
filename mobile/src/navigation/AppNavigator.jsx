@@ -14,6 +14,7 @@ import ProfileScreen from "../screens/main/ProfileScreen";
 import SettingsScreen from "../screens/main/SettingsScreen";
 import LobbyScreen from "../screens/rooms/LobbyScreen";
 import RoomScreen from "../screens/rooms/RoomScreen";
+import PlayWithBotsScreen from "../screens/rooms/PlayWithBotsScreen";
 import GamePreviewScreen from "../screens/games/GamePreviewScreen";
 import ManualScreen from "../screens/games/ManualScreen";
 import KachufulGameScreen from "../games/kachuful/pages/KachufulGameScreen";
@@ -143,6 +144,7 @@ export default function AppNavigator() {
           <>
             <Stack.Screen name="Main" component={MainTabs} />
             <Stack.Screen name="Room" component={RoomScreen} />
+            <Stack.Screen name="PlayWithBots" component={PlayWithBotsScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="GamePreview" component={GamePreviewScreen} />
             <Stack.Screen name="Manual" component={ManualScreen} />

@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../theme";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 const SEATS = { N: "North", E: "East", S: "South", W: "West" };
 
@@ -30,6 +31,7 @@ function SpadesSeatContent({ player, viewerId, active = false }) {
         <View style={styles.nameBox}>
           <Text numberOfLines={1} style={styles.name}>
             {isYou ? "You" : player.username || "Player"}
+            {!isYou && isBotPlayer(player) ? " · BOT" : ""}
           </Text>
           <Text numberOfLines={1} style={styles.meta}>
             {SEATS[player.seat] || player.seat} · {team}

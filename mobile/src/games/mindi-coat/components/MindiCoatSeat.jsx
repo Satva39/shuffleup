@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import { seatLabel } from "../utils/cards";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function MindiCoatSeatContent({ player, isYou, isCurrentTurn }) {
   if (!player) return null;
@@ -41,6 +42,7 @@ function MindiCoatSeatContent({ player, isYou, isCurrentTurn }) {
         <View style={styles.nameBox}>
           <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
             {isYou ? "You" : player?.username || "Player"}
+            {!isYou && isBotPlayer(player) ? " · BOT" : ""}
           </Text>
           <Text numberOfLines={1} ellipsizeMode="tail" style={styles.meta}>
             {seatLabel(player?.seat)} · Team {team}

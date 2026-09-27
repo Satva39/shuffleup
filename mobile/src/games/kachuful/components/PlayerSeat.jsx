@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, radii } from "../../../theme";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function PlayerSeatContent({ player, isYou, isCurrentTurn }) {
   const initials = String(player?.username || "Player")
@@ -30,6 +31,7 @@ function PlayerSeatContent({ player, isYou, isCurrentTurn }) {
         <Text numberOfLines={1} style={styles.name}>
           {player?.username || "Player"}
           {isYou ? " · YOU" : ""}
+          {!isYou && isBotPlayer(player) ? " · BOT" : ""}
         </Text>
         <Text style={styles.stats}>
           {player?.score ?? 0} pts · {player?.cardCount ?? 0} cards

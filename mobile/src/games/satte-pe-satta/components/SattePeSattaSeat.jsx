@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function SattePeSattaSeatContent({ player, isYou = false, active = false }) {
   if (!player) return null;
@@ -16,6 +17,7 @@ function SattePeSattaSeatContent({ player, isYou = false, active = false }) {
         <View style={styles.identity}>
           <Text numberOfLines={1} style={styles.name}>
             {isYou ? "You" : player.username}
+            {!isYou && isBotPlayer(player) ? " · BOT" : ""}
           </Text>
           <Text style={styles.meta}>
             {player.cardCount} {player.cardCount === 1 ? "card" : "cards"} ·{" "}

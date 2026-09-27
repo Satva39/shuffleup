@@ -134,6 +134,17 @@ export default function GamePreviewScreen({ route, navigation }) {
           style={{ marginTop: 18 }}
         />
 
+        {game.id !== "solitaire" ? (
+          <AppButton
+            title="Play With Bots"
+            variant="secondary"
+            onPress={() =>
+              navigation.navigate("PlayWithBots", { gameId: game.id })
+            }
+            style={{ marginTop: 10 }}
+          />
+        ) : null}
+
         <AppButton
           title="Back to Play"
           variant="secondary"

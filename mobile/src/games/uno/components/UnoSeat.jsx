@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import UnoCard from "./UnoCard";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function UnoSeatContent({ player, local, active, onCallUno }) {
   const canCall =
@@ -25,6 +26,9 @@ function UnoSeatContent({ player, local, active, onCallUno }) {
           <Text numberOfLines={1} style={styles.name}>
             {player.username}
           </Text>
+          {!local && isBotPlayer(player) ? (
+            <Text style={styles.bot}>BOT</Text>
+          ) : null}
           {local ? <Text style={styles.you}>YOU</Text> : null}
           {player.unoDeclared && player.cardCount === 1 ? (
             <Text style={styles.uno}>UNO</Text>
@@ -121,6 +125,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "900",
     flexShrink: 1,
+  },
+  bot: {
+    color: colors.primary,
+    fontSize: 8,
+    fontWeight: "900",
+    letterSpacing: 0.5,
   },
   you: {
     color: colors.cyan,

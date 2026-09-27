@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { colors, radii } from "../../../theme";
 import { GameSeatMotion, seatMotionKey } from "../../../components/GameMotion";
+import { isBotPlayer } from "../../../utils/player";
 
 function BluffSeatContent({ player, isYou, active }) {
   return (
@@ -16,6 +17,7 @@ function BluffSeatContent({ player, isYou, active }) {
         <View style={styles.copy}>
           <Text numberOfLines={1} style={styles.name}>
             {isYou ? "You" : player?.username || "Player"}
+            {!isYou && isBotPlayer(player) ? " · BOT" : ""}
           </Text>
           <Text style={styles.seat}>Seat {Number(player?.seat ?? 0) + 1}</Text>
         </View>

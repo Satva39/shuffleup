@@ -1,0 +1,278 @@
+.bot-page {
+    min-height: 100vh;
+    padding: 36px 24px 56px;
+}
+
+.bot-page-shell {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+}
+
+.bot-back {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    opacity: 0.7;
+    font: inherit;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.bot-back:hover {
+    opacity: 1;
+}
+
+.bot-page-header {
+    margin-bottom: 30px;
+}
+
+.bot-page-header p,
+.bot-step,
+.bot-standard-pill,
+.bot-limit-note {
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+
+.bot-page-header p {
+    margin: 0 0 8px;
+    font-size: 0.75rem;
+    opacity: 0.58;
+}
+
+.bot-page-header h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 0.95;
+}
+
+.bot-page-header span {
+    display: block;
+    margin-top: 14px;
+    max-width: 680px;
+    opacity: 0.68;
+}
+
+.bot-setup-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+    gap: 18px;
+}
+
+.bot-setup-card,
+.bot-start-card,
+.bot-loading {
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.035);
+    padding: 24px;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.18);
+}
+
+.bot-step {
+    font-size: 0.68rem;
+    opacity: 0.45;
+    margin-bottom: 15px;
+}
+
+.bot-card-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+}
+
+.bot-setup-card h2,
+.bot-start-card h2 {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.bot-setup-card p,
+.bot-start-card p {
+    margin: 7px 0 0;
+    opacity: 0.62;
+    line-height: 1.55;
+}
+
+.bot-standard-pill {
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 999px;
+    padding: 7px 10px;
+    font-size: 0.62rem;
+    opacity: 0.65;
+}
+
+.bot-game-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    max-height: 540px;
+    overflow: auto;
+    padding-right: 4px;
+}
+
+.bot-game-option {
+    min-height: 74px;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.025);
+    color: inherit;
+    padding: 14px;
+    cursor: pointer;
+    transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.bot-game-option:hover {
+    transform: translateY(-2px);
+}
+
+.bot-game-option.selected {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.bot-game-name,
+.bot-game-limit {
+    display: block;
+}
+
+.bot-game-name {
+    font-weight: 700;
+}
+
+.bot-game-limit {
+    margin-top: 7px;
+    font-size: 0.77rem;
+    opacity: 0.52;
+}
+
+.bot-count-card {
+    min-height: 260px;
+}
+
+.bot-count-picker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 28px;
+}
+
+.bot-count-picker button {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.045);
+    color: inherit;
+    font-size: 1.7rem;
+    cursor: pointer;
+}
+
+.bot-count-picker button:disabled {
+    opacity: 0.24;
+    cursor: not-allowed;
+}
+
+.bot-count-picker div {
+    min-width: 88px;
+    text-align: center;
+}
+
+.bot-count-picker strong {
+    display: block;
+    font-size: 3.4rem;
+    line-height: 0.95;
+}
+
+.bot-count-picker span {
+    opacity: 0.56;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: .68rem;
+}
+
+.bot-total-preview {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bot-total-preview span {
+    opacity: .52;
+}
+
+.bot-total-preview strong {
+    text-align: right;
+}
+
+.bot-limit-note {
+    margin-top: 10px;
+    font-size: .62rem;
+    opacity: .46;
+}
+
+.bot-start-card {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.bot-start-btn {
+    min-width: 210px;
+    border: 0;
+    border-radius: 14px;
+    padding: 15px 18px;
+    background: #fff;
+    color: #111;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.bot-start-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.bot-error {
+    margin-top: 18px;
+    border: 1px solid rgba(255, 100, 100, 0.28);
+    border-radius: 14px;
+    padding: 13px 15px;
+    background: rgba(255, 100, 100, 0.07);
+}
+
+.bot-loading,
+.bot-empty {
+    opacity: .68;
+}
+
+@media (max-width: 860px) {
+    .bot-setup-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bot-game-list {
+        grid-template-columns: 1fr;
+        max-height: none;
+    }
+
+    .bot-start-card {
+        grid-column: auto;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .bot-start-btn {
+        width: 100%;
+    }
+}

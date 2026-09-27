@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "ShuffleUp",
+    "slug": "shuffleup",
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "scheme": "shuffleup",
+    "android": {
+      "package": "com.shuffleup.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#070B17"
+      },
+      "softwareKeyboardLayoutMode": "resize",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "shuffleup-five.vercel.app",
+              "pathPrefix": "/room"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#070B17",
+      "translucent": false
+    },
+    "androidNavigationBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#070B17",
+      "enforceContrast": false
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a72caccf-86ae-4589-8c14-5945a4f2bed6"
+      }
+    }
+  }
+}

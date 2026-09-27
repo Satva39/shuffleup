@@ -1,8 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
 
@@ -12,7 +8,7 @@ import Register from "./pages/Register/Register";
 import Lobby from "./pages/Lobby/Lobby";
 import Room from "./pages/Room/Room";
 import Profile from "./pages/Profile/Profile";
-
+import PlayWithBots from "./pages/PlayWithBots/PlayWithBots";
 
 // Games
 import { KachufulGame } from "./games/kachuful";
@@ -38,35 +34,19 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
 
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+          <Route path="/login" element={<Login />} />
 
-          <Route
-            path="/register"
-            element={<Register />}
-          />
+          <Route path="/register" element={<Register />} />
 
-          <Route
-            path="/lobby"
-            element={<Lobby />}
-          />
+          <Route path="/lobby" element={<Lobby />} />
 
-          <Route
-            path="/room/:roomCode"
-            element={<Room />}
-          />
+          <Route path="/room/:roomCode" element={<Room />} />
 
-          <Route
-            path="/profile"
-            element={<Profile />}
-          />
+          <Route path="/play-with-bots" element={<PlayWithBots />} />
 
-          <Route
-            path="/games/kachuful/:roomCode"
-            element={<KachufulGame />}
-          />
+          <Route path="/profile" element={<Profile />} />
+
+          <Route path="/games/kachuful/:roomCode" element={<KachufulGame />} />
 
           <Route
             path="/games/teen-patti/:roomCode"
@@ -78,35 +58,20 @@ function App() {
             element={<IndianRummyGame />}
           />
 
-          <Route
-            path="/games/mangoose/:roomCode"
-            element={<MangooseGame />}
-          />
+          <Route path="/games/mangoose/:roomCode" element={<MangooseGame />} />
 
-          <Route
-            path="/games/uno/:roomCode"
-            element={<UnoGame />}
-          />
+          <Route path="/games/uno/:roomCode" element={<UnoGame />} />
 
           <Route
             path="/games/jack-thief/:roomCode"
             element={<JackThiefGame />}
           />
 
-          <Route
-            path="/games/napoleon/:roomCode"
-            element={<NapoleonGame />}
-          />
+          <Route path="/games/napoleon/:roomCode" element={<NapoleonGame />} />
 
-          <Route
-            path="/games/bridge/:roomCode"
-            element={<BridgeGame />}
-          />
+          <Route path="/games/bridge/:roomCode" element={<BridgeGame />} />
 
-          <Route
-            path="/games/spades/:roomCode"
-            element={<SpadesGame />}
-          />
+          <Route path="/games/spades/:roomCode" element={<SpadesGame />} />
 
           <Route
             path="/games/twenty-nine/:roomCode"
@@ -118,26 +83,19 @@ function App() {
             element={<MindiCoatGame />}
           />
 
-          <Route
-            path="/games/bluff/:roomCode"
-            element={<BluffGame />}
-          />
+          <Route path="/games/bluff/:roomCode" element={<BluffGame />} />
 
           <Route
             path="/games/satte-pe-satta/:roomCode"
             element={<SattePeSattaGame />}
           />
 
-          <Route
-            path="/games/war/:roomCode"
-            element={<WarGame />}
-          />
+          <Route path="/games/war/:roomCode" element={<WarGame />} />
 
           <Route
             path="/games/solitaire/:roomCode"
             element={<SolitaireGame />}
           />
-
         </Routes>
       </AuthProvider>
     </BrowserRouter>

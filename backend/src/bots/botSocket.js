@@ -20,6 +20,8 @@ export class BotSocket {
     this.clientHandlers = new Map();
     this.serverHandlers = new Map();
     this.serverEventLog = [];
+    this.pendingAckTimers = new Set();
+    this.closed = false;
   }
 
   on(event, handler) {
@@ -75,6 +77,13 @@ export class BotSocket {
 
   /** Client -> server through the exact event handler registered by the game module. */
   clientEmit(event, payload = {}, timeoutMs = 5000) {
+    if (this.closed) {
+      return Promise.resolve({
+        success: false,
+        message: "Bot socket is closed.",
+      });
+    }
+
     const handlers = this.clientHandlers.get(event) || [];
     if (!handlers.length) {
       return Promise.resolve({
@@ -92,11 +101,14 @@ export class BotSocket {
       };
 
       const timer = setTimeout(() => {
+        this.pendingAckTimers.delete(timer);
         settle({ success: false, message: `Bot action timed out: ${event}.` });
       }, timeoutMs);
+      this.pendingAckTimers.add(timer);
 
       const callback = (result) => {
         clearTimeout(timer);
+        this.pendingAckTimers.delete(timer);
         settle(result);
       };
 
@@ -107,6 +119,7 @@ export class BotSocket {
         }
       } catch (error) {
         clearTimeout(timer);
+        this.pendingAckTimers.delete(timer);
         settle({
           success: false,
           message: error.message || "Bot action failed.",
@@ -118,6 +131,14 @@ export class BotSocket {
   disconnect() {
     const handlers = this.clientHandlers.get("disconnect") || [];
     for (const handler of handlers) handler("bot-disconnect");
+  }
+
+  close() {
+    this.closed = true;
+    for (const timer of this.pendingAckTimers) clearTimeout(timer);
+    this.pendingAckTimers.clear();
+    this.clientHandlers.clear();
+    this.serverHandlers.clear();
   }
 }
 

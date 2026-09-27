@@ -95,32 +95,44 @@ function roomKey(roomCode) {
   return String(roomCode).toUpperCase();
 }
 
-function createIoProxy(realIo, botSockets, roomCode) {
-  const room = roomKey(roomCode);
+const BOT_SOCKET_REGISTRY = new Map();
+let botAwareIoTarget = null;
+let botAwareIo = null;
+
+function createBotAwareIo(realIo) {
+  if (botAwareIo && botAwareIoTarget === realIo) {
+    return botAwareIo;
+  }
+
   const realSocketsProxy = new Proxy(realIo.sockets, {
     get(target, property, receiver) {
       if (property === "sockets") {
-        return {
-          get(id) {
-            return botSockets.get(id) || target.sockets.get(id);
+        return new Proxy(target.sockets, {
+          get(socketMap, mapProperty, mapReceiver) {
+            if (mapProperty === "get") {
+              return (id) => BOT_SOCKET_REGISTRY.get(id) || socketMap.get(id);
+            }
+            return Reflect.get(socketMap, mapProperty, mapReceiver);
           },
-        };
+        });
       }
       return Reflect.get(target, property, receiver);
     },
   });
 
-  return new Proxy(realIo, {
+  botAwareIo = new Proxy(realIo, {
     get(target, property, receiver) {
       if (property === "sockets") return realSocketsProxy;
       if (property !== "to") return Reflect.get(target, property, receiver);
 
       return (targetId) => {
         const destination = String(targetId);
-        if (botSockets.has(destination)) {
+        const directBot = BOT_SOCKET_REGISTRY.get(destination);
+
+        if (directBot) {
           return {
             emit(event, payload) {
-              botSockets.get(destination)?.receiveServerEvent(event, payload);
+              directBot.receiveServerEvent(event, payload);
             },
           };
         }
@@ -129,8 +141,9 @@ function createIoProxy(realIo, botSockets, roomCode) {
         return {
           emit(event, payload) {
             emitter.emit(event, payload);
-            if (destination.toUpperCase() === room) {
-              for (const botSocket of botSockets.values()) {
+            const normalizedRoom = destination.toUpperCase();
+            for (const botSocket of BOT_SOCKET_REGISTRY.values()) {
+              if (botSocket.rooms.has(normalizedRoom)) {
                 botSocket.receiveServerEvent(event, payload);
               }
             }
@@ -139,6 +152,9 @@ function createIoProxy(realIo, botSockets, roomCode) {
       };
     },
   });
+
+  botAwareIoTarget = realIo;
+  return botAwareIo;
 }
 
 function installBotSocketHandlers(session, bot) {
@@ -168,12 +184,14 @@ class BotSession {
     this.adapter = GAME_ADAPTERS[this.gameId];
     this.bots = new Map();
     this.timers = new Map();
+    this.auxTimers = new Set();
     this.latestStates = new Map();
     this.lastDecisionKey = new Map();
     this.actionFailures = new Map();
     this.startedAt = Date.now();
+    this.stopped = false;
 
-    this.io = createIoProxy(io, this.bots, this.roomCode);
+    this.io = createBotAwareIo(io);
   }
 
   addBot(identity) {
@@ -184,6 +202,7 @@ class BotSession {
       roomCode: this.roomCode,
     });
     this.bots.set(bot.id, bot);
+    BOT_SOCKET_REGISTRY.set(bot.id, bot);
     installBotSocketHandlers(this, bot);
     return bot;
   }
@@ -204,8 +223,13 @@ class BotSession {
   }
 
   scheduleDecision(bot) {
+    if (this.stopped) return;
     const state = this.latestStates.get(bot.id);
-    if (!state || this.isGameComplete(state)) return;
+    if (!state) return;
+    if (this.isGameComplete(state)) {
+      stopBotSession(this.roomCode);
+      return;
+    }
 
     const action = decideBotAction(this.gameId, state, bot.id);
     if (!action) return;
@@ -214,6 +238,7 @@ class BotSession {
       event: action.event,
       phase: state.phase,
       status: state.status,
+      updatedAt: state.updatedAt,
       currentPlayerId: state.currentPlayerId,
       turnActorId: state.turnActorId,
       round: state.round,
@@ -263,31 +288,42 @@ class BotSession {
 
   recoverFromFailure(bot, state) {
     const key = bot.id;
-    const count = this.actionFailures.get(key) || 0;
-    if (count >= 3) {
-      // Re-arm from a refreshed state rather than hammering the same action.
-      this.actionFailures.delete(key);
-      this.lastDecisionKey.delete(key);
-      return;
-    }
-    this.actionFailures.set(key, count + 1);
+    const count = (this.actionFailures.get(key) || 0) + 1;
+    this.actionFailures.set(key, count);
     this.lastDecisionKey.delete(key);
-    setTimeout(() => {
+
+    const backoff = Math.min(1500, 150 + count * 200);
+    const recoveryTimer = setTimeout(() => {
+      this.auxTimers.delete(recoveryTimer);
       const liveState = this.latestStates.get(bot.id) || state;
-      const action = decideBotAction(this.gameId, liveState, bot.id);
+      if (this.stopped || !liveState || this.isGameComplete(liveState)) return;
+
+      let action = null;
+      try {
+        action = decideBotAction(this.gameId, liveState, bot.id);
+      } catch (error) {
+        console.error(
+          `[BOT ${bot.data.authUsername}] strategy retry error:`,
+          error,
+        );
+      }
+
       if (!action) return;
       this.clearTimer(bot.id);
       const timer = setTimeout(
         () => {
           this.timers.delete(bot.id);
-          this.executeDecision(bot, action).catch(() =>
-            this.recoverFromFailure(bot, liveState),
-          );
+          this.executeDecision(bot, action)
+            .then(() => {
+              this.actionFailures.delete(key);
+            })
+            .catch(() => this.recoverFromFailure(bot, liveState));
         },
         450 + Math.floor(Math.random() * 650),
       );
       this.timers.set(bot.id, timer);
-    }, 150);
+    }, backoff);
+    this.auxTimers.add(recoveryTimer);
   }
 
   isGameComplete(state) {
@@ -304,11 +340,14 @@ class BotSession {
   }
 
   stop() {
+    this.stopped = true;
     for (const timer of this.timers.values()) clearTimeout(timer);
     this.timers.clear();
+    for (const timer of this.auxTimers) clearTimeout(timer);
+    this.auxTimers.clear();
     for (const bot of this.bots.values()) {
-      bot.clientHandlers.clear();
-      bot.serverHandlers.clear();
+      BOT_SOCKET_REGISTRY.delete(bot.id);
+      bot.close();
     }
     this.bots.clear();
     this.latestStates.clear();
@@ -367,3 +406,5 @@ export function stopBotSession(roomCode) {
 export function listBotSessions() {
   return [...sessions.values()];
 }
+
+export { createBotAwareIo };

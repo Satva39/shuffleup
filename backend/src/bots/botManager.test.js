@@ -6,8 +6,13 @@ import {
   updatePlayerSocket,
 } from "../sockets/roomManager.js";
 import { BotSocket } from "./botSocket.js";
+import { setupKachufulSocket } from "../games/kachuful/kachufulSocket.js";
 import { decideBotAction } from "./botStrategies.js";
-import { startBotSession, stopBotSession } from "./botManager.js";
+import {
+  startBotSession,
+  stopBotSession,
+  createBotAwareIo,
+} from "./botManager.js";
 
 const GAMES = [
   "kachuful",
@@ -276,13 +281,71 @@ async function smokeJoinAllGames() {
   }
 }
 
+async function testHumanStatePropagatesToBots() {
+  const human = new BotSocket({
+    id: "human-socket",
+    userId: "human-state",
+    username: "Human",
+    roomCode: "",
+  });
+  const sockets = new Map([[human.id, human]]);
+  const io = {
+    sockets: { sockets },
+    to() {
+      return { emit() {} };
+    },
+  };
+  const gameIo = createBotAwareIo(io);
+  const room = createBotRoom(
+    "kachuful",
+    { id: "human-state", username: "Human", socketId: human.id },
+    3,
+  );
+  updatePlayerSocket(room.code, "human-state", human.id);
+  setupKachufulSocket(gameIo, human, { getRoom, updatePlayerSocket });
+  await human.clientEmit("kachuful:join", {
+    roomCode: room.code,
+    userId: "human-state",
+  });
+
+  const session = await startBotSession({
+    io,
+    getRoom,
+    updatePlayerSocket,
+    room,
+  });
+  const bot = [...session.bots.values()][0];
+  const before = bot.serverEventLog.filter(
+    (entry) => entry.event === "kachuful:state",
+  ).length;
+
+  const result = await human.clientEmit("kachuful:bid", {
+    roomCode: room.code,
+    userId: "human-state",
+    bid: 0,
+  });
+  assert.equal(result.success, true);
+
+  const after = bot.serverEventLog.filter(
+    (entry) => entry.event === "kachuful:state",
+  ).length;
+  assert.ok(
+    after > before,
+    "human-triggered state changes must reach bot private sockets",
+  );
+
+  stopBotSession(room.code);
+  deleteRoom(room.code);
+}
+
 async function main() {
   testRoomValidation();
   await testBotSocketContract();
   testRepresentativeStrategies();
   await smokeJoinAllGames();
+  await testHumanStatePropagatesToBots();
   console.log(
-    "✓ Bot room validation, virtual socket contract, 14-game strategy coverage, and adapter smoke passed",
+    "✓ Bot room validation, virtual socket contract, 14-game strategy coverage, adapter smoke, and human→bot state propagation passed",
   );
 }
 

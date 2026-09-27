@@ -18,7 +18,35 @@ import {
   assertSocketRoom,
 } from "./socketGuards.js";
 import { deleteRoom } from "./roomManager.js";
-import { startBotSession, stopBotSession } from "../bots/botManager.js";
+import {
+  startBotSession,
+  stopBotSession,
+  createBotAwareIo,
+} from "../bots/botManager.js";
+
+const botDisconnectCleanupTimers = new Map();
+
+function scheduleBotDisconnectCleanup(roomCode, userId) {
+  const key = String(roomCode).toUpperCase();
+  const existing = botDisconnectCleanupTimers.get(key);
+  if (existing) clearTimeout(existing);
+
+  const timer = setTimeout(() => {
+    botDisconnectCleanupTimers.delete(key);
+    const room = getRoom(key);
+    const human = room?.players?.find((player) => player.id === userId);
+    if (
+      room?.mode === "bots" &&
+      room.hostId === userId &&
+      human?.connected === false
+    ) {
+      stopBotSession(key);
+      deleteRoom(key);
+    }
+  }, 15000);
+
+  botDisconnectCleanupTimers.set(key, timer);
+}
 
 import { setupKachufulSocket } from "../games/kachuful/kachufulSocket.js";
 
@@ -51,6 +79,7 @@ import { setupWarSocket } from "../games/war/warSocket.js";
 import { setupSolitaireSocket } from "../games/solitaire/solitaireSocket.js";
 
 function setupSocket(io) {
+  const gameIo = createBotAwareIo(io);
   io.use((socket, next) => {
     try {
       const token = socket.handshake.auth?.token;
@@ -71,72 +100,72 @@ function setupSocket(io) {
   io.on("connection", (socket) => {
     console.log("Player connected:", socket.id);
 
-    setupKachufulSocket(io, socket, {
+    setupKachufulSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupTeenPattiSocket(io, socket, {
+    setupTeenPattiSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupIndianRummySocket(io, socket, {
+    setupIndianRummySocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupMangooseSocket(io, socket, {
+    setupMangooseSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupUnoSocket(io, socket, {
+    setupUnoSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupJackThiefSocket(io, socket, {
+    setupJackThiefSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupNapoleonSocket(io, socket, {
+    setupNapoleonSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupBridgeSocket(io, socket, {
+    setupBridgeSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupSpadesSocket(io, socket, {
+    setupSpadesSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupTwentyNineSocket(io, socket, {
+    setupTwentyNineSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupMindiCoatSocket(io, socket, {
+    setupMindiCoatSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupBluffSocket(io, socket, {
+    setupBluffSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupSattePeSattaSocket(io, socket, {
+    setupSattePeSattaSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
 
-    setupWarSocket(io, socket, {
+    setupWarSocket(gameIo, socket, {
       getRoom,
       updatePlayerSocket,
     });
@@ -197,7 +226,7 @@ function setupSocket(io) {
         updatePlayerSocket(botRoom.code, userId, socket.id);
 
         await startBotSession({
-          io,
+          io: gameIo,
           getRoom,
           updatePlayerSocket,
           room: botRoom,
@@ -330,6 +359,12 @@ function setupSocket(io) {
       const room = markPlayerDisconnected(roomCode, userId, socket.id);
 
       if (!room) {
+        return;
+      }
+
+      if (room.mode === "bots" && room.hostId === userId) {
+        io.to(room.code).emit("room-updated", room);
+        scheduleBotDisconnectCleanup(room.code, userId);
         return;
       }
 

@@ -52,7 +52,7 @@ export const games = [
   {
     id: "napoleon",
     name: "Napoleon",
-    players: "Variant Based",
+    players: "Only 5 Players",
     category: "Trick Taking",
     image: "/assets/games/napoleon.jpg",
     description:
@@ -61,7 +61,7 @@ export const games = [
   {
     id: "bridge",
     name: "Bridge",
-    players: "4 Players",
+    players: "Only 4 Players",
     category: "Trick Taking",
     image: "/assets/games/bridge.jpg",
     description: "A classic partnership card game based on bidding and tricks.",
@@ -69,7 +69,7 @@ export const games = [
   {
     id: "spades",
     name: "Spades",
-    players: "4 Players",
+    players: "Only 4 Players",
     category: "Trick Taking",
     image: "/assets/games/spades.jpg",
     description: "Predict your tricks and work with your partner to score.",
@@ -77,7 +77,7 @@ export const games = [
   {
     id: "twenty-nine",
     name: "29 Card Game",
-    players: "4 Players",
+    players: "Only 4 Players",
     category: "Trick Taking",
     image: "/assets/games/twenty-nine.jpg",
     description:
@@ -86,7 +86,7 @@ export const games = [
   {
     id: "mindi-coat",
     name: "Mindi Coat",
-    players: "4 Players",
+    players: "Only 4 Players",
     category: "Trick Taking",
     image: "/assets/games/mindi-coat.jpg",
     description: "A traditional Indian trick-taking game also known as Mindi.",
@@ -112,7 +112,7 @@ export const games = [
   {
     id: "war",
     name: "War",
-    players: "2 Players",
+    players: "Only 2 Players",
     category: "Classic",
     image: "/assets/games/war.jpg",
     description: "A simple head-to-head battle where the highest card wins.",

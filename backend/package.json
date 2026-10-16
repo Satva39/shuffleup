@@ -20,8 +20,12 @@
         "test:satte-pe-satta": "node src/games/satte-pe-satta/sattePeSattaEngine.test.js",
         "test:war": "node src/games/war/warEngine.test.js",
         "test:solitaire": "node src/games/solitaire/solitaireEngine.test.js",
-        "test:all": "for f in src/games/*/*.test.js; do node \"$f\" || exit 1; done",
-        "test:bots": "node src/bots/botManager.test.js"
+        "test:all": "for f in src/games/*/*.test.js src/bots/*.test.js src/utils/*.test.js src/sockets/*.test.js; do node \"$f\" || exit 1; done",
+        "test:bots": "node src/bots/botManager.test.js",
+        "test:auth": "node src/utils/authSecurity.test.js",
+        "test:metrics": "node src/utils/requestMetrics.test.js",
+        "test:rooms": "node src/sockets/roomManager.test.js",
+        "test:load": "node scripts/local-load-test.js"
     },
     "dependencies": {
         "bcryptjs": "^3.0.2",

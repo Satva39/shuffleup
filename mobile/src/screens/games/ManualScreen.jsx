@@ -50,8 +50,9 @@ export default function ManualScreen({ route }) {
   );
 
   return (
-    <Screen scroll={false}>
+    <Screen scroll={false} contentStyle={{ flex: 1 }}>
       <ScrollView
+        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 30 }}
       >

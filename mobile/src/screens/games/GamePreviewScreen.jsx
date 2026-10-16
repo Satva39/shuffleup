@@ -50,8 +50,9 @@ export default function GamePreviewScreen({ route, navigation }) {
   }
 
   return (
-    <Screen scroll={false}>
+    <Screen scroll={false} contentStyle={{ flex: 1 }}>
       <ScrollView
+        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 28 }}
       >

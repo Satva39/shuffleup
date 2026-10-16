@@ -327,8 +327,9 @@ export default function RoomScreen({ route, navigation }) {
   if (!roomCode || !user) return null;
 
   return (
-    <Screen scroll={false} contentStyle={{ paddingBottom: 14 }}>
+    <Screen scroll={false} contentStyle={{ flex: 1, paddingBottom: 14 }}>
       <ScrollView
+        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl

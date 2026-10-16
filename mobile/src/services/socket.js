@@ -5,6 +5,7 @@ class ShuffleSocket {
   socket = null;
   token = null;
   listeners = new Map();
+  anyListeners = new Set();
 
   connect(token) {
     if (!token) throw new Error("Authentication token is required.");
@@ -31,6 +32,7 @@ class ShuffleSocket {
     for (const [event, handlers] of this.listeners.entries()) {
       for (const handler of handlers) this.socket.on(event, handler);
     }
+    for (const handler of this.anyListeners) this.socket.onAny(handler);
 
     this.socket.connect();
     return this.socket;
@@ -54,6 +56,17 @@ class ShuffleSocket {
   off(event, handler) {
     this.listeners.get(event)?.delete(handler);
     this.socket?.off(event, handler);
+  }
+
+  onAny(handler) {
+    this.anyListeners.add(handler);
+    this.socket?.onAny(handler);
+    return () => this.offAny(handler);
+  }
+
+  offAny(handler) {
+    this.anyListeners.delete(handler);
+    this.socket?.offAny(handler);
   }
 
   disconnect() {

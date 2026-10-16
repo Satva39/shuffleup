@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { socket } from "../../services/socket";
 import { games } from "../../data/games";
@@ -14,13 +14,18 @@ function getGameMeta(gameId) {
 
 export default function PlayWithBots() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const requestedGameId = searchParams.get("game") || "";
   const { user } = useAuth();
+  const isDemo = !user && Boolean(localStorage.getItem("shuffleup_demo_token"));
   const [configs, setConfigs] = useState([]);
   const [selectedGame, setSelectedGame] = useState("");
   const [botCount, setBotCount] = useState(1);
+  const [botPersona, setBotPersona] = useState("mix");
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState("");
+  const [impossibleChallenge, setImpossibleChallenge] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -34,9 +39,20 @@ export default function PlayWithBots() {
           : [];
         if (!active) return;
         setConfigs(supported);
-        if (supported[0]) {
-          setSelectedGame(supported[0].gameId);
-          setBotCount(supported[0].minBots);
+        const requestedConfig = supported.find(
+          (game) => game.gameId === requestedGameId,
+        );
+        const initialConfig = requestedConfig || supported[0];
+        if (initialConfig) {
+          setSelectedGame(initialConfig.gameId);
+          setBotCount(initialConfig.minBots);
+          if (requestedGameId && !requestedConfig) {
+            setError(
+              "That game does not currently support bot mode. Choose another game.",
+            );
+          }
+        } else {
+          setError("No bot-supported games are currently available.");
         }
       } catch (loadError) {
         if (active) setError(loadError.message || "Could not load bot games.");
@@ -48,7 +64,7 @@ export default function PlayWithBots() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [requestedGameId]);
 
   const selectedConfig = useMemo(
     () => configs.find((game) => game.gameId === selectedGame) || null,
@@ -59,6 +75,7 @@ export default function PlayWithBots() {
     const config = configs.find((game) => game.gameId === gameId);
     setSelectedGame(gameId);
     setBotCount(config?.minBots ?? 1);
+    setImpossibleChallenge(false);
     setError("");
   }
 
@@ -73,8 +90,13 @@ export default function PlayWithBots() {
   }
 
   function startBotGame() {
-    if (!user) {
+    const activeDemoToken = localStorage.getItem("shuffleup_demo_token");
+    if (!user && !activeDemoToken) {
       navigate("/login");
+      return;
+    }
+    if (impossibleChallenge && (!user || isDemo)) {
+      setError("Impossible Challenge requires a registered account.");
       return;
     }
     if (!selectedConfig) {
@@ -88,13 +110,20 @@ export default function PlayWithBots() {
 
     socket.emit(
       "create-bot-game",
-      { gameId: selectedGame, botCount },
+      {
+        gameId: selectedGame,
+        botCount,
+        botPersona,
+        challengeMode: impossibleChallenge ? "impossible" : null,
+      },
       (response) => {
         if (!response?.success) {
           setStarting(false);
           setError(response?.message || "Could not start the bot game.");
           return;
         }
+        sessionStorage.setItem("shuffleup:last-game-mode", "bots");
+        sessionStorage.setItem("shuffleup:last-game-id", selectedGame);
         navigate(`/games/${selectedGame}/${response.room.code}`);
       },
     );
@@ -135,7 +164,13 @@ export default function PlayWithBots() {
                   <h2>Select Game</h2>
                   <p>Only games with bot support are shown.</p>
                 </div>
-                <span className="bot-standard-pill">STANDARD</span>
+                <span className="bot-standard-pill">
+                  {impossibleChallenge
+                    ? "IMPOSSIBLE CHALLENGE"
+                    : isDemo
+                      ? "2-MINUTE DEMO"
+                      : "STANDARD"}
+                </span>
               </div>
 
               <div className="bot-game-list">
@@ -150,12 +185,41 @@ export default function PlayWithBots() {
                       {meta?.name || config.gameId}
                     </span>
                     <span className="bot-game-limit">
-                      {config.minPlayers}–{config.maxPlayers} players
+                      {config.minPlayers === config.maxPlayers
+                        ? `Only ${config.minPlayers} Players`
+                        : `${config.minPlayers}–${config.maxPlayers} Players`}
                     </span>
                   </button>
                 ))}
               </div>
             </section>
+
+            {selectedGame === "war" && (
+              <section className="bot-setup-card bot-challenge-card">
+                <div className="bot-step">SPECIAL MODE</div>
+                <h2>Impossible Challenge</h2>
+                <p>
+                  This mode deliberately overrides War battle results so the
+                  challenge bot wins. It is an explicitly unfair mode, not a
+                  fair rules-only opponent.
+                </p>
+                <label className="bot-challenge-toggle">
+                  <input
+                    type="checkbox"
+                    checked={impossibleChallenge}
+                    disabled={isDemo}
+                    onChange={(event) => {
+                      setImpossibleChallenge(event.target.checked);
+                      if (event.target.checked) setBotCount(1);
+                    }}
+                  />
+                  <span>
+                    Enable disclosed bot advantage{" "}
+                    {isDemo ? "(sign in required)" : ""}
+                  </span>
+                </label>
+              </section>
+            )}
 
             <section className="bot-setup-card bot-count-card">
               <div className="bot-step">02</div>
@@ -195,6 +259,46 @@ export default function PlayWithBots() {
                   <div className="bot-limit-note">
                     Valid: {selectedConfig.minBots}–{selectedConfig.maxBots}{" "}
                     bots
+                  </div>
+                  <div
+                    className="bot-persona-picker"
+                    aria-labelledby="bot-persona-label"
+                  >
+                    <h3 id="bot-persona-label">Bot personality</h3>
+                    <p>
+                      Choose the voice style for your opponents. Voice can be
+                      muted during the game.
+                    </p>
+                    <div className="bot-persona-options">
+                      {[
+                        {
+                          value: "mix",
+                          label: "Mixed",
+                          detail: "Arjun + Maya",
+                        },
+                        {
+                          value: "male",
+                          label: "Male",
+                          detail: "Arjun & male voices",
+                        },
+                        {
+                          value: "female",
+                          label: "Female",
+                          detail: "Maya & female voices",
+                        },
+                      ].map((item) => (
+                        <button
+                          key={item.value}
+                          type="button"
+                          className={`bot-persona-option ${botPersona === item.value ? "selected" : ""}`}
+                          aria-pressed={botPersona === item.value}
+                          onClick={() => setBotPersona(item.value)}
+                        >
+                          <strong>{item.label}</strong>
+                          <span>{item.detail}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </>
               ) : (

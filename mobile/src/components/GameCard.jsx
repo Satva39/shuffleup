@@ -4,7 +4,7 @@ import { GameCardMotion } from "./GameMotion";
 
 const accents = ["#7C5CFF", "#35D8FF", "#4ADE80", "#F7C65D", "#FF6B7A"];
 
-export default function GameCard({ game, onPress }) {
+export default function GameCard({ game, onPress, liveCount }) {
   const index = game.id.length % accents.length;
   return (
     <GameCardMotion motionKey={`game:${game.id}`}>
@@ -52,8 +52,15 @@ export default function GameCard({ game, onPress }) {
               >
                 {game.name}
               </Text>
-              <Text style={{ color: colors.muted, fontSize: 12, marginTop: 3 }}>
-                {game.players} players · {game.category}
+              <Text
+                style={{
+                  color: colors.muted,
+                  fontSize: 13,
+                  lineHeight: 19,
+                  marginTop: 4,
+                }}
+              >
+                {game.players} · {game.category}
               </Text>
             </View>
             <Text
@@ -62,7 +69,19 @@ export default function GameCard({ game, onPress }) {
               ›
             </Text>
           </View>
-          <Text style={{ color: colors.muted, lineHeight: 20, marginTop: 13 }}>
+          {Number.isFinite(liveCount) ? (
+            <Text style={{ color: colors.muted, fontSize: 12, marginTop: 8 }}>
+              ● {liveCount} players online now
+            </Text>
+          ) : null}
+          <Text
+            style={{
+              color: colors.muted,
+              fontSize: 14,
+              lineHeight: 22,
+              marginTop: 13,
+            }}
+          >
             {game.description}
           </Text>
         </View>

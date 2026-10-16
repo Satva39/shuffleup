@@ -1,5 +1,8 @@
 import { BotSocket } from "./botSocket.js";
 import { decideBotAction } from "./botStrategies.js";
+import { generateBotReaction } from "./botDialogue.js";
+import { getRoom } from "../sockets/roomManager.js";
+import { recordCompletedMatch } from "../utils/gameStats.js";
 
 import { setupKachufulSocket } from "../games/kachuful/kachufulSocket.js";
 import { setupTeenPattiSocket } from "../games/teen-patti/teenPattiSocket.js";
@@ -96,6 +99,7 @@ function roomKey(roomCode) {
 }
 
 const BOT_SOCKET_REGISTRY = new Map();
+const BOT_REACTION_COOLDOWN_MS = Math.max(2500, Number(process.env.BOT_REACTION_COOLDOWN_MS || 6500));
 let botAwareIoTarget = null;
 let botAwareIo = null;
 
@@ -147,6 +151,22 @@ function createBotAwareIo(realIo) {
                 botSocket.receiveServerEvent(event, payload);
               }
             }
+
+            const room = getRoom(normalizedRoom);
+            if (!room) return;
+            if (String(event).endsWith(":game-complete")) {
+              if (!room._statsRecordPromise) {
+                room._statsRecordPromise = recordCompletedMatch({ room, gameId: room.gameId, eventName: event, result: payload })
+                  .catch((error) => { console.error("Game result persistence failed:", error?.message || "Database error"); return null; });
+              }
+              room.status = "complete";
+              room.completedAt = Date.now();
+            }
+            const pending = room.pendingBotAction;
+            const now = Date.now();
+            if (!pending || pending.consumed || now - pending.at > 2500 || String(event).includes(":error")) return;
+            pending.consumed = true;
+            void dispatchBotReaction({ realIo: target, room, pending, publicEvent: payload, emittedEvent: event });
           },
         };
       };
@@ -155,6 +175,46 @@ function createBotAwareIo(realIo) {
 
   botAwareIoTarget = realIo;
   return botAwareIo;
+}
+
+async function dispatchBotReaction({ realIo, room, pending, publicEvent, emittedEvent }) {
+  if (!room || !["bots", "demo", "impossible-challenge"].includes(room.mode)) return;
+  const now = Date.now();
+  if (now - Number(room.lastBotReactionAt || 0) < BOT_REACTION_COOLDOWN_MS) return;
+  const session = sessions.get(roomKey(room.code));
+  if (!session || session.stopped) return;
+  const available = [...session.bots.values()].filter((bot) => bot.id !== pending.actorId);
+  if (!available.length) return;
+  const bot = available[Math.floor(Math.random() * available.length)];
+  room.lastBotReactionAt = now;
+  const publicObject = publicEvent && typeof publicEvent === "object" ? publicEvent : {};
+  const player = room.players.find((item) => String(item.id) === String(pending.actorId));
+  const context = {
+    emittedEvent: String(emittedEvent).slice(0, 100),
+    phase: publicObject.phase,
+    status: publicObject.status,
+    action: pending.actionEvent,
+    publicCard: publicObject.card || publicObject.playedCard || publicObject.discard || null,
+  };
+  const text = await generateBotReaction({
+    gameId: room.gameId,
+    botName: bot.data.authUsername,
+    persona: bot.data.botPersona || "neutral",
+    actionEvent: pending.actionEvent,
+    playerName: player?.username || "Player",
+    publicEvent: context,
+  });
+  if (!text || session.stopped || room.status === "complete") return;
+  // The reaction event is public but contains no private hand/state.
+  realIo.to(room.code).emit("bot-reaction", {
+    roomCode: room.code,
+    botId: bot.id,
+    botName: bot.data.authUsername,
+    persona: bot.data.botPersona || "neutral",
+    text,
+    triggeredBy: pending.actionEvent,
+    at: Date.now(),
+  });
 }
 
 function installBotSocketHandlers(session, bot) {
@@ -201,10 +261,39 @@ class BotSession {
       username: identity.username,
       roomCode: this.roomCode,
     });
+    bot.data.botPersona = identity.persona || (this.bots.size % 2 === 0 ? "male" : "female");
     this.bots.set(bot.id, bot);
     BOT_SOCKET_REGISTRY.set(bot.id, bot);
     installBotSocketHandlers(this, bot);
     return bot;
+  }
+
+  async takeOverPlayer(player) {
+    if (this.stopped) throw new Error("Bot session is stopped.");
+    if (!player?.id) throw new Error("Player identity is required for takeover.");
+    if (this.bots.has(player.id)) return this.bots.get(player.id);
+    const bot = this.addBot({ id: player.id, username: player.username || "Auto Bot", persona: player.botPersona || "neutral" });
+    const response = await bot.clientEmit(this.adapter.joinEvent, { roomCode: this.roomCode, userId: player.id });
+    if (!response?.success) {
+      this.bots.delete(bot.id);
+      BOT_SOCKET_REGISTRY.delete(bot.id);
+      bot.close();
+      throw new Error(response?.message || "Automatic bot could not take over this seat.");
+    }
+    return bot;
+  }
+
+  returnControl(playerId) {
+    const bot = this.bots.get(playerId);
+    if (!bot) return false;
+    this.clearTimer(playerId);
+    this.latestStates.delete(playerId);
+    this.lastDecisionKey.delete(playerId);
+    this.actionFailures.delete(playerId);
+    this.bots.delete(playerId);
+    BOT_SOCKET_REGISTRY.delete(playerId);
+    bot.close();
+    return true;
   }
 
   async joinBots() {
@@ -376,6 +465,7 @@ export async function startBotSession({
     const identity = {
       id: player.id,
       username: player.username || `Bot Player ${index + 1}`,
+      persona: player.botPersona || (index % 2 === 0 ? "male" : "female"),
     };
     session.addBot(identity);
   }

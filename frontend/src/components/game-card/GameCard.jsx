@@ -1,7 +1,7 @@
 import "./GameCard.css";
 import { useNavigate } from "react-router-dom";
 
-function GameCard({ game, onHowToPlay }) {
+function GameCard({ game, onHowToPlay, liveCount }) {
   const navigate = useNavigate();
 
   return (
@@ -23,6 +23,15 @@ function GameCard({ game, onHowToPlay }) {
         <h3>{game.name}</h3>
 
         <p className="players">👥 {game.players}</p>
+        {Number.isFinite(liveCount) && (
+          <p
+            className="game-live-count"
+            aria-label={`${liveCount} connected human players in ${game.name}`}
+          >
+            <span className="game-live-dot" aria-hidden="true" />
+            {liveCount} online now
+          </p>
+        )}
 
         <p className="game-description">{game.description}</p>
 
@@ -38,10 +47,23 @@ function GameCard({ game, onHowToPlay }) {
           <button
             type="button"
             className="play-btn"
-            onClick={() => navigate("/lobby")}
+            onClick={() =>
+              navigate(`/lobby?game=${encodeURIComponent(game.id)}`)
+            }
           >
             Play Now
           </button>
+          {game.id !== "solitaire" && (
+            <button
+              type="button"
+              className="play-bots-card-btn"
+              onClick={() =>
+                navigate(`/play-with-bots?game=${encodeURIComponent(game.id)}`)
+              }
+            >
+              Play Bots
+            </button>
+          )}
         </div>
       </div>
     </article>

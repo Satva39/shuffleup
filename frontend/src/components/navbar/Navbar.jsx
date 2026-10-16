@@ -43,9 +43,7 @@ function Navbar() {
                   {user.username.charAt(0).toUpperCase()}
                 </span>
 
-                <span className="user-name">
-                  {user.username}
-                </span>
+                <span className="user-name">{user.username}</span>
 
                 <span className={`menu-arrow ${menuOpen ? "open" : ""}`}>
                   ▾
@@ -70,7 +68,12 @@ function Navbar() {
                   <Link to="/profile" onClick={() => setMenuOpen(false)}>
                     👤 Profile
                   </Link>
-
+                  <Link to="/social" onClick={() => setMenuOpen(false)}>
+                    👥 Friends & Challenges
+                  </Link>
+                  <Link to="/stats" onClick={() => setMenuOpen(false)}>
+                    📊 Game dashboard
+                  </Link>
 
                   <div className="dropdown-divider" />
 

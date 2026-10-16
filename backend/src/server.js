@@ -12,16 +12,15 @@ const PORT = process.env.PORT || 5000;
 const httpServer = http.createServer(app);
 
 const io = new Server(httpServer, {
-    cors: {
-        origin: process.env.FRONTEND_URL,
-        methods: ["GET", "POST"],
-    },
+  cors: {
+    origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST"],
+  },
 });
 
 setupSocket(io);
+app.set("io", io);
 
 httpServer.listen(PORT, () => {
-    console.log(
-        `ShuffleUp backend running on port ${PORT}`
-    );
+  console.log(`ShuffleUp backend running on port ${PORT}`);
 });

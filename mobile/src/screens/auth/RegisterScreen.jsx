@@ -3,6 +3,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   Text,
   TextInput,
   View,
@@ -18,23 +19,47 @@ export default function RegisterScreen({ navigation, route }) {
   const redirectRoomCode = route.params?.redirectRoomCode;
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const set = (key, value) =>
     setForm((current) => ({ ...current, [key]: value }));
+
   async function submit() {
-    if (!form.username.trim() || !form.email.trim() || !form.password)
+    if (!form.username.trim() || !form.email.trim() || !form.password) {
       return Alert.alert("Missing details", "Complete all fields.");
+    }
+    if (form.password.length < 8 || form.password.length > 128) {
+      return Alert.alert(
+        "Password requirements",
+        "Use between 8 and 128 characters.",
+      );
+    }
     try {
       setLoading(true);
-      await register(form);
-      if (redirectRoomCode) {
-        navigation.replace("Room", { roomCode: redirectRoomCode });
-      }
+      await register({
+        ...form,
+        username: form.username.trim(),
+        email: form.email.trim(),
+      });
+      Alert.alert(
+        "Check your email",
+        "Open the ShuffleUp verification link from your inbox, then sign in. The link expires in 30 minutes.",
+        [
+          {
+            text: "Continue to sign in",
+            onPress: () => navigation.replace("Login", { redirectRoomCode }),
+          },
+        ],
+      );
     } catch (error) {
-      Alert.alert("Could not create account", error.message);
+      Alert.alert(
+        "Could not create account",
+        error.message || "Please try again.",
+      );
     } finally {
       setLoading(false);
     }
   }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -50,34 +75,62 @@ export default function RegisterScreen({ navigation, route }) {
             Create your account.
           </Text>
           <Text style={{ color: colors.muted, marginTop: 8, lineHeight: 22 }}>
-            One account for every table on ShuffleUp.
+            Verify your email before signing in.
           </Text>
           <Field
             label="Username"
             value={form.username}
-            onChangeText={(v) => set("username", v)}
+            onChangeText={(value) => set("username", value)}
             placeholder="Your username"
+            autoCapitalize="none"
+            maxLength={30}
           />
           <Field
             label="Email"
             value={form.email}
-            onChangeText={(v) => set("email", v)}
+            onChangeText={(value) => set("email", value)}
             placeholder="you@example.com"
             keyboardType="email-address"
             autoCapitalize="none"
+            maxLength={255}
           />
           <Field
             label="Password"
             value={form.password}
-            onChangeText={(v) => set("password", v)}
-            placeholder="At least 8 characters"
-            secureTextEntry
+            onChangeText={(value) => set("password", value)}
+            placeholder="8–128 characters"
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            maxLength={128}
           />
+          <Pressable
+            onPress={() => setShowPassword((value) => !value)}
+            accessibilityRole="button"
+            accessibilityLabel={
+              showPassword ? "Hide password" : "Show password"
+            }
+            hitSlop={8}
+            style={{ alignSelf: "flex-end", marginTop: 8, padding: 4 }}
+          >
+            <Text style={{ color: colors.cyan, fontWeight: "800" }}>
+              {showPassword ? "Hide password" : "Show password"}
+            </Text>
+          </Pressable>
+          <Text
+            style={{
+              color: colors.muted,
+              fontSize: 12,
+              lineHeight: 17,
+              marginTop: 4,
+            }}
+          >
+            Avoid common passwords and repeated characters.
+          </Text>
           <AppButton
             title="Create account"
             onPress={submit}
             loading={loading}
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 14 }}
           />
           <Text
             onPress={() => navigation.goBack()}
@@ -93,6 +146,7 @@ export default function RegisterScreen({ navigation, route }) {
     </KeyboardAvoidingView>
   );
 }
+
 function Field({ label, ...props }) {
   return (
     <View style={{ marginTop: 16 }}>
@@ -109,6 +163,7 @@ function Field({ label, ...props }) {
       <TextInput
         {...props}
         placeholderTextColor="#5F6C88"
+        autoCorrect={false}
         style={{
           color: colors.text,
           backgroundColor: colors.surface,

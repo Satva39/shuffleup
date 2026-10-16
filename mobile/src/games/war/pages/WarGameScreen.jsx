@@ -113,6 +113,20 @@ export default function WarGameScreen({ route, navigation }) {
           </View>
         </View>
 
+        {state.challengeNotice ? (
+          <View style={styles.challengeDisclosure} accessibilityRole="alert">
+            <Ionicons name="warning-outline" size={18} color="#fbbf24" />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.challengeDisclosureTitle}>
+                IMPOSSIBLE CHALLENGE · DISCLOSED ADVANTAGE
+              </Text>
+              <Text style={styles.challengeDisclosureText}>
+                {state.challengeNotice}
+              </Text>
+            </View>
+          </View>
+        ) : null}
+
         {error ? (
           <Pressable onPress={refreshState} style={styles.errorBar}>
             <Ionicons name="warning-outline" size={18} color={colors.red} />
@@ -320,6 +334,29 @@ const styles = StyleSheet.create({
   offlineDot: { backgroundColor: colors.red },
   liveText: { color: colors.green, fontSize: 9, fontWeight: "900" },
   offlineText: { color: colors.red },
+  challengeDisclosure: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 9,
+    padding: 12,
+    marginTop: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#d97706",
+    backgroundColor: "rgba(120,53,15,0.35)",
+  },
+  challengeDisclosureTitle: {
+    color: "#fbbf24",
+    fontSize: 10,
+    fontWeight: "900",
+    letterSpacing: 0.4,
+  },
+  challengeDisclosureText: {
+    color: "#fef3c7",
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 4,
+  },
   errorBar: {
     flexDirection: "row",
     alignItems: "center",

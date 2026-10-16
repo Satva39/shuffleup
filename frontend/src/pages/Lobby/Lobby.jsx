@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { games } from "../../data/games";
 import { useAuth } from "../../context/AuthContext";
 import { socket } from "../../services/socket";
@@ -7,13 +7,21 @@ import "./Lobby.css";
 
 function Lobby() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const requestedGameId = searchParams.get("game") || "";
   const { user } = useAuth();
 
-  const [selectedGame, setSelectedGame] = useState("");
+  const [selectedGame, setSelectedGame] = useState(requestedGameId);
 
   const [roomCode, setRoomCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (requestedGameId && games.some((game) => game.id === requestedGameId)) {
+      setSelectedGame(requestedGameId);
+    }
+  }, [requestedGameId]);
 
   function createRoom() {
     if (!user) {
@@ -50,6 +58,8 @@ function Lobby() {
           return;
         }
 
+        sessionStorage.setItem("shuffleup:last-game-mode", "multiplayer");
+        sessionStorage.setItem("shuffleup:last-game-id", selectedGame);
         navigate(`/room/${response.room.code}`);
       },
     );

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   Text,
   TextInput,
   View,
@@ -11,26 +12,76 @@ import { LinearGradient } from "expo-linear-gradient";
 import BrandMark from "../../components/BrandMark";
 import AppButton from "../../components/AppButton";
 import { useAuth } from "../../context/AuthStore";
+import { authApi } from "../../services/api";
 import { colors, radii } from "../../theme";
 
 export default function LoginScreen({ navigation, route }) {
-  const { login } = useAuth();
+  const { login, startDemo, demoExpired, clearDemoExpired } = useAuth();
   const redirectRoomCode = route.params?.redirectRoomCode;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [canResendVerification, setCanResendVerification] = useState(false);
+
+  useEffect(() => {
+    if (!demoExpired) return;
+    Alert.alert(
+      "Demo finished",
+      "Your two-minute demo has ended. Sign in or create an account to keep playing.",
+      [{ text: "OK", onPress: clearDemoExpired }],
+    );
+  }, [demoExpired, clearDemoExpired]);
 
   async function submit() {
     if (!email.trim() || !password)
       return Alert.alert("Missing details", "Enter your email and password.");
     try {
       setLoading(true);
+      setCanResendVerification(false);
       await login({ email: email.trim(), password });
-      if (redirectRoomCode) {
+      if (redirectRoomCode)
         navigation.replace("Room", { roomCode: redirectRoomCode });
-      }
     } catch (error) {
-      Alert.alert("Login failed", error.message);
+      setCanResendVerification(Boolean(error.data?.verificationRequired));
+      Alert.alert("Login failed", error.message || "Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function beginDemo() {
+    try {
+      setLoading(true);
+      await startDemo();
+    } catch (error) {
+      Alert.alert(
+        "Demo unavailable",
+        error?.message || "Please try again later.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function resendVerification() {
+    if (!email.trim())
+      return Alert.alert(
+        "Email required",
+        "Enter the email address used to register.",
+      );
+    try {
+      setLoading(true);
+      const result = await authApi.resendVerification(email.trim());
+      Alert.alert(
+        "Check your email",
+        result.message || "If verification is needed, a link will be sent.",
+      );
+    } catch (error) {
+      Alert.alert(
+        "Request unavailable",
+        error.message || "Please try again later.",
+      );
     } finally {
       setLoading(false);
     }
@@ -74,22 +125,64 @@ export default function LoginScreen({ navigation, route }) {
             placeholder="you@example.com"
             keyboardType="email-address"
             autoCapitalize="none"
+            maxLength={255}
           />
           <Field
             label="Password"
             value={password}
             onChangeText={setPassword}
             placeholder="Your password"
-            secureTextEntry
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
           />
+          <Pressable
+            onPress={() => setShowPassword((value) => !value)}
+            accessibilityRole="button"
+            accessibilityLabel={
+              showPassword ? "Hide password" : "Show password"
+            }
+            hitSlop={8}
+            style={{ alignSelf: "flex-end", marginTop: 8, padding: 4 }}
+          >
+            <Text style={{ color: colors.cyan, fontWeight: "800" }}>
+              {showPassword ? "Hide password" : "Show password"}
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => navigation.navigate("ForgotPassword")}
+            hitSlop={8}
+            style={{ alignSelf: "flex-end", marginTop: 14, padding: 4 }}
+          >
+            <Text style={{ color: colors.cyan, fontWeight: "800" }}>
+              Forgot password?
+            </Text>
+          </Pressable>
           <AppButton
             title="Sign in"
             onPress={submit}
             loading={loading}
+            style={{ marginTop: 12 }}
+          />
+          <AppButton
+            title="Try a 2-minute demo"
+            variant="secondary"
+            onPress={beginDemo}
+            loading={loading}
             style={{ marginTop: 10 }}
           />
+          {canResendVerification && (
+            <AppButton
+              title="Resend verification email"
+              variant="secondary"
+              onPress={resendVerification}
+              loading={loading}
+              style={{ marginTop: 10 }}
+            />
+          )}
           <Text
-            onPress={() => navigation.navigate("Register")}
+            onPress={() =>
+              navigation.navigate("Register", { redirectRoomCode })
+            }
             style={{ color: colors.muted, textAlign: "center", marginTop: 22 }}
           >
             New to ShuffleUp?{" "}
@@ -119,6 +212,7 @@ function Field({ label, ...props }) {
       <TextInput
         {...props}
         placeholderTextColor="#5F6C88"
+        autoCorrect={false}
         style={{
           color: colors.text,
           backgroundColor: colors.surface,

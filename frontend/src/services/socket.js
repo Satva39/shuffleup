@@ -8,7 +8,7 @@ export const socket = io(SOCKET_URL, {
     autoConnect: false,
     auth: (callback) => {
         callback({
-            token: localStorage.getItem("shuffleup_token"),
+            token: localStorage.getItem("shuffleup_token") || localStorage.getItem("shuffleup_demo_token"),
         });
     },
 });

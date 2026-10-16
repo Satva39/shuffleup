@@ -77,8 +77,9 @@ export default function LobbyScreen({ navigation }) {
   }
 
   return (
-    <Screen>
+    <Screen scroll={false} contentStyle={{ flex: 1 }}>
       <ScrollView
+        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 32 }}
       >

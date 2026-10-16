@@ -1,0 +1,208 @@
+.social-page {
+  min-height: 100vh;
+  color: #f8fafc;
+  background: #090d18;
+}
+.social-container {
+  width: min(1160px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+.social-heading {
+  margin-bottom: 28px;
+}
+.social-heading .eyebrow {
+  color: #67e8f9;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+.social-heading h1 {
+  margin: 8px 0;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.1;
+}
+.social-heading p:last-child {
+  color: #aab5ca;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 680px;
+}
+.social-alert {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+.social-alert.is-error {
+  color: #fecaca;
+  background: #451a21;
+  border: 1px solid #7f1d1d;
+}
+.social-alert.is-success {
+  color: #bbf7d0;
+  background: #123328;
+  border: 1px solid #166534;
+}
+.social-panel {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #263148;
+  border-radius: 18px;
+  background: #111827;
+  box-shadow: 0 12px 32px #02061722;
+}
+.social-panel h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.social-add-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+.social-add-form input,
+.social-game-select select {
+  min-width: 0;
+  border: 1px solid #394761;
+  border-radius: 10px;
+  color: #f8fafc;
+  background: #0b1220;
+  padding: 12px 13px;
+  font-size: 15px;
+}
+.social-add-form input {
+  flex: 1;
+}
+.social-panel button {
+  border: 1px solid #3b82f6;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.social-panel button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.social-panel .social-quiet-button {
+  border-color: #3a465b;
+  background: #202a3c;
+  color: #d7dfec;
+}
+.social-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+.social-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.social-panel-heading > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  padding: 3px 7px;
+  border-radius: 20px;
+  color: #c7f9ff;
+  background: #164e63;
+  font-size: 12px;
+  font-weight: 900;
+}
+.social-game-select {
+  display: grid;
+  gap: 8px;
+  margin: 8px 0 12px;
+  color: #aab5ca;
+  font-size: 12px;
+  font-weight: 800;
+}
+.social-game-select select {
+  width: 100%;
+}
+.social-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 0;
+  border-top: 1px solid #263148;
+}
+.social-avatar {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: #082f49;
+  background: #67e8f9;
+  font-size: 16px;
+  font-weight: 900;
+}
+.social-avatar.is-muted {
+  color: #d5dbea;
+  background: #2c374d;
+}
+.social-row-main {
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  gap: 3px;
+}
+.social-row-main strong {
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+.social-row-main small {
+  color: #9aa8bf;
+  font-size: 12px;
+}
+.social-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.social-empty {
+  margin: 14px 0 4px;
+  color: #a0aec4;
+  font-size: 14px;
+  line-height: 1.55;
+}
+@media (max-width: 760px) {
+  .social-container {
+    width: min(100% - 24px, 600px);
+    padding-top: 30px;
+  }
+  .social-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .social-panel {
+    padding: 15px;
+  }
+  .social-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .social-row-actions {
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 49px;
+  }
+  .social-add-form {
+    flex-direction: column;
+  }
+  .social-add-form button {
+    min-height: 44px;
+  }
+}

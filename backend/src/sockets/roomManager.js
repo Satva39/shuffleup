@@ -7,28 +7,32 @@ import {
   ROOM_STATUS,
 } from "../../../shared/constants/platform.js";
 
-const BOT_NAMES = [
-  "Bot Alex",
-  "Bot Sam",
-  "Bot Max",
-  "Bot Riley",
-  "Bot Jordan",
-  "Bot Chris",
-  "Bot Taylor",
-  "Bot Jamie",
-  "Bot Casey",
-  "Bot Morgan",
-  "Bot Avery",
-  "Bot Quinn",
-  "Bot Parker",
-  "Bot Devon",
-  "Bot Reese",
-  "Bot Drew",
-  "Bot Skyler",
-  "Bot Cameron",
-  "Bot Finley",
-  "Bot Rowan",
-];
+const BOT_NAMES = Object.freeze({
+  male: [
+    "Arjun",
+    "Bot Max",
+    "Bot Jordan",
+    "Bot Chris",
+    "Bot Devon",
+    "Bot Drew",
+    "Bot Cameron",
+    "Bot Parker",
+    "Bot Quinn",
+    "Bot Rowan",
+  ],
+  female: [
+    "Maya",
+    "Bot Riley",
+    "Bot Taylor",
+    "Bot Jamie",
+    "Bot Casey",
+    "Bot Morgan",
+    "Bot Avery",
+    "Bot Reese",
+    "Bot Skyler",
+    "Bot Finley",
+  ],
+});
 
 function generateRoomCode() {
   const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -75,9 +79,23 @@ function createRoom(gameId, player) {
   return room;
 }
 
-function createBotRoom(gameId, player, botCount) {
+function createBotRoom(gameId, player, botCount, options = {}) {
   if (gameId === GAME_IDS.SOLITAIRE) {
     throw new Error("Solitaire cannot be played with bots.");
+  }
+  const mode = options.mode || "bots";
+  const requestedPersona = ["male", "female", "mix"].includes(
+    options.botPersona,
+  )
+    ? options.botPersona
+    : "mix";
+  if (mode === "impossible-challenge" && gameId !== GAME_IDS.WAR) {
+    throw new Error(
+      "Impossible Challenge is currently available only for War.",
+    );
+  }
+  if (mode === "impossible-challenge" && Number(botCount) !== 1) {
+    throw new Error("Impossible Challenge uses exactly one opponent bot.");
   }
 
   const limits = GAME_LIMITS[gameId];
@@ -113,7 +131,14 @@ function createBotRoom(gameId, player, botCount) {
   ];
 
   for (let index = 0; index < count; index += 1) {
-    let username = BOT_NAMES[index % BOT_NAMES.length];
+    const persona =
+      requestedPersona === "mix"
+        ? index % 2 === 0
+          ? "male"
+          : "female"
+        : requestedPersona;
+    const names = BOT_NAMES[persona];
+    let username = names[Math.floor(index / 2) % names.length];
     if (usedNames.has(username)) {
       let suffix = 2;
       const base = username;
@@ -128,6 +153,7 @@ function createBotRoom(gameId, player, botCount) {
       socketId: null,
       connected: true,
       isBot: true,
+      botPersona: persona,
     });
   }
 
@@ -142,7 +168,9 @@ function createBotRoom(gameId, player, botCount) {
     gameId,
     hostId: player.id,
     status: ROOM_STATUS.PLAYING,
-    mode: "bots",
+    mode,
+    challengeMode:
+      mode === "impossible-challenge" ? "disclosed-battle-advantage" : null,
     createdAt: Date.now(),
     players: orderedPlayers,
   };
@@ -156,7 +184,60 @@ function deleteRoom(code) {
 }
 
 function getRoom(code) {
-  return rooms.get(code.toUpperCase());
+  return rooms.get(
+    String(code || "")
+      .trim()
+      .toUpperCase(),
+  );
+}
+
+function findActiveRoomForPlayer(playerId) {
+  if (playerId === undefined || playerId === null) return null;
+  const matchingRooms = [...rooms.values()]
+    .filter(
+      (room) =>
+        room.status !== ROOM_STATUS.COMPLETE &&
+        room.status !== ROOM_STATUS.FINISHED &&
+        room.players.some((player) => String(player.id) === String(playerId)),
+    )
+    .sort(
+      (a, b) =>
+        (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0),
+    );
+  return matchingRooms[0] || null;
+}
+
+function getLiveCounts() {
+  const counts = {};
+  for (const gameId of Object.values(GAME_IDS)) {
+    counts[gameId] = {
+      connectedPlayers: 0,
+      connectedHumans: 0,
+      connectedBots: 0,
+      activeRooms: 0,
+      waitingRooms: 0,
+    };
+  }
+
+  for (const room of rooms.values()) {
+    const gameCounts = counts[room.gameId];
+    if (!gameCounts) continue;
+    if (
+      room.status === ROOM_STATUS.COMPLETE ||
+      room.status === ROOM_STATUS.FINISHED
+    )
+      continue;
+    if (room.status === ROOM_STATUS.PLAYING) gameCounts.activeRooms += 1;
+    if (room.status === ROOM_STATUS.WAITING) gameCounts.waitingRooms += 1;
+
+    for (const player of room.players) {
+      if (player.connected === false) continue;
+      gameCounts.connectedPlayers += 1;
+      if (player.isBot) gameCounts.connectedBots += 1;
+      else gameCounts.connectedHumans += 1;
+    }
+  }
+  return { generatedAt: new Date().toISOString(), games: counts };
 }
 
 function addPlayer(code, player) {
@@ -166,12 +247,18 @@ function addPlayer(code, player) {
     throw new Error("Room not found.");
   }
 
-  if (room.status !== ROOM_STATUS.WAITING) {
-    throw new Error("This game has already started.");
+  // Returning players must be recognized before enforcing the lobby-only
+  // join rule. Otherwise a browser refresh or mobile reconnect is rejected
+  // even when the player already owns a seat in the live game.
+  const existingPlayer = room.players.find((item) => item.id === player.id);
+  if (existingPlayer) {
+    existingPlayer.username = player.username || existingPlayer.username;
+    existingPlayer.connected = true;
+    return room;
   }
 
-  if (room.players.some((item) => item.id === player.id)) {
-    return room;
+  if (room.status !== ROOM_STATUS.WAITING) {
+    throw new Error("This game has already started.");
   }
 
   const limits = GAME_LIMITS[room.gameId];
@@ -340,6 +427,8 @@ export {
   createBotRoom,
   deleteRoom,
   getRoom,
+  findActiveRoomForPlayer,
+  getLiveCounts,
   addPlayer,
   removePlayer,
   setPlayerReady,

@@ -1,0 +1,80 @@
+import assert from "node:assert/strict";
+import {
+  canTakeOverDisconnectedPlayer,
+  hasLiveHumanSocket,
+  takeoverGracePeriodMs,
+} from "./botTakeoverPolicy.js";
+
+const baseRoom = { status: "playing", gameId: "war", mode: "multiplayer" };
+const player = { id: "player-1", connected: false, isBot: false };
+assert.equal(canTakeOverDisconnectedPlayer(baseRoom, player), true);
+assert.equal(
+  hasLiveHumanSocket({ id: "user-1", connected: true, socketId: "user-1" }),
+  false,
+  "synthetic bot socket must not look like a human reconnect",
+);
+assert.equal(
+  hasLiveHumanSocket({
+    id: "user-1",
+    connected: true,
+    socketId: "real-socket-id",
+  }),
+  true,
+);
+assert.equal(
+  hasLiveHumanSocket({
+    id: "user-1",
+    connected: false,
+    socketId: "real-socket-id",
+  }),
+  false,
+);
+assert.equal(
+  canTakeOverDisconnectedPlayer(baseRoom, { ...player, connected: true }),
+  false,
+);
+assert.equal(
+  canTakeOverDisconnectedPlayer(baseRoom, { ...player, isBot: true }),
+  false,
+);
+assert.equal(
+  canTakeOverDisconnectedPlayer({ ...baseRoom, status: "waiting" }, player),
+  false,
+);
+assert.equal(
+  canTakeOverDisconnectedPlayer({ ...baseRoom, gameId: "solitaire" }, player),
+  false,
+);
+assert.equal(
+  canTakeOverDisconnectedPlayer({ ...baseRoom, mode: "demo" }, player),
+  false,
+);
+assert.equal(
+  canTakeOverDisconnectedPlayer(
+    { ...baseRoom, mode: "impossible-challenge" },
+    player,
+  ),
+  false,
+);
+assert.equal(
+  hasLiveHumanSocket({ id: "user-1", connected: true, socketId: "user-1" }),
+  false,
+  "synthetic takeover socket must not look human",
+);
+assert.equal(
+  hasLiveHumanSocket({ id: "user-1", connected: true, socketId: "socket-abc" }),
+  true,
+  "a real socket connection must be recognized",
+);
+assert.equal(
+  hasLiveHumanSocket({
+    id: "user-1",
+    connected: false,
+    socketId: "socket-abc",
+  }),
+  false,
+);
+assert.equal(takeoverGracePeriodMs("25000"), 25000);
+assert.equal(takeoverGracePeriodMs("500"), 10000);
+assert.equal(takeoverGracePeriodMs("999999"), 180000);
+console.log("✓ Bot takeover eligibility and grace-period tests passed");

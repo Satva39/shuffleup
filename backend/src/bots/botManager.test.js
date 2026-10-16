@@ -338,12 +338,41 @@ async function testHumanStatePropagatesToBots() {
   deleteRoom(room.code);
 }
 
+async function testHumanSeatCanBeTakenOverAndReturned() {
+  const io = fakeIo();
+  const room = createBotRoom(
+    "war",
+    { id: "human-takeover-test", username: "Human", socketId: "human-socket" },
+    1,
+  );
+  let session;
+  try {
+    session = await startBotSession({ io, getRoom, updatePlayerSocket, room });
+    const humanSeat = room.players.find((player) => player.id === "human-takeover-test");
+    assert.ok(humanSeat);
+    humanSeat.connected = false;
+    humanSeat.isBot = true;
+    humanSeat.autoBotTakeover = true;
+    const takeoverBot = await session.takeOverPlayer(humanSeat);
+    assert.equal(takeoverBot.id, humanSeat.id);
+    assert.equal(session.bots.has(humanSeat.id), true);
+    assert.equal(session.latestStates.has(humanSeat.id), true, "replacement should receive the authoritative private game state");
+    assert.equal(session.returnControl(humanSeat.id), true);
+    assert.equal(session.bots.has(humanSeat.id), false, "returned human must not race its replacement bot");
+    console.log("✓ Auto-bot takeover seat and return-control tests passed");
+  } finally {
+    stopBotSession(room.code);
+    deleteRoom(room.code);
+  }
+}
+
 async function main() {
   testRoomValidation();
   await testBotSocketContract();
   testRepresentativeStrategies();
   await smokeJoinAllGames();
   await testHumanStatePropagatesToBots();
+  await testHumanSeatCanBeTakenOverAndReturned();
   console.log(
     "✓ Bot room validation, virtual socket contract, 14-game strategy coverage, adapter smoke, and human→bot state propagation passed",
   );

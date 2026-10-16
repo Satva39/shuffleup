@@ -8,7 +8,12 @@ import {
   normalizeEmail,
   validatePassword,
 } from "../utils/authSecurity.js";
-import { isEmailJsConfigured, sendEmailJsTemplate } from "../utils/emailJs.js";
+import {
+  emailJsFailureLogFields,
+  getEmailJsUserHint,
+  isEmailJsConfigured,
+  sendEmailJsTemplate,
+} from "../utils/emailJs.js";
 import { disconnectUserSockets } from "../sockets/activeSocketRegistry.js";
 
 const TOKEN_LIFETIME_MINUTES = 30;
@@ -17,7 +22,10 @@ const EMAIL_WINDOW_MINUTES = 15;
 const DEFAULT_PUBLIC_APP_URL = "https://shuffleup-five.vercel.app";
 
 function publicAppUrl() {
-  const candidate = process.env.PUBLIC_APP_URL || process.env.FRONTEND_URL || DEFAULT_PUBLIC_APP_URL;
+  const candidate =
+    process.env.PUBLIC_APP_URL ||
+    process.env.FRONTEND_URL ||
+    DEFAULT_PUBLIC_APP_URL;
   try {
     const url = new URL(candidate);
     if (url.protocol !== "https:" && url.hostname !== "localhost") {
@@ -67,7 +75,11 @@ async function issueSingleUseToken(user, kind) {
     );
     await client.query("COMMIT");
   } catch (error) {
-    try { await client.query("ROLLBACK"); } catch { /* already rolled back */ }
+    try {
+      await client.query("ROLLBACK");
+    } catch {
+      /* already rolled back */
+    }
     throw error;
   } finally {
     client.release();
@@ -93,18 +105,24 @@ async function issueSingleUseToken(user, kind) {
 }
 
 export async function register(req, res) {
-  const username = typeof req.body?.username === "string" ? req.body.username.trim() : "";
+  const username =
+    typeof req.body?.username === "string" ? req.body.username.trim() : "";
   const email = normalizeEmail(req.body?.email);
   const password = req.body?.password;
 
   if (!username || username.length < 2 || username.length > 30) {
     return sendFailure(res, "Username must be between 2 and 30 characters.");
   }
-  if (!isValidEmail(email)) return sendFailure(res, "Enter a valid email address.");
+  if (!isValidEmail(email))
+    return sendFailure(res, "Enter a valid email address.");
   const passwordError = validatePassword(password);
   if (passwordError) return sendFailure(res, passwordError);
   if (!isEmailJsConfigured("verification")) {
-    return sendFailure(res, "Email verification is not configured. Please try again later.", 503);
+    return sendFailure(
+      res,
+      "Email verification is not configured. Please try again later.",
+      503,
+    );
   }
 
   try {
@@ -118,37 +136,80 @@ export async function register(req, res) {
     try {
       await issueSingleUseToken(user, "verification");
     } catch (error) {
-      // Keep the pending account so a resend can recover a transient email failure.
-      console.error("Verification email delivery failed.", error?.message || "Unknown EmailJS error.");
+      // Keep the pending account so a resend can recover after EmailJS is fixed.
+      // Distinguish a provider rejection from token/schema failures; previously both
+      // were reported as an email failure, which hid database migration problems.
+      if (String(error?.code || "").startsWith("EMAILJS_")) {
+        console.error(
+          "Verification email send failed.",
+          JSON.stringify(emailJsFailureLogFields(error)),
+        );
+        return res.status(503).json({
+          message: `Your account is saved, but the verification email was not accepted. ${getEmailJsUserHint(error)}`,
+          verificationPending: true,
+          email,
+          deliveryErrorCode: error.code,
+        });
+      }
+
+      console.error(
+        "Verification token creation failed.",
+        error?.code || "UNKNOWN_DB_ERROR",
+        error?.message || "Unknown database error.",
+      );
       return res.status(503).json({
-        message: "Your account is pending verification, but the email could not be sent. Try resending the verification email.",
+        message:
+          "Your account may be saved, but the server could not prepare its verification link. The site owner must check the database migrations and backend logs before you retry.",
         verificationPending: true,
         email,
       });
     }
 
     return res.status(201).json({
-      message: "Account created. Check your email for a verification link that expires in 30 minutes.",
+      message:
+        "Account created. Check your email for a verification link that expires in 30 minutes.",
       verificationRequired: true,
       email,
     });
   } catch (error) {
     if (error?.code === "23505") {
-      return sendFailure(res, "An account with this email already exists. Try signing in or resending verification.", 409);
+      return sendFailure(
+        res,
+        "An account with this email already exists. Try signing in or resending verification.",
+        409,
+      );
     }
     if (["42703", "42P01"].includes(error?.code)) {
-      console.error("Registration blocked because required authentication schema is missing.", error.code);
-      return sendFailure(res, "The account service database is not up to date. The server owner must apply the authentication database migrations.", 503);
+      console.error(
+        "Registration blocked because required authentication schema is missing.",
+        error.code,
+      );
+      return sendFailure(
+        res,
+        "The account service database is not up to date. The server owner must apply the authentication database migrations.",
+        503,
+      );
     }
-    console.error("Registration failed.", error?.code || "UNKNOWN_DB_ERROR", error?.message || "Unknown database error.");
-    return sendFailure(res, "Unable to create account. Please try again later.", 500);
+    console.error(
+      "Registration failed.",
+      error?.code || "UNKNOWN_DB_ERROR",
+      error?.message || "Unknown database error.",
+    );
+    return sendFailure(
+      res,
+      "Unable to create account. Please try again later.",
+      500,
+    );
   }
 }
 
 export async function verifyEmail(req, res) {
   const token = typeof req.body?.token === "string" ? req.body.token : "";
   if (token.length < 40 || token.length > 128) {
-    return sendFailure(res, "This verification link is invalid or has expired.");
+    return sendFailure(
+      res,
+      "This verification link is invalid or has expired.",
+    );
   }
 
   const client = await pool.connect();
@@ -160,10 +221,15 @@ export async function verifyEmail(req, res) {
     );
     if (!found.rows[0]) {
       await client.query("ROLLBACK");
-      return sendFailure(res, "This verification link is invalid or has expired.");
+      return sendFailure(
+        res,
+        "This verification link is invalid or has expired.",
+      );
     }
     const { id, user_id: userId } = found.rows[0];
-    await client.query("UPDATE users SET email_verified = TRUE WHERE id = $1", [userId]);
+    await client.query("UPDATE users SET email_verified = TRUE WHERE id = $1", [
+      userId,
+    ]);
     await client.query(
       "UPDATE email_verification_tokens SET consumed_at = NOW() WHERE user_id = $1 AND consumed_at IS NULL",
       [userId],
@@ -171,9 +237,20 @@ export async function verifyEmail(req, res) {
     await client.query("COMMIT");
     return res.json({ message: "Email verified. You can now sign in." });
   } catch (error) {
-    try { await client.query("ROLLBACK"); } catch { /* ignored */ }
-    console.error("Email verification failed.", error?.message || "Unknown database error.");
-    return sendFailure(res, "Unable to verify this email right now. Please try again.", 500);
+    try {
+      await client.query("ROLLBACK");
+    } catch {
+      /* ignored */
+    }
+    console.error(
+      "Email verification failed.",
+      error?.message || "Unknown database error.",
+    );
+    return sendFailure(
+      res,
+      "Unable to verify this email right now. Please try again.",
+      500,
+    );
   } finally {
     client.release();
   }
@@ -181,7 +258,8 @@ export async function verifyEmail(req, res) {
 
 export async function resendVerification(req, res) {
   const email = normalizeEmail(req.body?.email);
-  const genericMessage = "If an unverified account exists for that email, a verification message may have been sent. Check your inbox and spam folder; if it never arrives, the service owner should check the EmailJS dashboard and backend logs.";
+  const genericMessage =
+    "If an unverified account exists for that email, a verification message may have been sent. Check your inbox and spam folder; if it never arrives, the service owner should check the EmailJS dashboard and backend logs.";
   if (!isValidEmail(email)) return res.json({ message: genericMessage });
 
   try {
@@ -191,14 +269,39 @@ export async function resendVerification(req, res) {
     );
     if (found.rows[0] && isEmailJsConfigured("verification")) {
       try {
-        await issueSingleUseToken(found.rows[0], "verification");
+        const result = await issueSingleUseToken(found.rows[0], "verification");
+        if (result?.rateLimited) {
+          console.warn(
+            "Verification resend rate-limited by per-account email quota.",
+          );
+        }
       } catch (error) {
-        console.error("Verification resend failed.", error?.message || "Unknown EmailJS error.");
+        if (String(error?.code || "").startsWith("EMAILJS_")) {
+          console.error(
+            "Verification resend email send failed.",
+            JSON.stringify(emailJsFailureLogFields(error)),
+          );
+        } else {
+          console.error(
+            "Verification resend token creation failed.",
+            error?.code || "UNKNOWN_DB_ERROR",
+            error?.message || "Unknown database error.",
+          );
+        }
       }
+    } else if (found.rows[0]) {
+      // Keep a generic public response to avoid account enumeration, but make
+      // the missing server configuration visible to the service owner.
+      console.error(
+        "Verification resend skipped because EmailJS configuration is incomplete.",
+      );
     }
     return res.json({ message: genericMessage });
   } catch (error) {
-    console.error("Verification resend request failed.", error?.message || "Unknown database error.");
+    console.error(
+      "Verification resend request failed.",
+      error?.message || "Unknown database error.",
+    );
     return res.json({ message: genericMessage });
   }
 }
@@ -220,10 +323,12 @@ export async function login(req, res) {
     }
     const user = result.rows[0];
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
-    if (!passwordMatch) return sendFailure(res, "Invalid email or password.", 401);
+    if (!passwordMatch)
+      return sendFailure(res, "Invalid email or password.", 401);
     if (user.email_verified === false) {
       return res.status(403).json({
-        message: "Verify your email before signing in. You can request a new verification link from this screen.",
+        message:
+          "Verify your email before signing in. You can request a new verification link from this screen.",
         verificationRequired: true,
       });
     }
@@ -236,21 +341,29 @@ export async function login(req, res) {
     });
   } catch (error) {
     if (["42703", "42P01"].includes(error?.code)) {
-      console.error("Login blocked because required authentication schema is missing.", error.code);
+      console.error(
+        "Login blocked because required authentication schema is missing.",
+        error.code,
+      );
       return sendFailure(
         res,
         "The login service database is not up to date. Existing accounts are safe; the server owner must apply the authentication database migrations.",
         503,
       );
     }
-    console.error("Login failed.", error?.code || "UNKNOWN_DB_ERROR", error?.message || "Unknown database error.");
+    console.error(
+      "Login failed.",
+      error?.code || "UNKNOWN_DB_ERROR",
+      error?.message || "Unknown database error.",
+    );
     return sendFailure(res, "Unable to login. Please try again later.", 500);
   }
 }
 
 export async function forgotPassword(req, res) {
   const email = normalizeEmail(req.body?.email);
-  const genericMessage = "If a verified account exists for that email, password reset instructions will be sent.";
+  const genericMessage =
+    "If a verified account exists for that email, password reset instructions will be sent.";
   if (!isValidEmail(email)) return res.json({ message: genericMessage });
 
   try {
@@ -262,11 +375,25 @@ export async function forgotPassword(req, res) {
       try {
         await issueSingleUseToken(found.rows[0], "passwordReset");
       } catch (error) {
-        console.error("Password reset email delivery failed.", error?.message || "Unknown EmailJS error.");
+        if (String(error?.code || "").startsWith("EMAILJS_")) {
+          console.error(
+            "Password reset email send failed.",
+            JSON.stringify(emailJsFailureLogFields(error)),
+          );
+        } else {
+          console.error(
+            "Password reset token creation failed.",
+            error?.code || "UNKNOWN_DB_ERROR",
+            error?.message || "Unknown database error.",
+          );
+        }
       }
     }
   } catch (error) {
-    console.error("Password reset request failed.", error?.message || "Unknown database error.");
+    console.error(
+      "Password reset request failed.",
+      error?.message || "Unknown database error.",
+    );
   }
   return res.json({ message: genericMessage });
 }
@@ -275,7 +402,10 @@ export async function resetPassword(req, res) {
   const token = typeof req.body?.token === "string" ? req.body.token : "";
   const password = req.body?.password;
   if (token.length < 40 || token.length > 128) {
-    return sendFailure(res, "This password reset link is invalid or has expired.");
+    return sendFailure(
+      res,
+      "This password reset link is invalid or has expired.",
+    );
   }
   const passwordError = validatePassword(password);
   if (passwordError) return sendFailure(res, passwordError);
@@ -289,11 +419,17 @@ export async function resetPassword(req, res) {
     );
     if (!found.rows[0]) {
       await client.query("ROLLBACK");
-      return sendFailure(res, "This password reset link is invalid or has expired.");
+      return sendFailure(
+        res,
+        "This password reset link is invalid or has expired.",
+      );
     }
     const passwordHash = await bcrypt.hash(password, 12);
     const userId = found.rows[0].user_id;
-    await client.query("UPDATE users SET password_hash = $1, auth_version = auth_version + 1 WHERE id = $2", [passwordHash, userId]);
+    await client.query(
+      "UPDATE users SET password_hash = $1, auth_version = auth_version + 1 WHERE id = $2",
+      [passwordHash, userId],
+    );
     await client.query(
       "UPDATE password_reset_tokens SET consumed_at = NOW() WHERE user_id = $1 AND consumed_at IS NULL",
       [userId],
@@ -302,13 +438,29 @@ export async function resetPassword(req, res) {
     try {
       disconnectUserSockets(userId);
     } catch (disconnectError) {
-      console.error("Could not immediately disconnect old sessions.", disconnectError?.message || "Unknown socket error.");
+      console.error(
+        "Could not immediately disconnect old sessions.",
+        disconnectError?.message || "Unknown socket error.",
+      );
     }
-    return res.json({ message: "Password updated. You can now sign in with your new password." });
+    return res.json({
+      message: "Password updated. You can now sign in with your new password.",
+    });
   } catch (error) {
-    try { await client.query("ROLLBACK"); } catch { /* ignored */ }
-    console.error("Password reset failed.", error?.message || "Unknown database error.");
-    return sendFailure(res, "Unable to reset your password right now. Please try again.", 500);
+    try {
+      await client.query("ROLLBACK");
+    } catch {
+      /* ignored */
+    }
+    console.error(
+      "Password reset failed.",
+      error?.message || "Unknown database error.",
+    );
+    return sendFailure(
+      res,
+      "Unable to reset your password right now. Please try again.",
+      500,
+    );
   } finally {
     client.release();
   }
@@ -325,7 +477,10 @@ export async function getCurrentUser(req, res) {
     }
     return res.json({ user: result.rows[0] });
   } catch (error) {
-    console.error("Get-current-user request failed.", error?.message || "Unknown database error.");
+    console.error(
+      "Get-current-user request failed.",
+      error?.message || "Unknown database error.",
+    );
     return sendFailure(res, "Unable to get user right now.", 500);
   }
 }

@@ -72,3 +72,13 @@ The link opens the website in a mobile browser. After verification/reset, the us
 - Password reset requests use a generic response to avoid exposing whether an account exists.
 - Per-account email requests are capped at three in a rolling 15-minute window; route-level limits also apply. The route-level limiter is in-process, so multi-instance deployments should use shared rate limiting.
 - If the deployment uses a reverse proxy, configure `TRUST_PROXY_HOPS` only to the number of trusted proxy hops. Do not blindly trust client-provided forwarded headers.
+
+## Important server-side EmailJS security setting
+
+Because ShuffleUp sends email from the Node.js backend (Render), open **EmailJS Dashboard → Account → Security** and enable **Allow EmailJS API for non-browser applications**. EmailJS keeps this disabled by default. If **Use Private Key** is enabled, set the matching current private key only in the backend environment. If the private key was ever visible in a screenshot/chat, rotate it and update the host environment before testing.
+
+## Recipient field must be dynamic
+
+For both the Verification and Password Reset templates, set the template's **To Email** field to exactly `{{to_email}}`. Do not hardcode a personal email address; a hardcoded recipient can cause an accepted email to go to the wrong inbox. Save each template and make sure each `EMAILJS_*_TEMPLATE_ID` in the backend matches that saved template's ID exactly.
+
+If signup reports that email delivery failed, read the backend hosting logs and look for `Verification email send failed`. The latest helper records a sanitized failure code, HTTP status and provider message, without logging user email addresses, tokens, or configured keys. Also check EmailJS → Email History. A successful API response indicates EmailJS accepted the request, but does not guarantee delivery into the inbox.

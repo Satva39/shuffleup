@@ -1,164 +1,164 @@
 .register-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: var(--background);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--background);
 }
 
 .register-card {
-  width: 100%;
-  max-width: 450px;
-  padding: 42px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+    width: 100%;
+    max-width: 450px;
+    padding: 42px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
 }
 
 .register-logo {
-  display: block;
-  margin-bottom: 40px;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 28px;
-  font-weight: 800;
+    display: block;
+    margin-bottom: 40px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: 800;
 }
 
 .register-logo span {
-  color: var(--accent);
+    color: var(--accent);
 }
 
 .register-heading p {
-  margin: 0 0 8px;
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 2px;
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
 
 .register-heading h1 {
-  margin: 0 0 8px;
-  font-size: 38px;
+    margin: 0 0 8px;
+    font-size: 38px;
 }
 
 .register-heading span {
-  color: var(--muted);
-  font-size: 14px;
+    color: var(--muted);
+    font-size: 14px;
 }
 
 .register-card form {
-  margin-top: 28px;
+    margin-top: 28px;
 }
 
 .register-card label {
-  display: block;
-  margin-bottom: 16px;
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 700;
+    display: block;
+    margin-bottom: 16px;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .register-card input {
-  width: 100%;
-  box-sizing: border-box;
-  margin-top: 8px;
-  padding: 13px 14px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  outline: none;
-  background: var(--background);
-  color: var(--text);
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px;
+    padding: 13px 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    outline: none;
+    background: var(--background);
+    color: var(--text);
 }
 
 .register-card input:focus {
-  border-color: var(--accent);
+    border-color: var(--accent);
 }
 
 .register-submit {
-  width: 100%;
-  margin-top: 5px;
-  padding: 13px;
-  border: 0;
-  border-radius: 9px;
-  background: var(--accent);
-  color: white;
-  cursor: pointer;
-  font-weight: 800;
+    width: 100%;
+    margin-top: 5px;
+    padding: 13px;
+    border: 0;
+    border-radius: 9px;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    font-weight: 800;
 }
 
 .register-submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .register-error {
-  margin-top: 18px;
-  padding: 12px;
-  border-radius: 8px;
-  background: rgba(255, 70, 70, 0.1);
-  color: #ff6b6b;
-  font-size: 13px;
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 70, 70, 0.1);
+    color: #ff6b6b;
+    font-size: 13px;
 }
 
 .register-switch {
-  margin: 22px 0 0;
-  color: var(--muted);
-  text-align: center;
-  font-size: 13px;
+    margin: 22px 0 0;
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
 }
 
 .register-switch a {
-  color: var(--accent);
-  font-weight: 700;
+    color: var(--accent);
+    font-weight: 700;
 }
 
 @media (max-width: 500px) {
-  .register-card {
-    padding: 28px 22px;
-  }
+    .register-card {
+        padding: 28px 22px;
+    }
 
-  .register-heading h1 {
-    font-size: 32px;
-  }
+    .register-heading h1 {
+        font-size: 32px;
+    }
 }
 .register-password-field {
-  position: relative;
-  margin-top: 8px;
+    position: relative;
+    margin-top: 8px;
 }
 
 .register-password-field input {
-  margin-top: 0;
-  padding-right: 68px;
+    margin-top: 0;
+    padding-right: 68px;
 }
 
 .register-password-field .password-toggle {
-  top: 50%;
+    top: 50%;
 }
 
 .register-message {
-  margin-top: 18px;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  font-size: 13px;
-  line-height: 1.5;
+    margin-top: 18px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 .register-resend {
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: transparent;
-  color: var(--accent);
-  font-weight: 800;
-  cursor: pointer;
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--accent);
+    font-weight: 800;
+    cursor: pointer;
 }
 
 .register-resend:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }

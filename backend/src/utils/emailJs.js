@@ -49,7 +49,7 @@ async function performEmailJsSend(templateKind, templateParams) {
     if (!response.ok) {
       // Do not log or forward provider response bodies; they can include sensitive
       // configuration details. The status is enough for operational diagnostics.
-      throw new Error(`EmailJS request failed with status ${response.status}.`);
+      throw new Error(`EmailJS request failed with status ${response.status}. Check the EmailJS service ID, template ID, recipient field, template variable names, and private key in the backend environment.`);
     }
   } finally {
     clearTimeout(timeout);

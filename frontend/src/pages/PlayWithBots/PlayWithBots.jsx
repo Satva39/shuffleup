@@ -4,8 +4,9 @@ import { useAuth } from "../../context/AuthContext";
 import { socket } from "../../services/socket";
 import { games } from "../../data/games";
 import "./PlayWithBots.css";
+import { API_BASE_URL } from "../../services/apiBase";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = API_BASE_URL;
 const SOLITAIRE_ID = "solitaire";
 
 function getGameMeta(gameId) {
@@ -47,9 +48,7 @@ export default function PlayWithBots() {
           setSelectedGame(initialConfig.gameId);
           setBotCount(initialConfig.minBots);
           if (requestedGameId && !requestedConfig) {
-            setError(
-              "That game does not currently support bot mode. Choose another game.",
-            );
+            setError("That game does not currently support bot mode. Choose another game.");
           }
         } else {
           setError("No bot-supported games are currently available.");
@@ -110,12 +109,7 @@ export default function PlayWithBots() {
 
     socket.emit(
       "create-bot-game",
-      {
-        gameId: selectedGame,
-        botCount,
-        botPersona,
-        challengeMode: impossibleChallenge ? "impossible" : null,
-      },
+      { gameId: selectedGame, botCount, botPersona, challengeMode: impossibleChallenge ? "impossible" : null },
       (response) => {
         if (!response?.success) {
           setStarting(false);
@@ -164,13 +158,7 @@ export default function PlayWithBots() {
                   <h2>Select Game</h2>
                   <p>Only games with bot support are shown.</p>
                 </div>
-                <span className="bot-standard-pill">
-                  {impossibleChallenge
-                    ? "IMPOSSIBLE CHALLENGE"
-                    : isDemo
-                      ? "2-MINUTE DEMO"
-                      : "STANDARD"}
-                </span>
+                <span className="bot-standard-pill">{impossibleChallenge ? "IMPOSSIBLE CHALLENGE" : isDemo ? "2-MINUTE DEMO" : "STANDARD"}</span>
               </div>
 
               <div className="bot-game-list">
@@ -198,25 +186,10 @@ export default function PlayWithBots() {
               <section className="bot-setup-card bot-challenge-card">
                 <div className="bot-step">SPECIAL MODE</div>
                 <h2>Impossible Challenge</h2>
-                <p>
-                  This mode deliberately overrides War battle results so the
-                  challenge bot wins. It is an explicitly unfair mode, not a
-                  fair rules-only opponent.
-                </p>
+                <p>This mode deliberately overrides War battle results so the challenge bot wins. It is an explicitly unfair mode, not a fair rules-only opponent.</p>
                 <label className="bot-challenge-toggle">
-                  <input
-                    type="checkbox"
-                    checked={impossibleChallenge}
-                    disabled={isDemo}
-                    onChange={(event) => {
-                      setImpossibleChallenge(event.target.checked);
-                      if (event.target.checked) setBotCount(1);
-                    }}
-                  />
-                  <span>
-                    Enable disclosed bot advantage{" "}
-                    {isDemo ? "(sign in required)" : ""}
-                  </span>
+                  <input type="checkbox" checked={impossibleChallenge} disabled={isDemo} onChange={(event) => { setImpossibleChallenge(event.target.checked); if (event.target.checked) setBotCount(1); }} />
+                  <span>Enable disclosed bot advantage {isDemo ? "(sign in required)" : ""}</span>
                 </label>
               </section>
             )}
@@ -260,44 +233,11 @@ export default function PlayWithBots() {
                     Valid: {selectedConfig.minBots}–{selectedConfig.maxBots}{" "}
                     bots
                   </div>
-                  <div
-                    className="bot-persona-picker"
-                    aria-labelledby="bot-persona-label"
-                  >
+                  <div className="bot-persona-picker" aria-labelledby="bot-persona-label">
                     <h3 id="bot-persona-label">Bot personality</h3>
-                    <p>
-                      Choose the voice style for your opponents. Voice can be
-                      muted during the game.
-                    </p>
+                    <p>Choose the voice style for your opponents. Voice can be muted during the game.</p>
                     <div className="bot-persona-options">
-                      {[
-                        {
-                          value: "mix",
-                          label: "Mixed",
-                          detail: "Arjun + Maya",
-                        },
-                        {
-                          value: "male",
-                          label: "Male",
-                          detail: "Arjun & male voices",
-                        },
-                        {
-                          value: "female",
-                          label: "Female",
-                          detail: "Maya & female voices",
-                        },
-                      ].map((item) => (
-                        <button
-                          key={item.value}
-                          type="button"
-                          className={`bot-persona-option ${botPersona === item.value ? "selected" : ""}`}
-                          aria-pressed={botPersona === item.value}
-                          onClick={() => setBotPersona(item.value)}
-                        >
-                          <strong>{item.label}</strong>
-                          <span>{item.detail}</span>
-                        </button>
-                      ))}
+                      {[{ value: "mix", label: "Mixed", detail: "Arjun + Maya" }, { value: "male", label: "Male", detail: "Arjun & male voices" }, { value: "female", label: "Female", detail: "Maya & female voices" }].map((item) => <button key={item.value} type="button" className={`bot-persona-option ${botPersona === item.value ? "selected" : ""}`} aria-pressed={botPersona === item.value} onClick={() => setBotPersona(item.value)}><strong>{item.label}</strong><span>{item.detail}</span></button>)}
                     </div>
                   </div>
                 </>

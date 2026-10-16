@@ -23,10 +23,7 @@ try {
   // than treating the player as a new participant or rejecting the reconnect.
   const returnedRoom = addPlayer(room.code, { id: hostId, username: "Host" });
   assert.equal(returnedRoom.code, room.code);
-  assert.equal(
-    returnedRoom.players.filter((player) => player.id === hostId).length,
-    1,
-  );
+  assert.equal(returnedRoom.players.filter((player) => player.id === hostId).length, 1);
   assert.equal(findActiveRoomForPlayer(hostId).code, room.code);
 
   const counts = getLiveCounts().games.war;
@@ -39,12 +36,7 @@ try {
 }
 
 for (const persona of ["male", "female", "mix"]) {
-  const botRoom = createBotRoom(
-    "war",
-    { id: `persona-test-${persona}`, username: "Tester" },
-    1,
-    { mode: "bots", botPersona: persona },
-  );
+  const botRoom = createBotRoom("war", { id: `persona-test-${persona}`, username: "Tester" }, 1, { mode: "bots", botPersona: persona });
   try {
     const selectedBot = botRoom.players.find((player) => player.isBot);
     assert.ok(selectedBot);

@@ -28,12 +28,23 @@ export function AuthProvider({ children }) {
         localStorage.setItem("shuffleup_user", JSON.stringify(result.user));
 
         setUser(result.user);
-      } catch {
-        localStorage.removeItem("shuffleup_user");
-
-        localStorage.removeItem("shuffleup_token");
-
-        setUser(null);
+      } catch (error) {
+        // Only clear a session when the server explicitly rejects it.
+        // A temporary outage or unapplied migration must not erase a saved session.
+        if ([401, 403, 404].includes(Number(error?.status))) {
+          localStorage.removeItem("shuffleup_user");
+          localStorage.removeItem("shuffleup_token");
+          setUser(null);
+        } else {
+          try {
+            const cachedUser = JSON.parse(
+              localStorage.getItem("shuffleup_user") || "null",
+            );
+            setUser(cachedUser);
+          } catch {
+            setUser(null);
+          }
+        }
       } finally {
         setLoading(false);
       }

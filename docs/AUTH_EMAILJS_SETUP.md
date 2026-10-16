@@ -39,15 +39,16 @@ PUBLIC_APP_URL=https://shuffleup-five.vercel.app
 
 Use the real deployed website URL for `PUBLIC_APP_URL` and HTTPS in production. `FRONTEND_URL` remains the website origin permitted by the backend's CORS policy. Do not copy the placeholders as working credentials.
 
-## 2. Apply the database migration
+## 2. Apply the database migrations
 
-Back up the database first. On the existing PostgreSQL/Neon database, run:
+Back up the database first. On the existing PostgreSQL/Neon database, run both migrations in this order:
 
 ```bash
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/20261016_email_verification_and_password_reset.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/migrations/20261016_legacy_accounts_verified.sql
 ```
 
-Or run the migration's SQL in your database console. The migration is additive: old rows are marked verified to preserve existing accounts; new registrations explicitly create `email_verified = FALSE`. The new token tables store SHA-256 token hashes, expiry timestamps, and one-use state rather than raw tokens.
+Or execute each file in your database console in the same order. The second migration grandfathers existing accounts that have no verification-token record, including accounts which were accidentally left with `email_verified = FALSE` by an earlier partial rollout. Accounts that already have a verification token remain subject to verification and can request a resend. New registrations explicitly create `email_verified = FALSE`. Token values themselves are not stored in the database; only token hashes, expiry timestamps, and one-use state are stored.
 
 For a brand-new database, `database/schema.sql` includes the new columns and tables.
 

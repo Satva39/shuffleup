@@ -1,19 +1,9 @@
 import { socket } from "../services/socket";
 
 /** Leave the current server session and route to the existing setup flow. */
-export function startFreshGame(
-  gameId,
-  roomCode,
-  navigate,
-  { confirm = true } = {},
-) {
+export function startFreshGame(gameId, roomCode, navigate, { confirm = true } = {}) {
   if (!gameId || typeof navigate !== "function") return false;
-  if (
-    confirm &&
-    typeof window !== "undefined" &&
-    !window.confirm("Leave this table and set up a fresh game?")
-  )
-    return false;
+  if (confirm && typeof window !== "undefined" && !window.confirm("Leave this table and set up a fresh game?")) return false;
 
   if (roomCode && socket.connected) {
     try {
@@ -23,14 +13,8 @@ export function startFreshGame(
     }
   }
 
-  const lastMode =
-    typeof sessionStorage !== "undefined"
-      ? sessionStorage.getItem("shuffleup:last-game-mode")
-      : null;
-  const lastGameId =
-    typeof sessionStorage !== "undefined"
-      ? sessionStorage.getItem("shuffleup:last-game-id")
-      : null;
+  const lastMode = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("shuffleup:last-game-mode") : null;
+  const lastGameId = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("shuffleup:last-game-id") : null;
   if (lastMode === "bots" && lastGameId === gameId && gameId !== "solitaire") {
     navigate(`/play-with-bots?game=${encodeURIComponent(gameId)}`);
   } else {

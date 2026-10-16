@@ -141,9 +141,7 @@ export default function PlayWithBotsScreen({ navigation, route }) {
     }
 
     if (impossibleChallenge && (user?.isGuest || selectedGame !== "war")) {
-      setError(
-        "Impossible Challenge is available only for registered users in War.",
-      );
+      setError("Impossible Challenge is available only for registered users in War.");
       return;
     }
     if (!selectedConfig) {
@@ -417,9 +415,7 @@ export default function PlayWithBotsScreen({ navigation, route }) {
                               marginTop: 4,
                             }}
                           >
-                            {config.minPlayers === config.maxPlayers
-                              ? `Only ${config.minPlayers} Players`
-                              : `${config.minPlayers}–${config.maxPlayers} Players`}
+                            {config.minPlayers === config.maxPlayers ? `Only ${config.minPlayers} Players` : `${config.minPlayers}–${config.maxPlayers} Players`}
                           </Text>
                         </View>
                         <Ionicons
@@ -472,156 +468,18 @@ export default function PlayWithBotsScreen({ navigation, route }) {
             </View>
 
             {selectedGame === "war" ? (
-              <Pressable
-                onPress={() => {
-                  if (user?.isGuest) {
-                    setError(
-                      "Impossible Challenge requires a registered account.",
-                    );
-                    return;
-                  }
-                  setImpossibleChallenge((value) => !value);
-                  if (!impossibleChallenge) setBotCount(1);
-                }}
-                style={{
-                  marginTop: 14,
-                  padding: 14,
-                  borderRadius: radii.lg,
-                  borderWidth: 1,
-                  borderColor: impossibleChallenge
-                    ? colors.cyan
-                    : colors.border,
-                  backgroundColor: impossibleChallenge
-                    ? "rgba(34,211,238,0.10)"
-                    : colors.surface,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 10,
-                }}
-                accessibilityRole="checkbox"
-                accessibilityState={{ checked: impossibleChallenge }}
-              >
-                <Ionicons
-                  name={impossibleChallenge ? "checkbox" : "square-outline"}
-                  size={22}
-                  color={impossibleChallenge ? colors.cyan : colors.muted}
-                />
-                <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      color: colors.text,
-                      fontWeight: "900",
-                      fontSize: 15,
-                    }}
-                  >
-                    Impossible Challenge
-                  </Text>
-                  <Text
-                    style={{
-                      color: colors.muted,
-                      fontSize: 12,
-                      lineHeight: 18,
-                      marginTop: 4,
-                    }}
-                  >
-                    War only. The challenge bot is deliberately given a
-                    disclosed advantage and wins each resolved battle. This is
-                    not fair-play mode; one bot is required.
-                  </Text>
-                  {user?.isGuest ? (
-                    <Text
-                      style={{ color: colors.cyan, fontSize: 11, marginTop: 4 }}
-                    >
-                      Sign in required
-                    </Text>
-                  ) : null}
-                </View>
+              <Pressable onPress={() => { if (user?.isGuest) { setError("Impossible Challenge requires a registered account."); return; } setImpossibleChallenge((value) => !value); if (!impossibleChallenge) setBotCount(1); }} style={{ marginTop: 14, padding: 14, borderRadius: radii.lg, borderWidth: 1, borderColor: impossibleChallenge ? colors.cyan : colors.border, backgroundColor: impossibleChallenge ? "rgba(34,211,238,0.10)" : colors.surface, flexDirection: "row", alignItems: "center", gap: 10 }} accessibilityRole="checkbox" accessibilityState={{ checked: impossibleChallenge }}>
+                <Ionicons name={impossibleChallenge ? "checkbox" : "square-outline"} size={22} color={impossibleChallenge ? colors.cyan : colors.muted} />
+                <View style={{ flex: 1 }}><Text style={{ color: colors.text, fontWeight: "900", fontSize: 15 }}>Impossible Challenge</Text><Text style={{ color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 4 }}>War only. The challenge bot is deliberately given a disclosed advantage and wins each resolved battle. This is not fair-play mode; one bot is required.</Text>{user?.isGuest ? <Text style={{ color: colors.cyan, fontSize: 11, marginTop: 4 }}>Sign in required</Text> : null}</View>
               </Pressable>
             ) : null}
 
-            <View
-              style={{
-                marginTop: 14,
-                backgroundColor: colors.surface,
-                borderRadius: radii.lg,
-                borderWidth: 1,
-                borderColor: colors.border,
-                padding: 18,
-              }}
-            >
-              <Text
-                style={{
-                  color: colors.muted,
-                  fontSize: 11,
-                  fontWeight: "900",
-                  letterSpacing: 1,
-                }}
-              >
-                BOT PERSONALITY
-              </Text>
-              <Text
-                style={{
-                  color: colors.text,
-                  fontSize: 18,
-                  fontWeight: "900",
-                  marginTop: 6,
-                }}
-              >
-                Who are you playing against?
-              </Text>
-              <Text
-                style={{
-                  color: colors.muted,
-                  fontSize: 12,
-                  lineHeight: 18,
-                  marginTop: 5,
-                }}
-              >
-                Persona affects the bot name, reaction style and default speech
-                pitch. You can mute it in game settings.
-              </Text>
+            <View style={{ marginTop: 14, backgroundColor: colors.surface, borderRadius: radii.lg, borderWidth: 1, borderColor: colors.border, padding: 18 }}>
+              <Text style={{ color: colors.muted, fontSize: 11, fontWeight: "900", letterSpacing: 1 }}>BOT PERSONALITY</Text>
+              <Text style={{ color: colors.text, fontSize: 18, fontWeight: "900", marginTop: 6 }}>Who are you playing against?</Text>
+              <Text style={{ color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 5 }}>Persona affects the bot name, reaction style and default speech pitch. You can mute it in game settings.</Text>
               <View style={{ flexDirection: "row", gap: 7, marginTop: 12 }}>
-                {[
-                  { value: "mix", label: "Mixed", detail: "Arjun + Maya" },
-                  { value: "male", label: "Male", detail: "Arjun" },
-                  { value: "female", label: "Female", detail: "Maya" },
-                ].map((item) => (
-                  <Pressable
-                    key={item.value}
-                    onPress={() => setBotPersona(item.value)}
-                    accessibilityRole="radio"
-                    accessibilityState={{ selected: botPersona === item.value }}
-                    style={{
-                      flex: 1,
-                      paddingVertical: 11,
-                      paddingHorizontal: 8,
-                      borderRadius: radii.md,
-                      borderWidth: 1,
-                      borderColor:
-                        botPersona === item.value ? colors.cyan : colors.border,
-                      backgroundColor:
-                        botPersona === item.value
-                          ? "rgba(34,211,238,0.10)"
-                          : colors.surface2,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: colors.text,
-                        fontSize: 12,
-                        fontWeight: "900",
-                      }}
-                    >
-                      {item.label}
-                    </Text>
-                    <Text
-                      style={{ color: colors.muted, fontSize: 9, marginTop: 3 }}
-                    >
-                      {item.detail}
-                    </Text>
-                  </Pressable>
-                ))}
+                {[{ value: "mix", label: "Mixed", detail: "Arjun + Maya" }, { value: "male", label: "Male", detail: "Arjun" }, { value: "female", label: "Female", detail: "Maya" }].map((item) => <Pressable key={item.value} onPress={() => setBotPersona(item.value)} accessibilityRole="radio" accessibilityState={{ selected: botPersona === item.value }} style={{ flex: 1, paddingVertical: 11, paddingHorizontal: 8, borderRadius: radii.md, borderWidth: 1, borderColor: botPersona === item.value ? colors.cyan : colors.border, backgroundColor: botPersona === item.value ? "rgba(34,211,238,0.10)" : colors.surface2, alignItems: "center" }}><Text style={{ color: colors.text, fontSize: 12, fontWeight: "900" }}>{item.label}</Text><Text style={{ color: colors.muted, fontSize: 9, marginTop: 3 }}>{item.detail}</Text></Pressable>)}
               </View>
             </View>
 

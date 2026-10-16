@@ -65,3 +65,11 @@ See `backend/.env.example`. Required for demo/JWT: `JWT_SECRET` (random, at leas
 5. Test the disclosed War challenge mode in setup and in-game.
 6. Check statistics against the actual completion events emitted by all 15 games; document unknown-result games instead of guessing.
 7. Test music/sound/voice controls on desktop browsers and a physical Android device.
+
+## Follow-up fixes for visible demo, legacy login, email delivery, and Expo Doctor
+
+- The website demo button now has explicit purple/white high-contrast styling, wraps on narrow screens, and times out after 12 seconds with an actionable visible error.
+- `frontend/src/services/apiBase.js` is the shared URL resolver. Production falls back to the ShuffleUp Render service if `VITE_API_URL` was omitted; local development uses `http://localhost:5000`.
+- `database/migrations/20261016_legacy_accounts_verified.sql` must run after the email verification/password-reset migration. It marks legacy accounts verified when they did not receive a verification token close to account creation; pending new registrations remain unverified. Password verification still applies to all logins.
+- After deploying the backend, use `/api/health/ready` to check database connectivity, auth schema presence, and presence of EmailJS variables. This endpoint does not expose credentials and does not guarantee that EmailJS delivered an email.
+- To complete the Expo Doctor repair from `mobile/`, run `npx expo install --fix`, then `npx expo install expo-font expo-asset`, then `npx expo-doctor`. This regenerates the lockfile using SDK-compatible package versions; do not hand-edit npm lock entries.

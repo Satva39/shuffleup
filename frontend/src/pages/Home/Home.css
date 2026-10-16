@@ -1,304 +1,373 @@
 .hero {
-  max-width: 1200px;
-  min-height: 600px;
-  margin: auto;
-  padding: 90px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 50px;
+    max-width: 1200px;
+    min-height: 520px;
+    margin: auto;
+    padding: 58px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
 }
 
 .hero-content {
-  max-width: 650px;
+    max-width: 650px;
 }
 
 .eyebrow {
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 2px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
 
 .hero h1 {
-  margin: 18px 0;
-  font-size: clamp(48px, 7vw, 82px);
-  line-height: 0.98;
-  letter-spacing: -4px;
+    margin: 18px 0;
+    font-size: clamp(48px, 7vw, 82px);
+    line-height: 0.98;
+    letter-spacing: -4px;
 }
 
 .hero h1 span {
-  color: var(--accent);
+    color: var(--accent);
 }
 
 .hero-description {
-  max-width: 520px;
-  color: var(--muted);
-  line-height: 1.7;
-  font-size: 17px;
+    max-width: 520px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 17px;
 }
 
 .hero-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 30px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.hero-buttons > a,
+.hero-buttons > button {
+    flex: 0 0 auto;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font: inherit;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: center;
+}
+
+.demo-start-button {
+    appearance: none;
+    border: 1px solid var(--accent) !important;
+    background: var(--accent) !important;
+    color: #ffffff !important;
+    cursor: pointer;
+    opacity: 1;
+    white-space: normal;
+    box-shadow: 0 8px 24px rgba(124, 92, 255, 0.18);
+    transition: background-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.demo-start-button:hover:not(:disabled) {
+    background: #6745ee !important;
+    box-shadow: 0 10px 28px rgba(124, 92, 255, 0.28);
+    transform: translateY(-1px);
+}
+
+.demo-start-button:focus-visible {
+    outline: 3px solid rgba(124, 92, 255, 0.55);
+    outline-offset: 3px;
+}
+
+.demo-start-button:disabled {
+    cursor: wait;
+    opacity: 0.78;
+}
+
+.demo-start-error {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 14px 0 0;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 107, 107, 0.35);
+    border-radius: 8px;
+    background: rgba(255, 70, 70, 0.10);
+    color: #ff8b8b;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .primary-btn,
 .secondary-btn {
-  padding: 13px 22px;
-  border-radius: 9px;
-  text-decoration: none;
-  font-weight: 800;
+    padding: 13px 22px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-weight: 800;
 }
 
 .primary-btn {
-  background: var(--accent);
-  color: white;
+    background: var(--accent);
+    color: white;
 }
 
 .secondary-btn {
-  border: 1px solid var(--border);
-  color: var(--text);
+    border: 1px solid var(--border);
+    color: var(--text);
 }
 
 .hero-cards {
-  width: 330px;
-  height: 350px;
-  position: relative;
+    width: 330px;
+    height: 350px;
+    position: relative;
 }
 
 .floating-card {
-  position: absolute;
-  width: 150px;
-  height: 210px;
-  border-radius: 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  font-weight: 800;
+    position: absolute;
+    width: 150px;
+    height: 210px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 800;
 }
 
 .card-one {
-  left: 20px;
-  top: 70px;
-  transform: rotate(-15deg);
+    left: 20px;
+    top: 70px;
+    transform: rotate(-15deg);
 }
 
 .card-two {
-  left: 90px;
-  top: 25px;
-  transform: rotate(4deg);
-  z-index: 2;
+    left: 90px;
+    top: 25px;
+    transform: rotate(4deg);
+    z-index: 2;
 }
 
 .card-three {
-  left: 165px;
-  top: 70px;
-  transform: rotate(16deg);
+    left: 165px;
+    top: 70px;
+    transform: rotate(16deg);
 }
 
 .games-section {
-  max-width: 1200px;
-  margin: auto;
-  padding: 80px 24px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 80px 24px;
 }
 
 .section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 30px;
 }
 
 .section-heading h2,
 .how-section h2 {
-  margin: 8px 0 0;
-  font-size: 42px;
-  letter-spacing: -2px;
+    margin: 8px 0 0;
+    font-size: 42px;
+    letter-spacing: -2px;
 }
 
-.section-heading > p {
-  color: var(--muted);
-  font-size: 13px;
+.section-heading>p {
+    color: var(--muted);
+    font-size: 13px;
 }
 
 .game-controls {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .game-controls input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface);
-  color: var(--text);
-  outline: none;
-  margin-bottom: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    margin-bottom: 14px;
 }
 
 .categories {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .categories button {
-  padding: 9px 15px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  font-weight: 700;
+    padding: 9px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-weight: 700;
 }
 
 .categories button.active,
 .categories button:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
 }
 
 .games-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
 .no-games {
-  text-align: center;
-  padding: 80px 0;
+    text-align: center;
+    padding: 80px 0;
 }
 
 .no-games p {
-  color: var(--muted);
+    color: var(--muted);
 }
 
 .how-section {
-  max-width: 1200px;
-  margin: auto;
-  padding: 100px 24px;
-  text-align: center;
+    max-width: 1200px;
+    margin: auto;
+    padding: 100px 24px;
+    text-align: center;
 }
 
 .steps {
-  margin-top: 50px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  text-align: left;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    text-align: left;
 }
 
 .step {
-  border-top: 1px solid var(--border);
-  padding-top: 20px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
 }
 
 .step span {
-  color: var(--accent);
-  font-weight: 800;
+    color: var(--accent);
+    font-weight: 800;
 }
 
 .step p {
-  color: var(--muted);
-  line-height: 1.6;
+    color: var(--muted);
+    line-height: 1.6;
 }
 
 .about-section {
-  max-width: 800px;
-  margin: auto;
-  padding: 100px 24px;
-  text-align: center;
+    max-width: 800px;
+    margin: auto;
+    padding: 100px 24px;
+    text-align: center;
 }
 
 .about-section h2 {
-  font-size: 45px;
-  letter-spacing: -2px;
+    font-size: 45px;
+    letter-spacing: -2px;
 }
 
-.about-section > p:last-child {
-  color: var(--muted);
-  line-height: 1.8;
+.about-section>p:last-child {
+    color: var(--muted);
+    line-height: 1.8;
 }
 
 footer {
-  border-top: 1px solid var(--border);
-  padding: 30px 24px;
-  display: flex;
-  justify-content: space-between;
-  color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding: 30px 24px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
 }
 
 footer strong {
-  color: var(--text);
+    color: var(--text);
 }
 
 @media (max-width: 900px) {
-  .hero {
-    text-align: center;
-    justify-content: center;
-  }
+    .hero {
+        text-align: center;
+        justify-content: center;
+    }
 
-  .hero-description {
-    margin: auto;
-  }
+    .hero-description {
+        margin: auto;
+    }
 
-  .hero-buttons {
-    justify-content: center;
-  }
+    .hero-buttons {
+        justify-content: center;
+        gap: 10px;
+    }
 
-  .hero-cards {
-    display: none;
-  }
+    .hero-buttons > a,
+    .hero-buttons > button {
+        min-width: min(100%, 155px);
+        max-width: 100%;
+    }
 
-  .games-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .demo-start-button {
+        flex-basis: 100% !important;
+    }
 
-  .steps {
-    grid-template-columns: 1fr;
-  }
+    .hero-cards {
+        display: none;
+    }
+
+    .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 600px) {
-  .hero {
-    min-height: auto;
-    padding: 70px 18px;
-  }
+    .hero {
+        min-height: auto;
+        padding: 54px 18px 42px;
+    }
 
-  .hero h1 {
-    font-size: 48px;
-    letter-spacing: -2px;
-  }
+    .hero h1 {
+        font-size: 48px;
+        letter-spacing: -2px;
+    }
 
-  .games-section {
-    padding: 60px 16px;
-  }
+    .games-section {
+        padding: 60px 16px;
+    }
 
-  .section-heading {
-    display: block;
-  }
+    .section-heading {
+        display: block;
+    }
 
-  .section-heading h2,
-  .how-section h2 {
-    font-size: 34px;
-  }
+    .section-heading h2,
+    .how-section h2 {
+        font-size: 34px;
+    }
 
-  .games-grid {
-    grid-template-columns: 1fr;
-  }
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
 
-  footer {
-    flex-direction: column;
-    gap: 8px;
-  }
+    footer {
+        flex-direction: column;
+        gap: 8px;
+    }
 }
 .game-sort-control {
   display: flex;
@@ -329,31 +398,10 @@ footer strong {
   gap: 14px;
   background: var(--surface);
 }
-.rejoin-active-room div {
-  display: grid;
-  gap: 4px;
-}
-.rejoin-active-room span {
-  color: var(--muted);
-  font-size: 14px;
-}
-.rejoin-active-room button {
-  border: 0;
-  border-radius: 8px;
-  padding: 11px 16px;
-  background: var(--accent);
-  color: white;
-  font-weight: 800;
-  cursor: pointer;
-}
+.rejoin-active-room div { display: grid; gap: 4px; }
+.rejoin-active-room span { color: var(--muted); font-size: 14px; }
+.rejoin-active-room button { border: 0; border-radius: 8px; padding: 11px 16px; background: var(--accent); color: white; font-weight: 800; cursor: pointer; }
 @media (max-width: 600px) {
-  .game-sort-control {
-    align-items: stretch;
-    flex-direction: column;
-  }
-  .rejoin-active-room {
-    margin: 14px 16px 0;
-    align-items: stretch;
-    flex-direction: column;
-  }
+  .game-sort-control { align-items: stretch; flex-direction: column; }
+  .rejoin-active-room { margin: 14px 16px 0; align-items: stretch; flex-direction: column; }
 }

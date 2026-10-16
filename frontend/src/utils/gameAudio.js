@@ -19,15 +19,9 @@ function getContext() {
   return audioContext;
 }
 
-export function isSoundEnabled() {
-  return enabled;
-}
-export function isMusicEnabled() {
-  return musicEnabled;
-}
-export function getSoundVolume() {
-  return volume;
-}
+export function isSoundEnabled() { return enabled; }
+export function isMusicEnabled() { return musicEnabled; }
+export function getSoundVolume() { return volume; }
 
 export async function setSoundEnabled(nextValue) {
   enabled = Boolean(nextValue);
@@ -56,33 +50,20 @@ export function setSoundVolume(nextValue) {
   const number = Number(nextValue);
   if (!Number.isFinite(number)) return volume;
   volume = Math.max(0, Math.min(1, number));
-  if (masterGain && audioContext)
-    masterGain.gain.setTargetAtTime(volume, audioContext.currentTime, 0.02);
+  if (masterGain && audioContext) masterGain.gain.setTargetAtTime(volume, audioContext.currentTime, 0.02);
   return volume;
 }
 
-function tone(
-  frequency,
-  startAt,
-  duration,
-  { type = "sine", gain = 0.18, endFrequency = null } = {},
-) {
+function tone(frequency, startAt, duration, { type = "sine", gain = 0.18, endFrequency = null } = {}) {
   const context = getContext();
   if (!context || !masterGain) return;
   const oscillator = context.createOscillator();
   const envelope = context.createGain();
   oscillator.type = type;
   oscillator.frequency.setValueAtTime(Math.max(30, frequency), startAt);
-  if (endFrequency)
-    oscillator.frequency.exponentialRampToValueAtTime(
-      Math.max(30, endFrequency),
-      startAt + duration,
-    );
+  if (endFrequency) oscillator.frequency.exponentialRampToValueAtTime(Math.max(30, endFrequency), startAt + duration);
   envelope.gain.setValueAtTime(0.0001, startAt);
-  envelope.gain.exponentialRampToValueAtTime(
-    Math.max(0.001, gain),
-    startAt + Math.min(0.015, duration / 3),
-  );
+  envelope.gain.exponentialRampToValueAtTime(Math.max(0.001, gain), startAt + Math.min(0.015, duration / 3));
   envelope.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
   oscillator.connect(envelope);
   envelope.connect(masterGain);
@@ -103,21 +84,15 @@ export function playGameSound(kind = "card", force = false) {
     tone(420, now, 0.12, { type: "triangle", gain: 0.16, endFrequency: 310 });
   } else if (kind === "trick") {
     tone(520, now, 0.16, { type: "sine", gain: 0.13 });
-    tone(690, now + 0.1, 0.2, { type: "sine", gain: 0.12 });
+    tone(690, now + 0.10, 0.20, { type: "sine", gain: 0.12 });
   } else if (kind === "win") {
-    [523.25, 659.25, 783.99].forEach((frequency, index) =>
-      tone(frequency, now + index * 0.09, 0.28, { type: "sine", gain: 0.1 }),
-    );
+    [523.25, 659.25, 783.99].forEach((frequency, index) => tone(frequency, now + index * 0.09, 0.28, { type: "sine", gain: 0.10 }));
   } else if (kind === "tap") {
     tone(620, now, 0.06, { type: "sine", gain: 0.06, endFrequency: 520 });
   } else {
     // Soft, short card flick sound built from oscillators; no external assets.
     tone(460, now, 0.085, { type: "triangle", gain: 0.14, endFrequency: 230 });
-    tone(880, now + 0.018, 0.045, {
-      type: "sine",
-      gain: 0.035,
-      endFrequency: 620,
-    });
+    tone(880, now + 0.018, 0.045, { type: "sine", gain: 0.035, endFrequency: 620 });
   }
 }
 

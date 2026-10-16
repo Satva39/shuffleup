@@ -52,14 +52,7 @@ export default function GameCard({ game, onPress, liveCount }) {
               >
                 {game.name}
               </Text>
-              <Text
-                style={{
-                  color: colors.muted,
-                  fontSize: 13,
-                  lineHeight: 19,
-                  marginTop: 4,
-                }}
-              >
+              <Text style={{ color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 4 }}>
                 {game.players} · {game.category}
               </Text>
             </View>
@@ -74,14 +67,7 @@ export default function GameCard({ game, onPress, liveCount }) {
               ● {liveCount} players online now
             </Text>
           ) : null}
-          <Text
-            style={{
-              color: colors.muted,
-              fontSize: 14,
-              lineHeight: 22,
-              marginTop: 13,
-            }}
-          >
+          <Text style={{ color: colors.muted, fontSize: 14, lineHeight: 22, marginTop: 13 }}>
             {game.description}
           </Text>
         </View>

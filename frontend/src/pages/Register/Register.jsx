@@ -21,10 +21,7 @@ function Register() {
   const [resendAvailable, setResendAvailable] = useState(false);
 
   function handleChange(event) {
-    setForm((current) => ({
-      ...current,
-      [event.target.name]: event.target.value,
-    }));
+    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
     setError("");
   }
 
@@ -54,18 +51,12 @@ function Register() {
         email: form.email,
         password: form.password,
       });
-      setForm((current) => ({
-        ...current,
-        email: result.email || current.email,
-      }));
+      setForm((current) => ({ ...current, email: result.email || current.email }));
       setMessage(result.message || "Check your email for a verification link.");
       setResendAvailable(true);
     } catch (requestError) {
       setError(requestError.message || "Registration failed.");
-      if (
-        requestError.data?.verificationPending ||
-        requestError.status === 409
-      ) {
+      if (requestError.data?.verificationPending || requestError.status === 409) {
         setResendAvailable(true);
       }
     } finally {
@@ -78,13 +69,9 @@ function Register() {
     setLoading(true);
     try {
       const result = await resendVerificationEmail(form.email);
-      setMessage(
-        result.message || "Check your inbox if the account needs verification.",
-      );
+      setMessage(result.message || "Check your inbox if the account needs verification.");
     } catch (requestError) {
-      setError(
-        requestError.message || "Unable to request a new verification email.",
-      );
+      setError(requestError.message || "Unable to request a new verification email.");
     } finally {
       setLoading(false);
     }
@@ -103,16 +90,8 @@ function Register() {
           <span>Verify your email before your first sign in.</span>
         </div>
 
-        {error && (
-          <div className="register-error" role="alert">
-            {error}
-          </div>
-        )}
-        {message && (
-          <div className="register-message" role="status">
-            {message}
-          </div>
-        )}
+        {error && <div className="register-error" role="alert">{error}</div>}
+        {message && <div className="register-message" role="status">{message}</div>}
 
         {!message && (
           <form onSubmit={handleSubmit}>
@@ -159,12 +138,7 @@ function Register() {
                   autoComplete="new-password"
                   required
                 />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={() => setShowPassword((value) => !value)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
+                <button type="button" className="password-toggle" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Hide password" : "Show password"}>
                   {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
@@ -183,67 +157,33 @@ function Register() {
                   autoComplete="new-password"
                   required
                 />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={() => setShowConfirmPassword((value) => !value)}
-                  aria-label={
-                    showConfirmPassword
-                      ? "Hide confirm password"
-                      : "Show confirm password"
-                  }
-                >
+                <button type="button" className="password-toggle" onClick={() => setShowConfirmPassword((value) => !value)} aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}>
                   {showConfirmPassword ? "Hide" : "Show"}
                 </button>
               </div>
             </label>
 
-            <button
-              type="submit"
-              className="register-submit"
-              disabled={loading}
-            >
+            <button type="submit" className="register-submit" disabled={loading}>
               {loading ? "Creating account..." : "Create Account"}
             </button>
           </form>
         )}
 
         {resendAvailable && (
-          <button
-            className="register-resend"
-            type="button"
-            disabled={loading || !form.email.trim()}
-            onClick={resend}
-          >
+          <button className="register-resend" type="button" disabled={loading || !form.email.trim()} onClick={resend}>
             {loading ? "Sending..." : "Resend verification email"}
           </button>
         )}
 
         {message && (
-          <button
-            className="register-submit"
-            type="button"
-            onClick={() =>
-              navigate(
-                redirectTo
-                  ? `/login?redirect=${encodeURIComponent(redirectTo)}`
-                  : "/login",
-              )
-            }
-          >
+          <button className="register-submit" type="button" onClick={() => navigate(redirectTo ? `/login?redirect=${encodeURIComponent(redirectTo)}` : "/login")}>
             Continue to Login
           </button>
         )}
 
         <p className="register-switch">
           Already have an account?{" "}
-          <Link
-            to={
-              redirectTo
-                ? `/login?redirect=${encodeURIComponent(redirectTo)}`
-                : "/login"
-            }
-          >
+          <Link to={redirectTo ? `/login?redirect=${encodeURIComponent(redirectTo)}` : "/login"}>
             Login
           </Link>
         </p>

@@ -136,7 +136,11 @@ export async function register(req, res) {
     if (error?.code === "23505") {
       return sendFailure(res, "An account with this email already exists. Try signing in or resending verification.", 409);
     }
-    console.error("Registration failed.", error?.message || "Unknown database error.");
+    if (["42703", "42P01"].includes(error?.code)) {
+      console.error("Registration blocked because required authentication schema is missing.", error.code);
+      return sendFailure(res, "The account service database is not up to date. The server owner must apply the authentication database migrations.", 503);
+    }
+    console.error("Registration failed.", error?.code || "UNKNOWN_DB_ERROR", error?.message || "Unknown database error.");
     return sendFailure(res, "Unable to create account. Please try again later.", 500);
   }
 }
@@ -177,7 +181,7 @@ export async function verifyEmail(req, res) {
 
 export async function resendVerification(req, res) {
   const email = normalizeEmail(req.body?.email);
-  const genericMessage = "If an unverified account exists for that email, a verification link will be sent.";
+  const genericMessage = "If an unverified account exists for that email, a verification message may have been sent. Check your inbox and spam folder; if it never arrives, the service owner should check the EmailJS dashboard and backend logs.";
   if (!isValidEmail(email)) return res.json({ message: genericMessage });
 
   try {
@@ -231,7 +235,15 @@ export async function login(req, res) {
       token,
     });
   } catch (error) {
-    console.error("Login failed.", error?.message || "Unknown database error.");
+    if (["42703", "42P01"].includes(error?.code)) {
+      console.error("Login blocked because required authentication schema is missing.", error.code);
+      return sendFailure(
+        res,
+        "The login service database is not up to date. Existing accounts are safe; the server owner must apply the authentication database migrations.",
+        503,
+      );
+    }
+    console.error("Login failed.", error?.code || "UNKNOWN_DB_ERROR", error?.message || "Unknown database error.");
     return sendFailure(res, "Unable to login. Please try again later.", 500);
   }
 }

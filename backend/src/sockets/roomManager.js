@@ -8,30 +8,8 @@ import {
 } from "../../../shared/constants/platform.js";
 
 const BOT_NAMES = Object.freeze({
-  male: [
-    "Arjun",
-    "Bot Max",
-    "Bot Jordan",
-    "Bot Chris",
-    "Bot Devon",
-    "Bot Drew",
-    "Bot Cameron",
-    "Bot Parker",
-    "Bot Quinn",
-    "Bot Rowan",
-  ],
-  female: [
-    "Maya",
-    "Bot Riley",
-    "Bot Taylor",
-    "Bot Jamie",
-    "Bot Casey",
-    "Bot Morgan",
-    "Bot Avery",
-    "Bot Reese",
-    "Bot Skyler",
-    "Bot Finley",
-  ],
+  male: ["Arjun", "Bot Max", "Bot Jordan", "Bot Chris", "Bot Devon", "Bot Drew", "Bot Cameron", "Bot Parker", "Bot Quinn", "Bot Rowan"],
+  female: ["Maya", "Bot Riley", "Bot Taylor", "Bot Jamie", "Bot Casey", "Bot Morgan", "Bot Avery", "Bot Reese", "Bot Skyler", "Bot Finley"],
 });
 
 function generateRoomCode() {
@@ -84,15 +62,9 @@ function createBotRoom(gameId, player, botCount, options = {}) {
     throw new Error("Solitaire cannot be played with bots.");
   }
   const mode = options.mode || "bots";
-  const requestedPersona = ["male", "female", "mix"].includes(
-    options.botPersona,
-  )
-    ? options.botPersona
-    : "mix";
+  const requestedPersona = ["male", "female", "mix"].includes(options.botPersona) ? options.botPersona : "mix";
   if (mode === "impossible-challenge" && gameId !== GAME_IDS.WAR) {
-    throw new Error(
-      "Impossible Challenge is currently available only for War.",
-    );
+    throw new Error("Impossible Challenge is currently available only for War.");
   }
   if (mode === "impossible-challenge" && Number(botCount) !== 1) {
     throw new Error("Impossible Challenge uses exactly one opponent bot.");
@@ -131,12 +103,7 @@ function createBotRoom(gameId, player, botCount, options = {}) {
   ];
 
   for (let index = 0; index < count; index += 1) {
-    const persona =
-      requestedPersona === "mix"
-        ? index % 2 === 0
-          ? "male"
-          : "female"
-        : requestedPersona;
+    const persona = requestedPersona === "mix" ? (index % 2 === 0 ? "male" : "female") : requestedPersona;
     const names = BOT_NAMES[persona];
     let username = names[Math.floor(index / 2) % names.length];
     if (usedNames.has(username)) {
@@ -169,8 +136,7 @@ function createBotRoom(gameId, player, botCount, options = {}) {
     hostId: player.id,
     status: ROOM_STATUS.PLAYING,
     mode,
-    challengeMode:
-      mode === "impossible-challenge" ? "disclosed-battle-advantage" : null,
+    challengeMode: mode === "impossible-challenge" ? "disclosed-battle-advantage" : null,
     createdAt: Date.now(),
     players: orderedPlayers,
   };
@@ -184,26 +150,18 @@ function deleteRoom(code) {
 }
 
 function getRoom(code) {
-  return rooms.get(
-    String(code || "")
-      .trim()
-      .toUpperCase(),
-  );
+  return rooms.get(String(code || "").trim().toUpperCase());
 }
 
 function findActiveRoomForPlayer(playerId) {
   if (playerId === undefined || playerId === null) return null;
   const matchingRooms = [...rooms.values()]
-    .filter(
-      (room) =>
-        room.status !== ROOM_STATUS.COMPLETE &&
-        room.status !== ROOM_STATUS.FINISHED &&
-        room.players.some((player) => String(player.id) === String(playerId)),
+    .filter((room) =>
+      room.status !== ROOM_STATUS.COMPLETE &&
+      room.status !== ROOM_STATUS.FINISHED &&
+      room.players.some((player) => String(player.id) === String(playerId)),
     )
-    .sort(
-      (a, b) =>
-        (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0),
-    );
+    .sort((a, b) => (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
   return matchingRooms[0] || null;
 }
 
@@ -222,11 +180,7 @@ function getLiveCounts() {
   for (const room of rooms.values()) {
     const gameCounts = counts[room.gameId];
     if (!gameCounts) continue;
-    if (
-      room.status === ROOM_STATUS.COMPLETE ||
-      room.status === ROOM_STATUS.FINISHED
-    )
-      continue;
+    if (room.status === ROOM_STATUS.COMPLETE || room.status === ROOM_STATUS.FINISHED) continue;
     if (room.status === ROOM_STATUS.PLAYING) gameCounts.activeRooms += 1;
     if (room.status === ROOM_STATUS.WAITING) gameCounts.waitingRooms += 1;
 

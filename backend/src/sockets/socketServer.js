@@ -1,11 +1,7 @@
 import jwt from "jsonwebtoken";
 import pool from "../config/database.js";
 import { setActiveSocketServer } from "./activeSocketRegistry.js";
-import {
-  canTakeOverDisconnectedPlayer,
-  hasLiveHumanSocket,
-  takeoverGracePeriodMs,
-} from "./botTakeoverPolicy.js";
+import { canTakeOverDisconnectedPlayer, hasLiveHumanSocket, takeoverGracePeriodMs } from "./botTakeoverPolicy.js";
 
 import {
   createRoom,
@@ -53,9 +49,7 @@ function cancelBotTakeover(roomCode, userId) {
 
 async function startPlayerBotTakeover(io, gameIo, roomCode, userId) {
   const room = getRoom(roomCode);
-  const player = room?.players?.find(
-    (item) => String(item.id) === String(userId),
-  );
+  const player = room?.players?.find((item) => String(item.id) === String(userId));
   if (!canTakeOverDisconnectedPlayer(room, player)) return;
 
   player.isBot = true;
@@ -66,14 +60,7 @@ async function startPlayerBotTakeover(io, gameIo, roomCode, userId) {
 
   try {
     const existingSession = getBotSession(room.code);
-    const session =
-      existingSession ||
-      (await startBotSession({
-        io: gameIo,
-        getRoom,
-        updatePlayerSocket,
-        room,
-      }));
+    const session = existingSession || await startBotSession({ io: gameIo, getRoom, updatePlayerSocket, room });
     if (existingSession) await session.takeOverPlayer(player);
     // A reconnect may race the async engine join. If the human has already
     // returned, immediately hand control back instead of letting both act.
@@ -83,40 +70,24 @@ async function startPlayerBotTakeover(io, gameIo, roomCode, userId) {
       player.isBot = false;
       player.autoBotTakeover = false;
       player.takeoverStartedAt = null;
-      player.username = String(player.username || "Player").replace(
-        / · Auto Bot$/,
-        "",
-      );
+      player.username = String(player.username || "Player").replace(/ · Auto Bot$/, "");
       return;
     }
     io.to(room.code).emit("room-updated", room);
-    io.to(room.code).emit("bot-takeover-started", {
-      roomCode: room.code,
-      userId,
-      playerName: player.username,
-      gracePeriodMs: BOT_TAKEOVER_GRACE_MS,
-    });
+    io.to(room.code).emit("bot-takeover-started", { roomCode: room.code, userId, playerName: player.username, gracePeriodMs: BOT_TAKEOVER_GRACE_MS });
     publishLiveCounts(io);
   } catch (error) {
     player.isBot = false;
     player.autoBotTakeover = false;
-    player.username = String(player.username || "Player").replace(
-      / · Auto Bot$/,
-      "",
-    );
+    player.username = String(player.username || "Player").replace(/ · Auto Bot$/, "");
     player.connected = false;
-    console.error(
-      "Automatic bot takeover failed:",
-      error?.message || "Unknown bot takeover error.",
-    );
+    console.error("Automatic bot takeover failed:", error?.message || "Unknown bot takeover error.");
   }
 }
 
 function schedulePlayerBotTakeover(io, gameIo, roomCode, userId) {
   const room = getRoom(roomCode);
-  const player = room?.players?.find(
-    (item) => String(item.id) === String(userId),
-  );
+  const player = room?.players?.find((item) => String(item.id) === String(userId));
   if (!canTakeOverDisconnectedPlayer(room, player)) return;
   cancelBotTakeover(roomCode, userId);
   const key = takeoverTimerKey(roomCode, userId);
@@ -141,10 +112,7 @@ function scheduleDemoRoomExpiry(io, room) {
     // Room expiry is independent of the browser socket, so closing the app
     // cannot leave a demo room/bot session alive past the signed expiry.
     io.to(key).emit("room-expired", { roomCode: key, reason: "demo-expired" });
-    io.to(key).emit("demo-expired", {
-      message:
-        "Your two-minute demo has ended. Sign in or register to keep playing.",
-    });
+    io.to(key).emit("demo-expired", { message: "Your two-minute demo has ended. Sign in or register to keep playing." });
     stopBotSession(key);
     deleteRoom(key);
     publishLiveCounts(io);
@@ -160,9 +128,7 @@ function publishLiveCounts(io) {
 function getRoomDestination(room) {
   if (!room) return null;
   const code = String(room.code).toUpperCase();
-  return room.status === "waiting"
-    ? `/room/${code}`
-    : `/games/${room.gameId}/${code}`;
+  return room.status === "waiting" ? `/room/${code}` : `/games/${room.gameId}/${code}`;
 }
 
 function scheduleBotDisconnectCleanup(roomCode, userId) {
@@ -228,19 +194,9 @@ function setupSocket(io) {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       if (decoded.type === "demo") {
-        const expiresAt = Number(
-          decoded.demoExpiresAt || Number(decoded.exp) * 1000,
-        );
-        if (
-          !String(decoded.id || "").startsWith("guest:") ||
-          !Number.isFinite(expiresAt) ||
-          Date.now() >= expiresAt
-        ) {
-          return next(
-            new Error(
-              "Your two-minute demo has ended. Please sign in or register.",
-            ),
-          );
+        const expiresAt = Number(decoded.demoExpiresAt || Number(decoded.exp) * 1000);
+        if (!String(decoded.id || "").startsWith("guest:") || !Number.isFinite(expiresAt) || Date.now() >= expiresAt) {
+          return next(new Error("Your two-minute demo has ended. Please sign in or register."));
         }
         socket.data.authUserId = decoded.id;
         socket.data.authUsername = decoded.username || "Guest";
@@ -258,9 +214,7 @@ function setupSocket(io) {
       if (!account || account.email_verified !== true) {
         return next(new Error("Email verification required."));
       }
-      if (
-        Number(decoded.authVersion ?? 0) !== Number(account.auth_version ?? 0)
-      ) {
+      if (Number(decoded.authVersion ?? 0) !== Number(account.auth_version ?? 0)) {
         return next(new Error("Session expired. Please sign in again."));
       }
 
@@ -275,18 +229,11 @@ function setupSocket(io) {
 
   io.on("connection", (socket) => {
     console.log("Player connected:", socket.id);
-    if (!socket.data.isDemo)
-      socket.join(`auth-user:${String(socket.data.authUserId)}`);
+    if (!socket.data.isDemo) socket.join(`auth-user:${String(socket.data.authUserId)}`);
     if (socket.data.isDemo) {
-      const remaining = Math.max(
-        0,
-        Number(socket.data.demoExpiresAt) - Date.now(),
-      );
+      const remaining = Math.max(0, Number(socket.data.demoExpiresAt) - Date.now());
       socket.data.demoExpiresTimer = setTimeout(() => {
-        socket.emit("demo-expired", {
-          message:
-            "Your two-minute demo has ended. Sign in or register to keep playing.",
-        });
+        socket.emit("demo-expired", { message: "Your two-minute demo has ended. Sign in or register to keep playing." });
         socket.disconnect(true);
       }, remaining);
       socket.data.demoExpiresTimer.unref?.();
@@ -295,76 +242,35 @@ function setupSocket(io) {
     socket.onAny((eventName, payload) => {
       const roomCode = payload?.roomCode;
       const userId = payload?.userId || socket.data.authUserId;
-      if (
-        roomCode &&
-        userId &&
-        (eventName === "get-my-active-room" ||
-          eventName === "join-room" ||
-          /:(join|reconnect)$/.test(eventName))
-      ) {
+      if (roomCode && userId && (eventName === "get-my-active-room" || eventName === "join-room" || /:(join|reconnect)$/.test(eventName))) {
         cancelBotTakeover(roomCode, userId);
         const room = getRoom(roomCode);
-        const player = room?.players?.find(
-          (item) => String(item.id) === String(userId),
-        );
+        const player = room?.players?.find((item) => String(item.id) === String(userId));
         if (player?.autoBotTakeover) {
           const session = getBotSession(roomCode);
           session?.returnControl(userId);
           player.isBot = false;
           player.autoBotTakeover = false;
           player.takeoverStartedAt = null;
-          player.username = String(player.username || "Player").replace(
-            / · Auto Bot$/,
-            "",
-          );
+          player.username = String(player.username || "Player").replace(/ · Auto Bot$/, "");
           player.connected = true;
         }
       }
-      if (
-        socket.data.isDemo &&
-        Date.now() >= Number(socket.data.demoExpiresAt || 0)
-      ) {
-        socket.emit("demo-expired", {
-          message:
-            "Your two-minute demo has ended. Sign in or register to keep playing.",
-        });
+      if (socket.data.isDemo && Date.now() >= Number(socket.data.demoExpiresAt || 0)) {
+        socket.emit("demo-expired", { message: "Your two-minute demo has ended. Sign in or register to keep playing." });
         socket.disconnect(true);
         return;
       }
-      if (
-        socket.data.isDemo &&
-        typeof eventName === "string" &&
-        /^(create-room|join-room|toggle-ready|start-game)$/.test(eventName)
-      ) {
-        socket.emit("demo-restricted", {
-          message:
-            "Demo sessions can only play supported bot games. Sign in for multiplayer rooms.",
-        });
+      if (socket.data.isDemo && typeof eventName === "string" && /^(create-room|join-room|toggle-ready|start-game)$/.test(eventName)) {
+        socket.emit("demo-restricted", { message: "Demo sessions can only play supported bot games. Sign in for multiplayer rooms." });
         return;
       }
-      if (
-        roomCode &&
-        typeof eventName === "string" &&
-        /:(action|play|play-card|move|bid|discard|draw|claim|challenge|pass|call|advance)$/.test(
-          eventName,
-        )
-      ) {
+      if (roomCode && typeof eventName === "string" && /:(action|play|play-card|move|bid|discard|draw|claim|challenge|pass|call|advance)$/.test(eventName)) {
         const room = getRoom(roomCode);
-        if (
-          room &&
-          ["bots", "demo", "impossible-challenge"].includes(room.mode)
-        ) {
-          const actorId =
-            payload?.userId || payload?.playerId || socket.data.authUserId;
-          if (
-            String(actorId) === String(socket.data.authUserId) &&
-            !String(actorId).startsWith("bot:")
-          ) {
-            room.pendingBotAction = {
-              actorId: String(actorId),
-              actionEvent: eventName,
-              at: Date.now(),
-            };
+        if (room && ["bots", "demo", "impossible-challenge"].includes(room.mode)) {
+          const actorId = payload?.userId || payload?.playerId || socket.data.authUserId;
+          if (String(actorId) === String(socket.data.authUserId) && !String(actorId).startsWith("bot:")) {
+            room.pendingBotAction = { actorId: String(actorId), actionEvent: eventName, at: Date.now() };
           }
         }
       }
@@ -373,8 +279,7 @@ function setupSocket(io) {
 
     socket.on("get-live-counts", (callback) => {
       const counts = getLiveCounts();
-      if (typeof callback === "function")
-        callback({ success: true, ...counts });
+      if (typeof callback === "function") callback({ success: true, ...counts });
       else socket.emit("game-live-counts", counts);
     });
 
@@ -382,10 +287,7 @@ function setupSocket(io) {
     // The game-specific join event is still responsible for restoring the
     // private, authoritative hand/state after this metadata step.
     socket.on("get-my-active-room", (payloadOrCallback, maybeCallback) => {
-      const callback =
-        typeof payloadOrCallback === "function"
-          ? payloadOrCallback
-          : maybeCallback;
+      const callback = typeof payloadOrCallback === "function" ? payloadOrCallback : maybeCallback;
       try {
         const userId = assertAuthenticatedSocket(socket);
         const room = findActiveRoomForPlayer(userId);
@@ -394,9 +296,7 @@ function setupSocket(io) {
           return;
         }
 
-        const player = room.players.find(
-          (item) => String(item.id) === String(userId),
-        );
+        const player = room.players.find((item) => String(item.id) === String(userId));
         if (!player) {
           callback?.({ success: true, room: null });
           return;
@@ -408,10 +308,7 @@ function setupSocket(io) {
           player.isBot = false;
           player.autoBotTakeover = false;
           player.takeoverStartedAt = null;
-          player.username = String(player.username || "Player").replace(
-            / · Auto Bot$/,
-            "",
-          );
+          player.username = String(player.username || "Player").replace(/ · Auto Bot$/, "");
         }
         updatePlayerSocket(room.code, userId, socket.id);
         socket.join(room.code);
@@ -436,12 +333,7 @@ function setupSocket(io) {
         publishLiveCounts(io);
         callback?.({
           success: true,
-          room: {
-            code: room.code,
-            gameId: room.gameId,
-            status: room.status,
-            mode: room.mode || "multiplayer",
-          },
+          room: { code: room.code, gameId: room.gameId, status: room.status, mode: room.mode || "multiplayer" },
           destination: getRoomDestination(room),
         });
         io.to(room.code).emit("room-updated", room);
@@ -556,62 +448,51 @@ function setupSocket(io) {
       }
     });
 
-    socket.on(
-      "create-bot-game",
-      async ({ gameId, botCount, challengeMode, botPersona }, callback) => {
-        let botRoom = null;
-        try {
-          const userId = assertAuthenticatedSocket(socket);
-          const username = socket.data.authUsername;
-          if (socket.data.isDemo && challengeMode)
-            throw new Error(
-              "Impossible Challenge requires a registered account.",
-            );
-          const selectedMode =
-            challengeMode === "impossible"
-              ? "impossible-challenge"
-              : socket.data.isDemo
-                ? "demo"
-                : "bots";
-          botRoom = createBotRoom(
-            gameId,
-            {
-              id: userId,
-              username,
-              socketId: socket.id,
-            },
-            botCount,
-            { mode: selectedMode, botPersona },
-          );
-          if (socket.data.isDemo) {
-            botRoom.demoExpiresAt = socket.data.demoExpiresAt;
-            scheduleDemoRoomExpiry(io, botRoom);
-          }
-
-          socket.join(botRoom.code);
-          socket.data.roomCode = botRoom.code;
-          socket.data.userId = userId;
-          updatePlayerSocket(botRoom.code, userId, socket.id);
-
-          await startBotSession({
-            io: gameIo,
-            getRoom,
-            updatePlayerSocket,
-            room: botRoom,
-          });
-
-          callback({ success: true, room: botRoom });
-          io.to(botRoom.code).emit("room-updated", botRoom);
-          publishLiveCounts(io);
-        } catch (error) {
-          if (botRoom) {
-            stopBotSession(botRoom.code);
-            deleteRoom(botRoom.code);
-          }
-          callback({ success: false, message: error.message });
+    socket.on("create-bot-game", async ({ gameId, botCount, challengeMode, botPersona }, callback) => {
+      let botRoom = null;
+      try {
+        const userId = assertAuthenticatedSocket(socket);
+        const username = socket.data.authUsername;
+        if (socket.data.isDemo && challengeMode) throw new Error("Impossible Challenge requires a registered account.");
+        const selectedMode = challengeMode === "impossible" ? "impossible-challenge" : (socket.data.isDemo ? "demo" : "bots");
+        botRoom = createBotRoom(
+          gameId,
+          {
+            id: userId,
+            username,
+            socketId: socket.id,
+          },
+          botCount,
+          { mode: selectedMode, botPersona },
+        );
+        if (socket.data.isDemo) {
+          botRoom.demoExpiresAt = socket.data.demoExpiresAt;
+          scheduleDemoRoomExpiry(io, botRoom);
         }
-      },
-    );
+
+        socket.join(botRoom.code);
+        socket.data.roomCode = botRoom.code;
+        socket.data.userId = userId;
+        updatePlayerSocket(botRoom.code, userId, socket.id);
+
+        await startBotSession({
+          io: gameIo,
+          getRoom,
+          updatePlayerSocket,
+          room: botRoom,
+        });
+
+        callback({ success: true, room: botRoom });
+        io.to(botRoom.code).emit("room-updated", botRoom);
+        publishLiveCounts(io);
+      } catch (error) {
+        if (botRoom) {
+          stopBotSession(botRoom.code);
+          deleteRoom(botRoom.code);
+        }
+        callback({ success: false, message: error.message });
+      }
+    });
 
     socket.on("join-room", ({ roomCode }, callback) => {
       try {
@@ -724,8 +605,7 @@ function setupSocket(io) {
     });
 
     socket.on("disconnect", () => {
-      if (socket.data.demoExpiresTimer)
-        clearTimeout(socket.data.demoExpiresTimer);
+      if (socket.data.demoExpiresTimer) clearTimeout(socket.data.demoExpiresTimer);
       const roomCode = socket.data.roomCode;
       const userId = socket.data.userId;
 

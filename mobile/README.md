@@ -38,3 +38,15 @@ This foundation intentionally stops before implementing the 15 game UIs. Game em
 - Socket.IO is reconnectable and server-authoritative.
 - No second backend, database, fake multiplayer, or mobile-specific rules.
 - Touch-first layouts, safe-area support, clear offline/disconnected states, and accessible actions.
+
+## Repair Expo Doctor findings (SDK 57)
+
+From the `mobile/` directory, after merging the latest source patch, run:
+
+```bash
+npx expo install --fix
+npx expo install expo-font expo-asset
+npx expo-doctor
+```
+
+`expo install` resolves SDK-compatible versions and updates both `package.json` and `package-lock.json`; do not edit those lockfile versions manually. The unsupported `newArchEnabled` field has been removed from `app.json`. After dependency repair, run `npm ci` on a fresh checkout and create a new EAS build.

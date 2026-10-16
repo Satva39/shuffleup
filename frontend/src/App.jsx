@@ -99,6 +99,8 @@ function GameNavigationTools() {
   const [selectedVoice, setSelectedVoice] = useState(
     () => localStorage.getItem("shuffleup_bot_voice_uri") || "",
   );
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const match = location.pathname.match(/^\/games\/([a-z0-9-]+)\/([^/]+)\/?$/i);
   const gameId = match ? match[1].toLowerCase() : null;
   const roomCode = match ? match[2].toUpperCase() : null;
@@ -112,6 +114,26 @@ function GameNavigationTools() {
     return () =>
       window.speechSynthesis.removeEventListener?.("voiceschanged", load);
   }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const closeOnOutsidePress = (event) => {
+      if (!menuRef.current?.contains(event.target)) setMenuOpen(false);
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", closeOnOutsidePress);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePress);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [menuOpen]);
 
   function updateVoiceOn(next) {
     localStorage.setItem("shuffleup_bot_voice", next ? "1" : "0");
@@ -191,6 +213,19 @@ function GameNavigationTools() {
 
   if (!match) return null;
 
+  const goHome = () => {
+    setMenuOpen(false);
+    navigate("/");
+  };
+  const goToLobby = () => {
+    setMenuOpen(false);
+    navigate(`/lobby?game=${encodeURIComponent(gameId)}`);
+  };
+  const beginNewGame = () => {
+    setMenuOpen(false);
+    startFreshGame(gameId, roomCode, navigate);
+  };
+
   return (
     <>
       {lastPlayed && (
@@ -211,84 +246,123 @@ function GameNavigationTools() {
           </button>
         </aside>
       )}
-      <nav className="game-navigation-tools" aria-label="Game navigation">
-        <button type="button" onClick={() => navigate("/")}>
-          Home
-        </button>
+      <div
+        className={`game-navigation-tools${menuOpen ? " is-open" : ""}`}
+        ref={menuRef}
+      >
         <button
           type="button"
-          onClick={() => navigate(`/lobby?game=${encodeURIComponent(gameId)}`)}
+          className="game-menu-toggle"
+          aria-expanded={menuOpen}
+          aria-controls="game-navigation-menu"
+          onClick={() => setMenuOpen((open) => !open)}
         >
-          Lobby
+          <span className="game-menu-toggle-icon" aria-hidden="true">
+            {menuOpen ? "×" : "☰"}
+          </span>
+          <span>{menuOpen ? "Close menu" : "Game menu"}</span>
         </button>
-        <button
-          type="button"
-          aria-pressed={soundOn}
-          onClick={async () => setSoundOn(await setSoundEnabled(!soundOn))}
-        >
-          Sound {soundOn ? "On" : "Off"}
-        </button>
-        <button
-          type="button"
-          aria-pressed={musicOn}
-          onClick={async () => setMusicOn(await setMusicEnabled(!musicOn))}
-        >
-          Music {musicOn ? "On" : "Off"}
-        </button>
-        <button
-          type="button"
-          aria-pressed={voiceOn}
-          onClick={() => updateVoiceOn(!voiceOn)}
-        >
-          Bot Voice {voiceOn ? "On" : "Off"}
-        </button>
-        <label className="game-voice-control" title="Bot voice">
-          <span>Voice</span>
-          <select
-            aria-label="Choose bot voice"
-            value={selectedVoice}
-            onChange={(event) => updateSelectedVoice(event.target.value)}
+        {menuOpen && (
+          <nav
+            id="game-navigation-menu"
+            className="game-navigation-menu"
+            aria-label="Game controls"
           >
-            <option value="">Automatic</option>
-            {availableVoices.map((voice) => (
-              <option key={voice.voiceURI} value={voice.voiceURI}>
-                {voice.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="game-volume-control" title="Bot voice volume">
-          <span>Voice vol</span>
-          <input
-            aria-label="Bot voice volume"
-            type="range"
-            min="0"
-            max="1"
-            step="0.1"
-            value={voiceVolume}
-            onChange={(event) => updateVoiceVolume(event.target.value)}
-          />
-        </label>
-        <label className="game-volume-control" title="Game audio volume">
-          <span>Vol</span>
-          <input
-            aria-label="Game audio volume"
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            value={volume}
-            onChange={(event) => setVolume(setSoundVolume(event.target.value))}
-          />
-        </label>
-        <button
-          type="button"
-          className="new-game"
-          onClick={() => startFreshGame(gameId, roomCode, navigate)}
-        >
-          New Game
-        </button>
-      </nav>
+            <div className="game-navigation-menu-heading">
+              <strong>Game controls</strong>
+              <span>{gameId.replace(/-/g, " ")}</span>
+            </div>
+            <div className="game-navigation-primary-actions">
+              <button type="button" onClick={goHome}>
+                ⌂ Home
+              </button>
+              <button type="button" onClick={goToLobby}>
+                Lobby
+              </button>
+            </div>
+            <div className="game-navigation-toggle-grid">
+              <button
+                type="button"
+                aria-pressed={soundOn}
+                onClick={async () =>
+                  setSoundOn(await setSoundEnabled(!soundOn))
+                }
+              >
+                Sound: {soundOn ? "On" : "Off"}
+              </button>
+              <button
+                type="button"
+                aria-pressed={musicOn}
+                onClick={async () =>
+                  setMusicOn(await setMusicEnabled(!musicOn))
+                }
+              >
+                Music: {musicOn ? "On" : "Off"}
+              </button>
+              <button
+                type="button"
+                className="game-navigation-wide-action"
+                aria-pressed={voiceOn}
+                onClick={() => updateVoiceOn(!voiceOn)}
+              >
+                Bot voice: {voiceOn ? "On" : "Off"}
+              </button>
+            </div>
+            <label
+              className="game-menu-setting"
+              title="Choose the browser voice used for bot reactions"
+            >
+              <span>Bot voice</span>
+              <select
+                aria-label="Choose bot voice"
+                value={selectedVoice}
+                onChange={(event) => updateSelectedVoice(event.target.value)}
+              >
+                <option value="">Automatic</option>
+                {availableVoices.map((voice) => (
+                  <option key={voice.voiceURI} value={voice.voiceURI}>
+                    {voice.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="game-menu-setting" title="Bot voice volume">
+              <span>
+                Bot voice volume{" "}
+                <strong>{Math.round(voiceVolume * 100)}%</strong>
+              </span>
+              <input
+                aria-label="Bot voice volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={voiceVolume}
+                onChange={(event) => updateVoiceVolume(event.target.value)}
+              />
+            </label>
+            <label className="game-menu-setting" title="Game audio volume">
+              <span>
+                Game sound volume <strong>{Math.round(volume * 100)}%</strong>
+              </span>
+              <input
+                aria-label="Game audio volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={volume}
+                onChange={(event) =>
+                  setVolume(setSoundVolume(event.target.value))
+                }
+              />
+            </label>
+            <button type="button" className="new-game" onClick={beginNewGame}>
+              New Game
+            </button>
+          </nav>
+        )}
+      </div>
     </>
   );
 }

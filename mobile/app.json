@@ -41,17 +41,20 @@
           "recordAudioAndroid": false,
           "microphonePermission": false
         }
+      ],
+      [
+        "expo-navigation-bar",
+        {
+          "enforceContrast": false,
+          "hidden": false,
+          "style": "dark"
+        }
       ]
     ],
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#070B17",
       "translucent": false
-    },
-    "androidNavigationBar": {
-      "barStyle": "light-content",
-      "backgroundColor": "#070B17",
-      "enforceContrast": false
     },
     "extra": {
       "eas": {

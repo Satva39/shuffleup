@@ -1,557 +1,614 @@
 .indian-rummy-page {
-    min-height: 100vh;
-    background: #09080f;
-    color: #f7f4ff;
-    overflow-x: hidden;
-    font-family: Inter, system-ui, sans-serif
+  min-height: 100vh;
+  background: #09080f;
+  color: #f7f4ff;
+  overflow-x: hidden;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .rummy-shell {
-    min-height: 100vh;
-    background: radial-gradient(circle at 50% 45%, #241635 0, #0d0b13 45%, #07070b 100%)
+  min-height: 100vh;
+  background: radial-gradient(
+    circle at 50% 45%,
+    #241635 0,
+    #0d0b13 45%,
+    #07070b 100%
+  );
 }
 
 .rummy-topbar {
-    height: 72px;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, .08);
-    background: rgba(8, 7, 12, .9)
+  height: 72px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 7, 12, 0.9);
 }
 
 .rummy-topbar span {
-    font-size: 11px;
-    letter-spacing: .18em;
-    color: #b694ff
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #b694ff;
 }
 
 .rummy-topbar h1 {
-    font-size: 22px;
-    margin: 4px 0 0
+  font-size: 22px;
+  margin: 4px 0 0;
 }
 
 .rummy-wild {
-    padding: 10px 14px;
-    border: 1px solid rgba(186, 135, 255, .35);
-    border-radius: 12px;
-    background: rgba(95, 48, 139, .18);
-    font-size: 11px;
-    letter-spacing: .12em
+  padding: 10px 14px;
+  border: 1px solid rgba(186, 135, 255, 0.35);
+  border-radius: 12px;
+  background: rgba(95, 48, 139, 0.18);
+  font-size: 11px;
+  letter-spacing: 0.12em;
 }
 
 .rummy-wild b {
-    font-size: 22px;
-    margin-left: 8px;
-    color: #fff
+  font-size: 22px;
+  margin-left: 8px;
+  color: #fff;
 }
 
 .rummy-layout {
-    max-width: 1500px;
-    margin: 0 auto;
-    padding: 18px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 260px;
-    gap: 18px
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 18px;
 }
 
 .rummy-table {
-    min-height: calc(100vh - 108px);
-    border: 1px solid rgba(255, 255, 255, .08);
-    border-radius: 26px;
-    background: radial-gradient(circle at 50% 45%, #3d2054 0, #241437 34%, #171021 70%, #100d16 100%);
-    box-shadow: 0 24px 90px rgba(0, 0, 0, .55);
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden
+  min-height: calc(100vh - 108px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 26px;
+  background: radial-gradient(
+    circle at 50% 45%,
+    #3d2054 0,
+    #241437 34%,
+    #171021 70%,
+    #100d16 100%
+  );
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.55);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .rummy-status-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .rummy-turn {
-    padding: 9px 13px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .06);
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: .09em
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
 }
 
 .rummy-turn.your {
-    background: rgba(169, 106, 255, .2);
-    border: 1px solid rgba(190, 137, 255, .35)
+  background: rgba(169, 106, 255, 0.2);
+  border: 1px solid rgba(190, 137, 255, 0.35);
 }
 
 .rummy-seats {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(110px, 1fr));
-    gap: 10px;
-    margin: 18px auto;
-    max-width: 900px;
-    width: 100%
+  display: grid;
+  grid-template-columns: repeat(5, minmax(110px, 1fr));
+  gap: 10px;
+  margin: 18px auto;
+  max-width: 900px;
+  width: 100%;
 }
 
 .rummy-seat {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: rgba(5, 4, 9, .42);
-    border: 1px solid rgba(255, 255, 255, .08);
-    border-radius: 14px;
-    min-width: 0
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(5, 4, 9, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  min-width: 0;
 }
 
 .rummy-seat.turn {
-    border-color: rgba(196, 143, 255, .6);
-    box-shadow: 0 0 0 1px rgba(196, 143, 255, .15), 0 0 24px rgba(145, 87, 218, .18)
+  border-color: rgba(196, 143, 255, 0.6);
+  box-shadow:
+    0 0 0 1px rgba(196, 143, 255, 0.15),
+    0 0 24px rgba(145, 87, 218, 0.18);
 }
 
 .rummy-seat.you {
-    margin: 12px auto 10px;
-    max-width: 360px;
-    width: 100%;
-    background: rgba(104, 52, 145, .26)
+  margin: 12px auto 10px;
+  max-width: 360px;
+  width: 100%;
+  background: rgba(104, 52, 145, 0.26);
 }
 
 .rummy-avatar {
-    flex: 0 0 34px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: #2f1d3f;
-    font-weight: 800
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #2f1d3f;
+  font-weight: 800;
 }
 
 .rummy-seat-copy {
-    min-width: 0;
-    display: flex;
-    flex-direction: column
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .rummy-seat-copy strong,
 .rummy-seat-copy span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .rummy-seat-copy strong {
-    font-size: 12px
+  font-size: 12px;
 }
 
 .rummy-seat-copy span {
-    font-size: 10px;
-    color: #aea7bb
+  font-size: 10px;
+  color: #aea7bb;
 }
 
 .turn-pill {
-    margin-left: auto;
-    font-size: 9px;
-    letter-spacing: .1em;
-    color: #ddbfff
+  margin-left: auto;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #ddbfff;
 }
 
 .rummy-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 26px;
-    min-height: 220px
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 26px;
+  min-height: 220px;
 }
 
 .rummy-center-divider {
-    height: 150px;
-    width: 1px;
-    background: rgba(255, 255, 255, .08)
+  height: 150px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .rummy-pile-control {
-    border: 0;
-    background: none;
-    color: #fff;
-    display: grid;
-    place-items: center;
-    gap: 7px;
-    cursor: pointer
+  border: 0;
+  background: none;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  gap: 7px;
+  cursor: pointer;
 }
 
 .rummy-pile-control:disabled {
-    opacity: .5;
-    cursor: not-allowed
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .rummy-pile-control span {
-    font-size: 10px;
-    letter-spacing: .12em;
-    font-weight: 800
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  font-weight: 800;
 }
 
 .rummy-pile-control small {
-    color: #aaa1b0;
-    font-size: 9px
+  color: #aaa1b0;
+  font-size: 9px;
 }
 
 .rummy-card {
-    width: 64px;
-    height: 92px;
-    border: 1px solid rgba(0, 0, 0, .18);
-    border-radius: 10px;
-    background: #fff;
-    color: #141018;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 8px;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, .25);
-    cursor: pointer;
-    transition: transform .16s ease, box-shadow .16s ease
+  width: 64px;
+  height: 92px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 10px;
+  background: #fff;
+  color: #141018;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
 }
 
 .rummy-card:hover {
-    transform: translateY(-4px)
+  transform: translateY(-4px);
 }
 
 .rummy-card.selected {
-    transform: translateY(-10px);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, .4), 0 0 0 2px #c78fff
+  transform: translateY(-10px);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.4),
+    0 0 0 2px #c78fff;
 }
 
 .rummy-card.red {
-    color: #c73563
+  color: #c73563;
 }
 
 .rummy-card strong {
-    font-size: 26px;
-    line-height: 1
+  font-size: 26px;
+  line-height: 1;
 }
 
 .rummy-card-back {
-    background: repeating-linear-gradient(45deg, #3c2552 0, #3c2552 7px, #5a3676 7px, #5a3676 14px);
-    border-color: #a779cc
+  background: repeating-linear-gradient(
+    45deg,
+    #3c2552 0,
+    #3c2552 7px,
+    #5a3676 7px,
+    #5a3676 14px
+  );
+  border-color: #a779cc;
 }
 
 .rummy-card.small {
-    width: 54px;
-    height: 78px;
-    padding: 7px
+  width: 54px;
+  height: 78px;
+  padding: 7px;
 }
 
 .rummy-card.small strong {
-    font-size: 20px
+  font-size: 20px;
 }
 
 .rummy-empty-pile {
-    width: 54px;
-    height: 78px;
-    border: 1px dashed rgba(255, 255, 255, .18);
-    border-radius: 10px;
-    display: grid;
-    place-items: center;
-    color: #776f7d
+  width: 54px;
+  height: 78px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #776f7d;
 }
 
 .rummy-hand-wrap {
-    margin-top: auto
+  margin-top: auto;
 }
 
 .rummy-hand-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 11px;
-    color: #b6afbc
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: #b6afbc;
 }
 
 .rummy-hand-toolbar button {
-    margin-left: 6px;
-    background: rgba(255, 255, 255, .06);
-    border: 1px solid rgba(255, 255, 255, .1);
-    color: #fff;
-    padding: 7px 10px;
-    border-radius: 8px;
-    font-size: 10px;
-    cursor: pointer
+  margin-left: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  cursor: pointer;
 }
 
 .rummy-hand {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    padding: 10px 0 4px
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 0 4px;
 }
 
 .rummy-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 14px
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
 }
 
 .rummy-actions button {
-    border: 1px solid rgba(255, 255, 255, .14);
-    background: rgba(255, 255, 255, .06);
-    color: #fff;
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .05em;
-    cursor: pointer
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
 }
 
 .rummy-actions button.primary {
-    background: #8b55bd;
-    border-color: #ac75da
+  background: #8b55bd;
+  border-color: #ac75da;
 }
 
 .rummy-actions button:disabled {
-    opacity: .4;
-    cursor: not-allowed
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .rummy-scoreboard {
-    background: rgba(255, 255, 255, .035);
-    border: 1px solid rgba(255, 255, 255, .07);
-    border-radius: 18px;
-    padding: 14px;
-    position: sticky;
-    top: 18px
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 14px;
+  position: sticky;
+  top: 18px;
 }
 
 .rummy-scoreboard h3 {
-    margin: 0 0 12px;
-    font-size: 13px
+  margin: 0 0 12px;
+  font-size: 13px;
 }
 
 .rummy-score-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 3px;
-    padding: 10px 0;
-    border-top: 1px solid rgba(255, 255, 255, .06)
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .rummy-score-row:first-of-type {
-    border-top: 0
+  border-top: 0;
 }
 
 .rummy-score-row span {
-    font-size: 12px
+  font-size: 12px;
 }
 
 .rummy-score-row b {
-    font-size: 12px
+  font-size: 12px;
 }
 
 .rummy-score-row small {
-    grid-column: 1/-1;
-    color: #948d9d;
-    font-size: 9px
+  grid-column: 1/-1;
+  color: #948d9d;
+  font-size: 9px;
 }
 
 .rummy-loading {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    background: #09080f;
-    color: #fff;
-    text-align: center
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #09080f;
+  color: #fff;
+  text-align: center;
 }
 
 .rummy-loading p {
-    color: #a9a1b0
+  color: #a9a1b0;
 }
 
 .rummy-connection,
 .rummy-error {
-    position: fixed;
-    z-index: 20;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 9px 14px;
-    border-radius: 999px;
-    background: #2a2330;
-    border: 1px solid rgba(255, 255, 255, .1);
-    font-size: 11px
+  position: fixed;
+  z-index: 20;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: #2a2330;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 11px;
 }
 
 .rummy-error {
-    top: 52px;
-    background: #411d2b;
-    color: #ffd7e4
+  top: 52px;
+  background: #411d2b;
+  color: #ffd7e4;
 }
 
 .rummy-result-overlay {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 20px;
-    background: radial-gradient(circle at center, #29163c, #08070b 65%)
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: radial-gradient(circle at center, #29163c, #08070b 65%);
 }
 
 .rummy-result-card {
-    width: min(520px, 100%);
-    background: #16111c;
-    border: 1px solid rgba(255, 255, 255, .1);
-    border-radius: 24px;
-    padding: 28px;
-    box-shadow: 0 30px 90px rgba(0, 0, 0, .55)
+  width: min(520px, 100%);
+  background: #16111c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
 }
 
-.rummy-result-card>span {
-    font-size: 10px;
-    letter-spacing: .14em;
-    color: #b896d1
+.rummy-result-card > span {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #b896d1;
 }
 
 .rummy-result-card h1 {
-    font-size: 30px;
-    margin: 9px 0 22px
+  font-size: 30px;
+  margin: 9px 0 22px;
 }
 
-.rummy-result-list>div {
-    display: flex;
-    justify-content: space-between;
-    padding: 13px 0;
-    border-top: 1px solid rgba(255, 255, 255, .07);
-    font-size: 13px
+.rummy-result-list > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 13px;
 }
 
 .rummy-result-card button {
-    margin-top: 20px;
-    width: 100%;
-    padding: 12px;
-    border: 0;
-    border-radius: 10px;
-    background: #8b55bd;
-    color: #fff;
-    font-weight: 800
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 10px;
+  background: #8b55bd;
+  color: #fff;
+  font-weight: 800;
 }
 
 .rummy-group-helper {
-    font-size: 10px;
-    color: #9f95aa;
-    text-align: center;
-    margin-top: 8px
+  font-size: 10px;
+  color: #9f95aa;
+  text-align: center;
+  margin-top: 8px;
 }
 
-@media (max-width:1050px) {
-    .rummy-layout {
-        grid-template-columns: 1fr
-    }
+@media (max-width: 1050px) {
+  .rummy-layout {
+    grid-template-columns: 1fr;
+  }
 
-    .rummy-scoreboard {
-        position: static
-    }
+  .rummy-scoreboard {
+    position: static;
+  }
 
-    .rummy-seats {
-        grid-template-columns: repeat(3, minmax(110px, 1fr))
-    }
+  .rummy-seats {
+    grid-template-columns: repeat(3, minmax(110px, 1fr));
+  }
 }
 
-@media (max-width:650px) {
-    .rummy-topbar {
-        padding: 0 12px
-    }
+@media (max-width: 650px) {
+  .rummy-topbar {
+    padding: 0 12px;
+  }
 
-    .rummy-topbar h1 {
-        font-size: 17px
-    }
+  .rummy-topbar h1 {
+    font-size: 17px;
+  }
 
-    .rummy-wild {
-        padding: 7px 9px
-    }
+  .rummy-wild {
+    padding: 7px 9px;
+  }
 
-    .rummy-layout {
-        padding: 8px
-    }
+  .rummy-layout {
+    padding: 8px;
+  }
 
-    .rummy-table {
-        padding: 11px;
-        border-radius: 18px;
-        min-height: calc(100vh - 88px)
-    }
+  .rummy-table {
+    padding: 11px;
+    border-radius: 18px;
+    min-height: calc(100vh - 88px);
+  }
 
-    .rummy-seats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        margin: 12px 0
-    }
+  .rummy-seats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 12px 0;
+  }
 
-    .rummy-seat.you {
-        margin: 10px auto
-    }
+  .rummy-seat.you {
+    margin: 10px auto;
+  }
 
-    .rummy-center {
-        min-height: 145px;
-        gap: 14px
-    }
+  .rummy-center {
+    min-height: 145px;
+    gap: 14px;
+  }
 
-    .rummy-center-divider {
-        height: 95px
-    }
+  .rummy-center-divider {
+    height: 95px;
+  }
 
-    .rummy-card {
-        width: 48px;
-        height: 70px;
-        padding: 6px;
-        border-radius: 8px
-    }
+  .rummy-card {
+    width: 48px;
+    height: 70px;
+    padding: 6px;
+    border-radius: 8px;
+  }
 
-    .rummy-card strong {
-        font-size: 20px
-    }
+  .rummy-card strong {
+    font-size: 20px;
+  }
 
-    .rummy-card.small {
-        width: 45px;
-        height: 65px
-    }
+  .rummy-card.small {
+    width: 45px;
+    height: 65px;
+  }
 
-    .rummy-card.small strong {
-        font-size: 17px
-    }
+  .rummy-card.small strong {
+    font-size: 17px;
+  }
 
-    .rummy-hand {
-        justify-content: flex-start;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        padding: 12px 2px 8px;
-        scrollbar-width: thin
-    }
+  .rummy-hand {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding: 12px 2px 8px;
+    scrollbar-width: thin;
+  }
 
-    .rummy-hand-toolbar {
-        align-items: flex-start;
-        gap: 8px
-    }
+  .rummy-hand-toolbar {
+    align-items: flex-start;
+    gap: 8px;
+  }
 
-    .rummy-hand-toolbar button {
-        padding: 6px 8px
-    }
+  .rummy-hand-toolbar button {
+    padding: 6px 8px;
+  }
 
-    .rummy-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr
-    }
+  .rummy-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 
-    .rummy-actions button {
-        padding: 11px 8px
-    }
+  .rummy-actions button {
+    padding: 11px 8px;
+  }
 
-    .rummy-scoreboard {
-        display: none
-    }
+  .rummy-scoreboard {
+    display: none;
+  }
+}
+
+/* In-game readability tune only; site-wide typography is intentionally unchanged. */
+.indian-rummy-page .rummy-topbar span {
+  font-size: 12px;
+}
+.indian-rummy-page .rummy-seat-copy strong {
+  font-size: 13px;
+}
+.indian-rummy-page .rummy-seat-copy span {
+  font-size: 11px;
+}
+.indian-rummy-page .turn-pill {
+  font-size: 10px;
+}
+.indian-rummy-page .rummy-pile-control span {
+  font-size: 11px;
+}
+.indian-rummy-page .rummy-pile-control small {
+  font-size: 10px;
+}
+.indian-rummy-page .rummy-hand-toolbar {
+  font-size: 12px;
+}
+.indian-rummy-page .rummy-hand-toolbar button,
+.indian-rummy-page .rummy-actions button {
+  font-size: 12px;
+}
+.indian-rummy-page .rummy-score-row span,
+.indian-rummy-page .rummy-score-row b {
+  font-size: 13px;
+}
+.indian-rummy-page .rummy-score-row small {
+  font-size: 10px;
 }

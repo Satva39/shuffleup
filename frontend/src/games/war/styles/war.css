@@ -812,3 +812,47 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+
+/* In-game readability tune only; site-wide typography is intentionally unchanged. */
+.war-page .war-status-label {
+  font-size: 12px;
+}
+.war-page .war-room-pill {
+  font-size: 13px;
+}
+.war-page .war-seat-name {
+  font-size: 13px;
+}
+.war-page .war-active-dot {
+  font-size: 10px;
+}
+.war-page .war-seat-count {
+  font-size: 11px;
+}
+.war-page .war-battle-heading {
+  font-size: 11px;
+}
+.war-page .war-reveal-slot > span {
+  font-size: 11px;
+}
+.war-page .war-waiting {
+  font-size: 12px;
+}
+.war-page .war-next-message span {
+  font-size: 11px;
+}
+.war-page .war-battle-result-copy {
+  font-size: 12px;
+}
+.war-page .war-indicator span {
+  font-size: 11px;
+}
+.war-page .war-bottom-copy span {
+  font-size: 12px;
+}
+.war-page .war-autostart-note {
+  font-size: 12px;
+}
+.war-page .war-result-kicker {
+  font-size: 11px;
+}

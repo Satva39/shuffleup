@@ -2,11 +2,12 @@
 .game-navigation-tools {
   position: fixed;
   z-index: 1500;
-  top: max(14px, env(safe-area-inset-top));
-  right: max(14px, env(safe-area-inset-right));
+  top: max(12px, env(safe-area-inset-top));
+  left: max(8px, env(safe-area-inset-left));
+  right: auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 10px;
   width: max-content;
   max-width: calc(100vw - 28px);
@@ -22,9 +23,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 50px;
-  padding: 10px 17px;
+  width: 54px;
+  min-width: 54px;
+  height: 54px;
+  min-height: 54px;
+  padding: 0;
   border: 1px solid rgba(167, 139, 250, 0.72);
   border-radius: 13px;
   background: #171523;
@@ -240,15 +243,18 @@
 @media (max-width: 520px) {
   .game-navigation-tools {
     top: max(8px, env(safe-area-inset-top));
-    right: max(8px, env(safe-area-inset-right));
+    left: max(8px, env(safe-area-inset-left));
+    right: auto;
     max-width: calc(100vw - 16px);
     gap: 8px;
   }
 
   .game-menu-toggle {
-    min-height: 48px;
-    padding: 10px 14px;
-    font-size: 15px;
+    width: 50px;
+    min-width: 50px;
+    height: 50px;
+    min-height: 50px;
+    padding: 0;
   }
 
   .game-navigation-menu {

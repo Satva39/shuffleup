@@ -253,6 +253,8 @@ function GameNavigationTools() {
         <button
           type="button"
           className="game-menu-toggle"
+          aria-label={menuOpen ? "Close game controls" : "Open game controls"}
+          title={menuOpen ? "Close game controls" : "Open game controls"}
           aria-expanded={menuOpen}
           aria-controls="game-navigation-menu"
           onClick={() => setMenuOpen((open) => !open)}
@@ -260,7 +262,6 @@ function GameNavigationTools() {
           <span className="game-menu-toggle-icon" aria-hidden="true">
             {menuOpen ? "×" : "☰"}
           </span>
-          <span>{menuOpen ? "Close menu" : "Game menu"}</span>
         </button>
         {menuOpen && (
           <nav

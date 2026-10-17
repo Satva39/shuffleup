@@ -29,7 +29,10 @@ function Home() {
     let cancelled = false;
     const loadCounts = async () => {
       try {
-        const response = await fetch(`${baseUrl.replace(/\/$/, "")}/api/live-counts`, { cache: "no-store" });
+        const response = await fetch(
+          `${baseUrl.replace(/\/$/, "")}/api/live-counts`,
+          { cache: "no-store" },
+        );
         if (!response.ok) return;
         const result = await response.json();
         if (!cancelled) setLiveCounts(result.games || {});
@@ -39,7 +42,10 @@ function Home() {
     };
     loadCounts();
     const interval = window.setInterval(loadCounts, 15000);
-    return () => { cancelled = true; window.clearInterval(interval); };
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
@@ -54,14 +60,18 @@ function Home() {
       if (!socket.connected) return;
       socket.emit("get-my-active-room", (result) => {
         if (cancelled) return;
-        if (result?.success && result.room && result.destination) setActiveRoom(result);
+        if (result?.success && result.room && result.destination)
+          setActiveRoom(result);
         else setActiveRoom(null);
       });
     };
     socket.on("connect", requestActiveRoom);
     if (!socket.connected) socket.connect();
     else requestActiveRoom();
-    return () => { cancelled = true; socket.off("connect", requestActiveRoom); };
+    return () => {
+      cancelled = true;
+      socket.off("connect", requestActiveRoom);
+    };
   }, [user?.id]);
 
   async function startDemo() {
@@ -82,14 +92,21 @@ function Home() {
         data = await response.json().catch(() => ({}));
       } catch (requestError) {
         if (requestError?.name === "AbortError") {
-          throw new Error("The demo server took too long to respond. Please try again in a moment.");
+          throw new Error(
+            "The demo server took too long to respond. Please try again in a moment.",
+          );
         }
-        throw new Error("Could not reach the demo server. Please try again shortly.");
+        throw new Error(
+          "Could not reach the demo server. Please try again shortly.",
+        );
       } finally {
         window.clearTimeout(timeout);
       }
       if (!response.ok || !data.token) {
-        throw new Error(data.message || "The demo is temporarily unavailable. Please try again shortly.");
+        throw new Error(
+          data.message ||
+            "The demo is temporarily unavailable. Please try again shortly.",
+        );
       }
       localStorage.setItem("shuffleup_demo_token", data.token);
       localStorage.setItem("shuffleup_demo_expires_at", String(data.expiresAt));
@@ -104,24 +121,33 @@ function Home() {
     }
   }
 
-  const categories = [
-    "All",
-    "Classic",
-    "Trick Taking",
-    "Casual",
-  ];
+  const categories = ["All", "Classic", "Trick Taking", "Casual"];
 
   const filteredGames = useMemo(() => {
     const filtered = games.filter((game) => {
-      const matchesSearch = game.name.toLowerCase().includes(search.toLowerCase());
+      const matchesSearch = game.name
+        .toLowerCase()
+        .includes(search.toLowerCase());
       const matchesCategory = category === "All" || game.category === category;
       return matchesSearch && matchesCategory;
     });
     return [...filtered].sort((a, b) => {
       if (sortBy === "name") return a.name.localeCompare(b.name);
-      if (sortBy === "most-played") return (gameHistory[b.id]?.plays || 0) - (gameHistory[a.id]?.plays || 0) || a.name.localeCompare(b.name);
-      if (sortBy === "recent") return (gameHistory[b.id]?.lastPlayedAt || 0) - (gameHistory[a.id]?.lastPlayedAt || 0) || a.name.localeCompare(b.name);
-      return games.findIndex((item) => item.id === a.id) - games.findIndex((item) => item.id === b.id);
+      if (sortBy === "most-played")
+        return (
+          (gameHistory[b.id]?.plays || 0) - (gameHistory[a.id]?.plays || 0) ||
+          a.name.localeCompare(b.name)
+        );
+      if (sortBy === "recent")
+        return (
+          (gameHistory[b.id]?.lastPlayedAt || 0) -
+            (gameHistory[a.id]?.lastPlayedAt || 0) ||
+          a.name.localeCompare(b.name)
+        );
+      return (
+        games.findIndex((item) => item.id === a.id) -
+        games.findIndex((item) => item.id === b.id)
+      );
     });
   }, [search, category, sortBy, gameHistory]);
 
@@ -134,9 +160,18 @@ function Home() {
           <section className="rejoin-active-room" aria-live="polite">
             <div>
               <strong>Your game is still available</strong>
-              <span>{games.find((game) => game.id === activeRoom.room.gameId)?.name || activeRoom.room.gameId} · Room {activeRoom.room.code}</span>
+              <span>
+                {games.find((game) => game.id === activeRoom.room.gameId)
+                  ?.name || activeRoom.room.gameId}{" "}
+                · Room {activeRoom.room.code}
+              </span>
             </div>
-            <button type="button" onClick={() => navigate(activeRoom.destination)}>Rejoin game</button>
+            <button
+              type="button"
+              onClick={() => navigate(activeRoom.destination)}
+            >
+              Rejoin game
+            </button>
           </section>
         )}
         <section className="hero">
@@ -150,8 +185,8 @@ function Home() {
             </h1>
 
             <p className="hero-description">
-              Classic card games, multiplayer rooms and
-              friendly competition — all in one place.
+              Classic card games, multiplayer rooms and friendly competition —
+              all in one place.
             </p>
 
             <div className="hero-buttons">
@@ -169,13 +204,19 @@ function Home() {
                   onClick={startDemo}
                   disabled={startingDemo || authLoading}
                   aria-busy={startingDemo}
-                  title={authLoading ? "Checking your existing session…" : undefined}
+                  title={
+                    authLoading ? "Checking your existing session…" : undefined
+                  }
                 >
                   {startingDemo ? "Starting demo…" : "Try 2-minute demo"}
                 </button>
               )}
             </div>
-            {demoError && <p role="alert" className="demo-start-error">{demoError}</p>}
+            {demoError && (
+              <p role="alert" className="demo-start-error">
+                {demoError}
+              </p>
+            )}
           </div>
 
           <div className="hero-cards">
@@ -192,9 +233,7 @@ function Home() {
               <h2>Choose Your Game</h2>
             </div>
 
-            <p>
-              {filteredGames.length} games available
-            </p>
+            <p>{filteredGames.length} games available</p>
           </div>
 
           <div className="game-controls">
@@ -207,7 +246,11 @@ function Home() {
 
             <div className="game-sort-control">
               <label htmlFor="game-sort">Sort games</label>
-              <select id="game-sort" value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+              <select
+                id="game-sort"
+                value={sortBy}
+                onChange={(event) => setSortBy(event.target.value)}
+              >
                 <option value="featured">Featured</option>
                 <option value="name">Name A–Z</option>
                 <option value="most-played">Most played on this device</option>
@@ -219,9 +262,7 @@ function Home() {
               {categories.map((item) => (
                 <button
                   key={item}
-                  className={
-                    category === item ? "active" : ""
-                  }
+                  className={category === item ? "active" : ""}
                   onClick={() => setCategory(item)}
                 >
                   {item}
@@ -259,25 +300,47 @@ function Home() {
             <div className="step">
               <span>01</span>
               <h3>Choose a Game</h3>
-              <p>
-                Pick one of our multiplayer card games.
-              </p>
+              <p>Pick one of our multiplayer card games.</p>
             </div>
 
             <div className="step">
               <span>02</span>
               <h3>Create or Join</h3>
-              <p>
-                Create a private room or join your friends.
-              </p>
+              <p>Create a private room or join your friends.</p>
             </div>
 
             <div className="step">
               <span>03</span>
               <h3>Shuffle Up</h3>
-              <p>
-                Play together in real time and have fun.
-              </p>
+              <p>Play together in real time and have fun.</p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="seo-guides-section"
+          aria-labelledby="seo-guides-heading"
+        >
+          <div className="seo-guides-inner">
+            <p className="eyebrow">LEARN BEFORE YOU PLAY</p>
+            <h2 id="seo-guides-heading">Online Card Games and How to Play</h2>
+            <p className="seo-guides-intro">
+              New to a game? Read a practical guide to its objective, player
+              count, turn sequence, and scoring. These guides describe the rules
+              used in ShuffleUp and help you choose the right table.
+            </p>
+            <p className="seo-guides-all">
+              <a href="/card-games/">
+                Browse all 15 card games and rules guides →
+              </a>
+            </p>
+            <div className="seo-guides-grid">
+              {games.map((game) => (
+                <a key={game.id} href={`/how-to-play/${game.id}/`}>
+                  <span>{game.name}</span>
+                  <span aria-hidden="true">Read guide →</span>
+                </a>
+              ))}
             </div>
           </div>
         </section>
@@ -292,9 +355,8 @@ function Home() {
           </h2>
 
           <p>
-            ShuffleUp is being built as a multiplayer
-            card-game platform where classic games can
-            be played with friends and other players.
+            ShuffleUp is being built as a multiplayer card-game platform where
+            classic games can be played with friends and other players.
           </p>
         </section>
       </main>
@@ -314,4 +376,4 @@ function Home() {
   );
 }
 
-export default Home;;
+export default Home;

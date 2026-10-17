@@ -17,6 +17,7 @@ function Navbar() {
         <nav className="nav-links">
           <a href="/#games">Games</a>
           <a href="/#how-it-works">How to Play</a>
+          <a href="/card-games/">Game Guides</a>
           <a href="/#about">About</a>
         </nav>
 

@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /room/
+Disallow: /games/
+Disallow: /profile
+Disallow: /lobby
+Disallow: /play-with-bots
+Disallow: /stats
+Disallow: /social
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+
+Sitemap: https://shuffleup-five.vercel.app/sitemap.xml
